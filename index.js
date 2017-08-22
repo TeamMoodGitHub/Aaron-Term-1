@@ -6,6 +6,9 @@ const app = express();
 //Serve static files from React app.
 app.use(express.static(path.join(__dirname, 'client/build')));
 
+//Serve static files from static folder.
+app.use(express.static(path.join(__dirname, 'static')));
+
 //Put all API endpoints under '/API'
 app.get('/api', (req, res) => {
 	res.json("Hello");
