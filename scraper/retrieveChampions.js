@@ -1,12 +1,13 @@
 const cron = require('node-cron');
 const MongoClient = require('mongodb').MongoClient;
-const config = require('../config');
+const MONGO_LINK = process.env.MONGO_LINK || require('../config').MONGO_LINK;
+const RIOT_API_KEY = process.env.RIOT_API_KEY || require('../config').RIOT_API_KEY;
 const https = require('https');
 
 var db;
-const url = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&dataById=false&api_key="+config.riotApiKey;
+const url = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&dataById=false&api_key="+RIOT_API_KEY;
 
-MongoClient.connect(process.env.MONGO_LINK || config.mongoLink, (err, database) => {
+MongoClient.connect(MONGO_LINK, (err, database) => {
 	if (err) {
 		console.log("Error Connecting to Mongo to update Champions: " + err);
 		return;
