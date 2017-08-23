@@ -1,33 +1,33 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
-import champions from '../data/champions';
-
-const getSuggestions = value => {
-	const input = value.trim().toLowerCase();
-	const length = input.length;
-
-	return length === 0 ? [] : champions.filter(champ => 
-		champ.name.toLowerCase().startsWith(input)
-		);
-}
 
 const getSuggestionValue = suggestion => suggestion.name;
 
 const renderSuggestion = suggestion => (
 	<div className="suggestion">
-		<h3>{suggestion.name}: {JSON.stringify(suggestion.tags)}</h3>
+		<h3>{suggestion.name}: {JSON.stringify(suggestion.tags ? suggestion.tags : suggestion.description)}</h3>
 	</div>
 );
 
 class ChampionInput extends React.Component {
 
-
 	//Initializes the state of the search box.
 	constructor(props) {
 		super(props);
 		this.state = {
-			suggestions: []
+			suggestions: [],
+			champions: []
 		};
+	}
+
+	componentDidMount() {
+		this.loadChampionsFromAPI();
+	};
+
+	loadChampionsFromAPI() {
+		fetch('/api')
+			.then(res => res.json())
+			.then(champions => this.setState({champions}));
 	}
 
 	//Called when user types into text box.
@@ -38,7 +38,7 @@ class ChampionInput extends React.Component {
 	//Called when suggestions are fetched.
 	onSuggestionsFetchRequested = ({value}) => {
 		this.setState({
-			suggestions: getSuggestions(value)
+			suggestions: this.getSuggestions(value)
 		});
 	};
 
@@ -48,6 +48,15 @@ class ChampionInput extends React.Component {
 			suggestions: []
 		});
 	};
+
+	getSuggestions = value => {
+		const input = value.trim().toLowerCase();
+		const length = input.length;
+
+		return length === 0 ? [] : this.state.champions.filter(champ => 
+			champ.name.toLowerCase().startsWith(input)
+			);
+	}
 
 	render() {
 		const {suggestions} = this.state;

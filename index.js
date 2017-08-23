@@ -16,7 +16,8 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.get('/api', (req, res) => {
 	db.collection("champions").find().toArray(function(err, results) {
 		if (err) {
-			res.json({
+			//Send Error Code 500 - Internal Server Error if query fails.
+			res.status(500).json({
 				source: "Error querying database for champions!",
 				error: err
 			});
@@ -34,6 +35,9 @@ app.get('*', (req, res) => {
 
 const port = process.env.PORT || 5000;
 
+//The database credentials are hidden for security purposes. 
+//When hosting locally, they are stored in a local configuration file, 
+//and when hosting on Heroku, it is stored as an environment variable.
 MongoClient.connect(process.env.MONGO_LINK || require("./config/mongoLink"), (err, database) => {
 	if (err) {
 		console.log(err);
