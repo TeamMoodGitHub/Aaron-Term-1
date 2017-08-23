@@ -3,3 +3,4 @@
 
 #Don't include configuration files on repo
 /config
+/config.js

@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const MongoClient = require('mongodb').MongoClient;
+const config = require('./config');
+const retrieveChampionsHourly = require('./scraper/retrieveChampions');
 
 const app = express();
 
@@ -38,7 +40,7 @@ const port = process.env.PORT || 5000;
 //The database credentials are hidden for security purposes. 
 //When hosting locally, they are stored in a local configuration file, 
 //and when hosting on Heroku, it is stored as an environment variable.
-MongoClient.connect(process.env.MONGO_LINK || require("./config/mongoLink"), (err, database) => {
+MongoClient.connect(process.env.MONGO_LINK || config.mongoLink, (err, database) => {
 	if (err) {
 		console.log(err);
 		return;
@@ -48,4 +50,6 @@ MongoClient.connect(process.env.MONGO_LINK || require("./config/mongoLink"), (er
 	app.listen(port, () => {
 		console.log(`Listening on port ${port}`);
 	});
+
+	retrieveChampionsHourly();
 })

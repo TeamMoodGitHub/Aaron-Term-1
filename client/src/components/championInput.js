@@ -5,7 +5,7 @@ const getSuggestionValue = suggestion => suggestion.name;
 
 const renderSuggestion = suggestion => (
 	<div className="suggestion">
-		<h3>{suggestion.name}: {JSON.stringify(suggestion.tags ? suggestion.tags : suggestion.description)}</h3>
+		<h3>{suggestion.name}: {suggestion.title}</h3>
 	</div>
 );
 
