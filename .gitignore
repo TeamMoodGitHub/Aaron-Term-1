@@ -1,2 +1,5 @@
 #Don't include node modules on repo
 /node_modules
+
+#Don't include configuration files on repo
+/config
