@@ -22,22 +22,50 @@ module.exports = function() {
 	//Currently, cron runs once per hour.
 	cron.schedule('0 * * * *', function() {
 	
-		console.log("Retrieving champions from API");
+		//console.log("Retrieving champions from API");
 		https.get(url, function(res) {
+
 			var body = '';
 			res.on('data', function(chunk) {
 				body += chunk;
 			});
 			res.on('end', function() {
+
+
+				//If response code isn't 2XX, there is a problem!
+				if (res.statusCode < 200 || res.statusCode > 299) {
+					console.log("Could not retrieve champions from API. Status Code: " + res.statusCode);
+					console.log("Contents of body: " + body);
+					return;
+				}
+
+				//Otherwise, parse the data!
 				var list = JSON.parse(body);
+
 				if (db) {
-					db.collection('champions').insertMany(Object.values(list.data), function(err, results) {
+					//For each champion, create an upsert request into Mongo.
+					var request = [];
+					for (var key in list.data) {
+						request.push({
+							updateOne: {
+								filter: {
+									key: key
+								},
+								update: {
+									$set: list.data[key]
+								},
+								upsert: true
+							}
+						});
+					}
+
+					//Use the bulkWrite method from Mongo to handle the upsert requests.
+					db.collection('champions').bulkWrite(request, function(err, results) {
 						if (err) {
 							console.log("Error inserting champions into Mongo: " + err);
 							return;
 						}
-						console.log("Champion list updated. New Count: " + Object.keys(list.data).length);
-						//console.log("Value of Champion list: " + JSON.stringify(list.data));
+						console.log("Champion list updated. New Count: " + request.length);
 					});
 				} else {
 					console.log("Database is null... Trying again later..");
@@ -49,5 +77,3 @@ module.exports = function() {
 
 	});
 }
-
-module.exports();
