@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(express.static(path.join(__dirname, 'static')));
 
 //Put all API endpoints under '/API'
-app.get('/api', (req, res) => {
+app.get('/api/champions', (req, res) => {
 	db.collection("champions").find().toArray(function(err, results) {
 		if (err) {
 			//Send Error Code 500 - Internal Server Error if query fails.
@@ -29,6 +29,14 @@ app.get('/api', (req, res) => {
 	});
 });
 
+app.get('/api', (req, res) => {
+
+	res.status(400).json({
+		error: "Invalid Request"
+	});
+
+});
+
 //Anything else will send back React's index.html file.
 
 app.get('*', (req, res) => {
@@ -38,7 +46,7 @@ app.get('*', (req, res) => {
 const port = process.env.PORT || 5000;
 
 //The database credentials are hidden for security purposes. 
-//When hosting locally, they are stored in a local configuration file, 
+//When hosting locally, it is stored in a local configuration file, 
 //and when hosting on Heroku, it is stored as an environment variable.
 MongoClient.connect(MONGO_LINK, (err, database) => {
 	if (err) {

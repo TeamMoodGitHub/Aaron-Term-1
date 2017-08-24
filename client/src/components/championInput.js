@@ -25,7 +25,7 @@ class ChampionInput extends React.Component {
 	};
 
 	loadChampionsFromAPI() {
-		fetch('/api')
+		fetch('/api/champions')
 			.then(res => res.json())
 			.then(champions => this.setState({champions}));
 	}

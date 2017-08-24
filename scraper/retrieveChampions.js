@@ -36,7 +36,8 @@ module.exports = function() {
 							console.log("Error inserting champions into Mongo: " + err);
 							return;
 						}
-						console.log("Champion list updated. New Count: " + list.data.length);
+						console.log("Champion list updated. New Count: " + Object.keys(list.data).length);
+						//console.log("Value of Champion list: " + JSON.stringify(list.data));
 					});
 				} else {
 					console.log("Database is null... Trying again later..");
@@ -46,5 +47,7 @@ module.exports = function() {
 			console.log("Error pulling champions from Riot API: " + e);
 		});
 
-});
+	});
 }
+
+module.exports();
