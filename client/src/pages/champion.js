@@ -26,6 +26,9 @@ class Champion extends React.Component {
 				champion: champInfo,
 				found: champInfo.found !== -1
 			}));
+	}
+
+	getPatchNumber() {
 		fetch('https://ddragon.leagueoflegends.com/api/versions.json')
 			.then(res => res.json())
 			.then(versions => this.setState({
