@@ -6,21 +6,51 @@ import ChampionHeader from '../components/championHeader';
 
 class Champion extends React.Component {
 
+	constructor(props) {
+		super(props);
+		this.state = {
+			query: this.props.match.params.championName,
+			loaded: false,
+			found: false
+		}
+	}
+
+	componentDidMount() {
+		this.loadChampionDetails();
+	}
+
+	loadChampionDetails() {
+		fetch('/api/champion/' + this.state.query)
+			.then(res => res.json())
+			.then(champInfo => this.setState( {
+				champion: champInfo,
+				loaded: true,
+				found: champInfo.found !== -1
+			}));
+	}
+
 	render() {
-
-		const champName = this.props.match.params.championName
-
+		//console.log(this.state);
 		//Searching for no champion?! What?!?
-		if (!champName) {
+		if (!this.state.query) {
 			return (
 				<h1> You're not searching for anything!! </h1>
 				);
+		} else if (!this.state.loaded) {
+			//Pass javascript object with only search query as champion name while loading.
+			return (
+				<ChampionHeader champ={{name: this.props.match.params.championName}} />
+			);
+		} else if (!this.state.found) {
+			return (
+				<h1> Oh no! We could not find the Champion you were looking for! </h1>
+			);
 		}
 
 		return (
 			<div>
-				<h1>Champion: {this.props.match.params.championName}</h1>
-				<ChampionHeader champ={champName} />
+				<h1>Champion: {this.state.champion.name}</h1>
+				<ChampionHeader champ={this.state.champion} />
 				{/*<StartingItems champ={champName} />*/}
 				{/*<JungleRoutes champ={champName} />*/}
 			</div>

@@ -1,40 +1,14 @@
 import React from 'react';
 
 class ChampionHeader extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			champ: this.props.champ,
-			title: "",
-			image: null,
-			winRatePercentage: 0,
-			winRateGameCount: 0
-		}
-	}
-
-	componentDidMount() {
-		this.loadChampionDetails();
-	}
-
-	loadChampionDetails() {
-		fetch('/api/champion/' + this.props.champ)
-			.then(res => res.json())
-			.then(champInfo => this.setState(champInfo));
-	}
 
 	render() {
 
-		if (this.state.found === -1) {
-			return (
-				<div class="notFound">
-					<p>Unfortunately, we could not find this champion!</p>
-				</div>
-			);
-		}
+		const champion = this.props.champ;
 
-		const name = this.state.name || this.state.champ;
-		const title = this.state.title || "Loading...";
-		const image = this.state.image ? "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/" + this.state.image.full : "Loading..."; 
+		const name = champion.name || "Loading...";
+		const title = champion.title || "Loading...";
+		const image = champion.image ? "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/" + champion.image.full : "Loading..."; 
 		const winRatePercentage = 50 //this.state.winRatePercentage || "Loading...";
 		const winRateGameCount = 0 //this.state.winRateGameCount || "Loading...";
 
