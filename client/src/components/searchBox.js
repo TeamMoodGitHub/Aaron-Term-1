@@ -37,7 +37,7 @@ class SearchBox extends React.Component {
 
 		//If redirect is enabled, send to the page for that champion.
 		if (this.state.redirect) {
-			return <Redirect push to={"/champion/"+this.state.champ.replace(/[^a-zA-Z ]/g, "").replace(" ", "-")} />;
+			return <Redirect push to={"/champion/"+this.state.champ} />;
 		}
 
 		//Otherwise, return the Champion Input Search field and the submit button.

@@ -1,7 +1,7 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 
-const getSuggestionValue = suggestion => suggestion.name;
+const getSuggestionValue = suggestion => suggestion.key;
 
 const renderSuggestion = suggestion => (
 	<div className="suggestion">

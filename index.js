@@ -29,6 +29,20 @@ app.get('/api/champions', (req, res) => {
 	});
 });
 
+app.get('/api/champion/:champ', (req, res) => {
+	db.collection("champ").findOne({key: req.params.champ}, function(err, results) {
+		if (err) {
+			//Send Error Code 500 - Internal Server Error if query fails.
+			res.status(500).json({
+				source: "Error querying database for champions!",
+				error: err
+			});
+			return;
+		}
+		res.json(results === null ? {found: -1} : results);
+	});
+});
+
 app.get('/api', (req, res) => {
 
 	res.status(400).json({

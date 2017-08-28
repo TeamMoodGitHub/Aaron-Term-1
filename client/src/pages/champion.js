@@ -1,6 +1,6 @@
 import React from 'react';
 
-//import ChampionHeader from './championHeader';
+import ChampionHeader from '../components/championHeader';
 //import StartingItems from './startingItems';
 //import JungleRoutes from './jungleRoutes';
 
@@ -20,7 +20,7 @@ class Champion extends React.Component {
 		return (
 			<div>
 				<h1>Champion: {this.props.match.params.championName}</h1>
-				{/*<ChampionHeader champ={champName} />*/}
+				<ChampionHeader champ={champName} />
 				{/*<StartingItems champ={champName} />*/}
 				{/*<JungleRoutes champ={champName} />*/}
 			</div>
