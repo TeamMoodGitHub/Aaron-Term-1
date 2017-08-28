@@ -8,7 +8,7 @@ class ChampionHeader extends React.Component {
 
 		const name = champion.name || "Loading...";
 		const title = champion.title || "Loading...";
-		const image = champion.image ? "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/" + champion.image.full : "Loading..."; 
+		const image = champion.image ? "http://ddragon.leagueoflegends.com/cdn/"+this.props.version+"/img/champion/" + champion.image.full : ""; 
 		const winRatePercentage = 50 //this.state.winRatePercentage || "Loading...";
 		const winRateGameCount = 0 //this.state.winRateGameCount || "Loading...";
 

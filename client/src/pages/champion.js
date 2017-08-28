@@ -10,13 +10,13 @@ class Champion extends React.Component {
 		super(props);
 		this.state = {
 			query: this.props.match.params.championName,
-			loaded: false,
 			found: false
 		}
 	}
 
 	componentDidMount() {
 		this.loadChampionDetails();
+		this.getPatchNumber();
 	}
 
 	loadChampionDetails() {
@@ -24,8 +24,12 @@ class Champion extends React.Component {
 			.then(res => res.json())
 			.then(champInfo => this.setState( {
 				champion: champInfo,
-				loaded: true,
 				found: champInfo.found !== -1
+			}));
+		fetch('https://ddragon.leagueoflegends.com/api/versions.json')
+			.then(res => res.json())
+			.then(versions => this.setState({
+				version: versions[0]
 			}));
 	}
 
@@ -36,7 +40,7 @@ class Champion extends React.Component {
 			return (
 				<h1> You're not searching for anything!! </h1>
 				);
-		} else if (!this.state.loaded) {
+		} else if (!this.state.champion || !this.state.version) {
 			//Pass javascript object with only search query as champion name while loading.
 			return (
 				<ChampionHeader champ={{name: this.props.match.params.championName}} />
@@ -50,7 +54,7 @@ class Champion extends React.Component {
 		return (
 			<div>
 				<h1>Champion: {this.state.champion.name}</h1>
-				<ChampionHeader champ={this.state.champion} />
+				<ChampionHeader champ={this.state.champion} version = {this.state.version}/>
 				{/*<StartingItems champ={champName} />*/}
 				{/*<JungleRoutes champ={champName} />*/}
 			</div>
