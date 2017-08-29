@@ -1,26 +1,25 @@
 import React from 'react';
 
 class ChampionHeader extends React.Component {
-	constructor(props) {
-		super(props);
-	}
 
 	render() {
 
-		const name = this.props.name;
-		const subtitle = "The Blind Monk";
-		const img = "http://www.mobafire.com/images/champion/icon/lee-sin.png";
-		const winRatePercentage = 48;
-		const winRateGameCount = 1300;
+		const champion = this.props.champ;
+
+		const name = champion.name || "Loading...";
+		const title = champion.title || "Loading...";
+		const image = champion.image ? "http://ddragon.leagueoflegends.com/cdn/"+this.props.version+"/img/champion/" + champion.image.full : ""; 
+		const winRatePercentage = 50 //this.state.winRatePercentage || "Loading...";
+		const winRateGameCount = 0 //this.state.winRateGameCount || "Loading...";
 
 		return (
 
 			<div class="champHeader">
 
-				<img src={img} />
+				<img src={image} />
 				<div class="champHeaderNamePanel">
 					<h2>{name}</h2>
-					<h3>{subtitle}</h3>
+					<h3>{title}</h3>
 				</div>
 				{/*Tags*/}
 				<div class="champHeaderWinRatePanel">
