@@ -39,7 +39,7 @@ app.get('/api/champion/:champ', (req, res) => {
 			});
 			return;
 		}
-		res.json(results === null ? {found: -1} : results);
+		res.json(results === null ? {source: "Champion not found!", found: -1} : results);
 	});
 });
 
@@ -73,5 +73,5 @@ MongoClient.connect(MONGO_LINK, (err, database) => {
 		console.log(`Listening on port ${port}`);
 	});
 
-	retrieveChampionsHourly();
-})
+	retrieveChampionsHourly(db);
+});

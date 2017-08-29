@@ -5,18 +5,9 @@ const RIOT_API_KEY = process.env.RIOT_API_KEY || require('../config').RIOT_API_K
 const https = require('https');
 const updateChampInfo = require('./updateChampInfo');
 
-var db;
 const url = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&dataById=false&api_key="+RIOT_API_KEY;
 
-MongoClient.connect(MONGO_LINK, (err, database) => {
-	if (err) {
-		console.log("Error Connecting to Mongo to update Champions: " + err);
-		return;
-	}
-	db = database;
-});
-
-module.exports = function() {
+module.exports = function(db) {
 	//console.log("Retrieve Champions Cron Job Started.");
 	
 	//In the future, update this to once per day.
@@ -80,7 +71,7 @@ module.exports = function() {
 		});
 
 		//Then pull detailed champion info from API.
-		updateChampInfo();
+		updateChampInfo(db);
 
 	});
 }

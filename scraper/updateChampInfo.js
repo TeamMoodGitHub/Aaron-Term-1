@@ -3,16 +3,7 @@ const MONGO_LINK = process.env.MONGO_LINK || require('../config').MONGO_LINK;
 const RIOT_API_KEY = process.env.RIOT_API_KEY || require('../config').RIOT_API_KEY;
 const https = require('https');
 
-var db;
-MongoClient.connect(MONGO_LINK, (err, database) => {
-	if (err) {
-		console.log("Error Connecting to Mongo to update detailed champion info: " + err);
-		return;
-	}
-	db = database;
-});
-
-module.exports = function() {
+module.exports = function(db) {
 	const url = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&tags=all&dataById=false&api_key="+RIOT_API_KEY;
 
 		//console.log("Retrieving champions from API");
