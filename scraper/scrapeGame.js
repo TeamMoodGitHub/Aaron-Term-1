@@ -1,9 +1,7 @@
-const cron = require('node-cron');
 const MongoClient = require('mongodb').MongoClient;
 const MONGO_LINK = process.env.MONGO_LINK || require('../config').MONGO_LINK;
 const RIOT_API_KEY = process.env.RIOT_API_KEY || require('../config').RIOT_API_KEY;
 const https = require('https');
-const updateChampInfo = require('./updateChampInfo');
 
 //Update this with patch date to parse games only from current patch.
 const patchTime = new Date("August 24, 2017").getTime();
@@ -15,6 +13,9 @@ const delay = 1.2 * 1000;
 const matchURL = (matchID) => "https://na1.api.riotgames.com/lol/match/v3/matches/"+ matchID +"?api_key="+ RIOT_API_KEY;
 const historyURL = (accountID) => "https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/"+ accountID + "?beginTime="+patchTime+"&api_key=" + RIOT_API_KEY;
 const patchURL = "https://ddragon.leagueoflegends.com/api/versions.json";
+
+//Summoner Spell ID for SMITE from: http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/summoner.json
+const SMITE = 11;
 
 var currentPatch;
 
@@ -132,6 +133,63 @@ function insertMatchToScrape(id) {
 	});
 }
 
+function addJunglerWin(champid) {
+	const query = {
+		champ: champid
+	}
+	const update = {
+		$inc: {
+			wins: 1
+		}
+	}
+	const options = {
+		upsert: true
+	}
+	db.collection("junglerStats").updateOne(query, update, options);
+}
+function addJunglerGame(champid){
+	const query = {
+		champ: champid
+	}
+	const update = {
+		$inc: {
+			games: 1
+		}
+	}
+	const options = {
+		upsert: true
+	}
+	db.collection("junglerStats").updateOne(query, update, options);
+}
+function addChampionWin(champid){
+	const query = {
+		champ: champid
+	}
+	const update = {
+		$inc: {
+			wins: 1
+		}
+	}
+	const options = {
+		upsert: true
+	}
+	db.collection("champStats").updateOne(query, update, options);
+}
+function addChampionGame(champid){
+	const query = {
+		champ: champid
+	}
+	const update = {
+		$inc: {
+			games: 1
+		}
+	}
+	const options = {
+		upsert: true
+	}
+	db.collection("champStats").updateOne(query, update, options);
+}
+
 function parseUserByID(userID) {
 	return new Promise(function(resolve, reject) {
 		https.get(historyURL(userID), function(res) {
@@ -151,10 +209,14 @@ function parseUserByID(userID) {
 				//Otherwise, parse the data!
 				var data = JSON.parse(body);
 				//console.log(JSON.stringify(userID) + " !! " + JSON.stringify(data));
+				var count=0;
 				for (var i=0;i<data.matches.length;i++) {
-					insertMatchToScrape(data.matches[i].gameId);
+					if (isRanked(data.matches[i].queue)) {
+						insertMatchToScrape(data.matches[i].gameId);
+						count++;
+					}
 				}
-				console.log("Inserted " + data.matches.length + " matches from accountID: " + userID);
+				console.log("Inserted " + count + " matches from accountID: " + userID);
 				resolve();
 
 			});
@@ -194,6 +256,35 @@ function parseGameByID(gameID) {
 					resolve();
 					return;
 				}
+				//SCRAPE RANKED GAME DATA HERE
+				//GRAB DATA ONLY FOR CHAMPIONS THAT ARE JUNGLING
+
+				//var winningTeam = data.teams[0].win === "Win" ? data.teams[0].teamId : data.teams[1].teamId;
+
+				
+				for (var i=0;i<data.participants.length;i++) {
+
+					if (data.participants[i].spell1Id === SMITE || data.participants[i].spell2Id === SMITE) {
+						//1. For each jungler, add to victory/total to champ in champWinRate collection. Update total.
+						if (data.participants[i].stats.win) {
+							addJunglerWin(data.participants[i].championId);
+							console.log("Added Jungler Win.");
+						}
+						addJunglerGame(data.participants[i].championId);
+						console.log("Added Jungler Game.");
+					}
+
+					//3. For each player, add to victory/total to champ in champWinRate collection. Update total.
+					if (data.participants[i].stats.win) {
+						addChampionWin(data.participants[i].championId);
+						console.log("Added Champion Win.");
+					}
+					addChampionGame(data.participants[i].championId);
+					console.log("Added Champion Game.");
+				}
+				
+				
+				//Repeat in Plat+ set of collection if champion is in plat+
 				console.log("Scraped game ID: " + data.gameId);
 				resolve();
 
@@ -202,6 +293,12 @@ function parseGameByID(gameID) {
 			reject("Error pulling match history for user: " + gameID + " from Riot API: " + e);
 		});
 	});
+}
+
+function isRanked(queue) {
+	//IDs mapped from https://developer.riotgames.com/game-constants.html.
+	const rankedIDs = [4,6,42,410,420,440];
+	return rankedIDs.includes(queue);
 }
 
 async function scrapeAllGames() {
@@ -226,7 +323,7 @@ async function scrapeUsers(n=10) {
 
 async function startScraping() {
 	while (true) {
-		const n = scrapeUsers(10)
+		const n = scrapeUsers(10);
 		if (await n == 0) {
 			return;
 		} else {
