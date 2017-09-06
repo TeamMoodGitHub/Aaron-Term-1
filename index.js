@@ -29,6 +29,20 @@ app.get('/api/champions', (req, res) => {
 	});
 });
 
+app.get('/api/champion/:champ/wr', (req, res) => {
+	db.collection("champStats").findOne({key: req.params.champ}, function(err, results) {
+		if (err) {
+			//Send Error Code 500 - Internal Server Error if query fails.
+			res.status(500).json({
+				source: "Error querying database for win rate!",
+				error: err
+			});
+			return;
+		}
+		res.json(results === null ? {source: "Champion not found!", found:-1} : results);
+	});
+});
+
 app.get('/api/champion/:champ', (req, res) => {
 	db.collection("champ").findOne({key: req.params.champ}, function(err, results) {
 		if (err) {
@@ -39,7 +53,7 @@ app.get('/api/champion/:champ', (req, res) => {
 			});
 			return;
 		}
-		res.json(results === null ? {found: -1} : results);
+		res.json(results === null ? {source: "Champion not found!", found: -1} : results);
 	});
 });
 
@@ -73,5 +87,5 @@ MongoClient.connect(MONGO_LINK, (err, database) => {
 		console.log(`Listening on port ${port}`);
 	});
 
-	retrieveChampionsHourly();
-})
+	retrieveChampionsHourly(db);
+});
