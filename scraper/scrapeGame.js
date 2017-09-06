@@ -13,11 +13,13 @@ const delay = 1.2 * 1000;
 const matchURL = (matchID) => "https://na1.api.riotgames.com/lol/match/v3/matches/"+ matchID +"?api_key="+ RIOT_API_KEY;
 const historyURL = (accountID) => "https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/"+ accountID + "?beginTime="+patchTime+"&api_key=" + RIOT_API_KEY;
 const patchURL = "https://ddragon.leagueoflegends.com/api/versions.json";
+const champsURL = (patchNumber) => "https://ddragon.leagueoflegends.com/cdn/"+patchNumber+"/data/en_US/champion.json";
 
 //Summoner Spell ID for SMITE from: http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/summoner.json
 const SMITE = 11;
 
 var currentPatch;
+var champIDs;
 
 function getCurrentPatch() {
 	return new Promise(function (resolve, reject) { 
@@ -45,6 +47,32 @@ function getCurrentPatch() {
 		}).on('error', function(e) {
 			reject("Error pulling match history for user: " + userID + " from Riot API: " + e);
 		});
+	});
+}
+
+async function getChampionIDs() {
+	await https.get(champsURL(currentPatch), function(res) {
+		var body = '';
+		res.on('data', function(chunk) {
+			body += chunk;
+		});
+		res.on('end', function() {
+
+			//If response code isn't 2XX, there is a problem!
+			if (res.statusCode < 200 || res.statusCode > 299) {
+				reject("Failed to get current champ IDs: " + body);
+				return;
+			}
+
+				//Otherwise, parse the data!
+			var data = JSON.parse(body);
+			champIDs = Object.values(data.data);
+			console.log("Num of Champs: " + champIDs.length);
+			return;
+
+		});
+	}).on('error', function(e) {
+		reject("Error pulling match history for user: " + userID + " from Riot API: " + e);
 	});
 }
 
@@ -135,7 +163,8 @@ function insertMatchToScrape(id) {
 
 function addJunglerWin(champid) {
 	const query = {
-		champ: champid
+		champ: champid,
+		key: getKeyFromId(champid)
 	}
 	const update = {
 		$inc: {
@@ -149,7 +178,8 @@ function addJunglerWin(champid) {
 }
 function addJunglerGame(champid){
 	const query = {
-		champ: champid
+		champ: champid,
+		key: getKeyFromId(champid)
 	}
 	const update = {
 		$inc: {
@@ -163,7 +193,8 @@ function addJunglerGame(champid){
 }
 function addChampionWin(champid){
 	const query = {
-		champ: champid
+		champ: champid,
+		key: getKeyFromId(champid)
 	}
 	const update = {
 		$inc: {
@@ -177,7 +208,8 @@ function addChampionWin(champid){
 }
 function addChampionGame(champid){
 	const query = {
-		champ: champid
+		champ: champid,
+		key: getKeyFromId(champid)
 	}
 	const update = {
 		$inc: {
@@ -268,19 +300,19 @@ function parseGameByID(gameID) {
 						//1. For each jungler, add to victory/total to champ in champWinRate collection. Update total.
 						if (data.participants[i].stats.win) {
 							addJunglerWin(data.participants[i].championId);
-							console.log("Added Jungler Win.");
+							//console.log("Added Jungler Win.");
 						}
 						addJunglerGame(data.participants[i].championId);
-						console.log("Added Jungler Game.");
+						//console.log("Added Jungler Game.");
 					}
 
 					//3. For each player, add to victory/total to champ in champWinRate collection. Update total.
 					if (data.participants[i].stats.win) {
 						addChampionWin(data.participants[i].championId);
-						console.log("Added Champion Win.");
+						//console.log("Added Champion Win.");
 					}
 					addChampionGame(data.participants[i].championId);
-					console.log("Added Champion Game.");
+					//console.log("Added Champion Game.");
 				}
 				
 				
@@ -299,6 +331,15 @@ function isRanked(queue) {
 	//IDs mapped from https://developer.riotgames.com/game-constants.html.
 	const rankedIDs = [4,6,42,410,420,440];
 	return rankedIDs.includes(queue);
+}
+
+function getKeyFromId(champid) {
+	for (var i=0;i<champIDs.length;i++) {
+		if (champIDs[i].key == champid) {
+			return champIDs[i].id;
+		}
+	}
+	throw "Error getting key for: " + champid;
 }
 
 async function scrapeAllGames() {
@@ -322,13 +363,8 @@ async function scrapeUsers(n=10) {
 }
 
 async function startScraping() {
-	while (true) {
-		const n = scrapeUsers(10);
-		if (await n == 0) {
-			return;
-		} else {
-			await scrapeAllGames();
-		}
+	while (await scrapeUsers(10) !== 0) {
+		await scrapeAllGames();
 	}
 }
 
@@ -344,6 +380,7 @@ MongoClient.connect(MONGO_LINK, (err, database) => {
 	db = database;
 
 	getCurrentPatch()
+	.then(getChampionIDs)
 	.then(startScraping)
 	.then(() => console.log("Done scraping."))
 	.catch((err) => console.log("Error on promise chain: " + err));
