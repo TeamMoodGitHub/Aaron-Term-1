@@ -5,12 +5,13 @@ class ChampionHeader extends React.Component {
 	render() {
 
 		const champion = this.props.champ;
+		const winRateData = this.props.winRate;
 
 		const name = champion.name || "Loading...";
 		const title = champion.title || "Loading...";
 		const image = champion.image ? "http://ddragon.leagueoflegends.com/cdn/"+this.props.version+"/img/champion/" + champion.image.full : ""; 
-		const winRatePercentage = 50 //this.state.winRatePercentage || "Loading...";
-		const winRateGameCount = 0 //this.state.winRateGameCount || "Loading...";
+		const winRatePercentage =  winRateData ? (100 * winRateData.wins / winRateData.games).toFixed(2) + "%" : "Loading...";
+		const winRateGameCount =  winRateData ? winRateData.games : "Loading...";
 
 		return (
 
@@ -24,7 +25,7 @@ class ChampionHeader extends React.Component {
 				{/*Tags*/}
 				<div class="champHeaderWinRatePanel">
 					<h2>Current Win Rate</h2>
-					<h2>{winRatePercentage}%</h2>
+					<h2>{winRatePercentage}</h2>
 					<h3>(From {winRateGameCount} games)</h3>
 				</div>	
 

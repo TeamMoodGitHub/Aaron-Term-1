@@ -26,6 +26,9 @@ class Champion extends React.Component {
 				champion: champInfo,
 				found: champInfo.found !== -1
 			}));
+		fetch('/api/champion/' + this.state.query + '/wr')
+			.then(res => res.json())
+			.then(winRate => this.setState({winRate}));
 	}
 
 	getPatchNumber() {
@@ -37,6 +40,7 @@ class Champion extends React.Component {
 	}
 
 	render() {
+		//console.log(this.state.winRate);
 		//console.log(this.state);
 		//Searching for no champion?! What?!?
 		if (!this.state.query) {
@@ -57,7 +61,7 @@ class Champion extends React.Component {
 		return (
 			<div>
 				<h1>Champion: {this.state.champion.name}</h1>
-				<ChampionHeader champ={this.state.champion} version = {this.state.version}/>
+				<ChampionHeader champ={this.state.champion} winRate={this.state.winRate} version = {this.state.version}/>
 				{/*<StartingItems champ={champName} />*/}
 				{/*<JungleRoutes champ={champName} />*/}
 			</div>
