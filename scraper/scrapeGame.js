@@ -7,8 +7,8 @@ const https = require('https');
 const patchTime = new Date("August 24, 2017").getTime();
 
 //Delay in ms to prevent surpassing Riot API Limit.
-//Current development limit: 100 requests/2 mins = 5/6 requests per second = 1.2 seconds / request
-const delay = 1.2 * 1000;
+//Current development limit: 50 requests / second = 1 requests / 0.02 seconds
+const delay = 0.02 * 1000;
 
 const matchURL = (matchID) => "https://na1.api.riotgames.com/lol/match/v3/matches/"+ matchID +"?api_key="+ RIOT_API_KEY;
 const historyURL = (accountID) => "https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/"+ accountID + "?beginTime="+patchTime+"&api_key=" + RIOT_API_KEY;
@@ -372,18 +372,25 @@ function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+
+function start() {
+	getCurrentPatch()
+	.then(getChampionIDs)
+	.then(startScraping)
+	.then(() => console.log("Done scraping."))
+	.catch(function(err) {
+		console.log("Error on promise chain: " + err);
+		console.log("Restarting...");
+		start();
+	});
+}
+
 MongoClient.connect(MONGO_LINK, (err, database) => {
 	if (err) {
 		console.log(err);
 		return;
 	}
 	db = database;
-
-	getCurrentPatch()
-	.then(getChampionIDs)
-	.then(startScraping)
-	.then(() => console.log("Done scraping."))
-	.catch((err) => console.log("Error on promise chain: " + err));
-	
-
+	start();
 });
+
