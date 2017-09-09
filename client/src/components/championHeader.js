@@ -17,7 +17,7 @@ class ChampionHeader extends React.Component {
 
 			<div class="champHeader">
 
-				<img src={image} />
+				<img src={image} alt={"Splash logo for " + name}/>
 				<div class="champHeaderNamePanel">
 					<h2>{name}</h2>
 					<h3>{title}</h3>

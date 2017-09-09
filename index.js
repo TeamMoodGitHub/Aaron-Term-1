@@ -43,6 +43,30 @@ app.get('/api/champion/:champ/wr', (req, res) => {
 	});
 });
 
+app.get('/api/champion/:champ/jungleRoutes/:side', (req, res) => {
+	const testReturnValue = 
+			[
+				{
+					path: [1,2,3,4,5],
+					score: 1
+				},
+				{
+					path: [2,3,4,5,6],
+					score: 2
+				},
+				{
+					path: [3,4,5,6,7],
+					score: 3
+				},
+				{
+					path: [4,6,1,2,1],
+					score: 4
+				}
+			];
+	
+	res.json(testReturnValue);
+});
+
 app.get('/api/champion/:champ', (req, res) => {
 	db.collection("champ").findOne({key: req.params.champ}, function(err, results) {
 		if (err) {

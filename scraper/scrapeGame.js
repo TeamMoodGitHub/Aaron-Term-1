@@ -381,7 +381,8 @@ function start() {
 	.catch(function(err) {
 		console.log("Error on promise chain: " + err);
 		console.log("Restarting...");
-		start();
+		sleep(30000)
+		.then(start);
 	});
 }
 
