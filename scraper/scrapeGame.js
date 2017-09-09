@@ -242,6 +242,12 @@ function parseUserByID(userID) {
 				var data = JSON.parse(body);
 				//console.log(JSON.stringify(userID) + " !! " + JSON.stringify(data));
 				var count=0;
+
+				if (!data.matches) {
+					//Error value returned instead!
+					reject("Data returned does not contain match history!");
+				}
+
 				for (var i=0;i<data.matches.length;i++) {
 					if (isRanked(data.matches[i].queue)) {
 						insertMatchToScrape(data.matches[i].gameId);
@@ -277,6 +283,11 @@ function parseGameByID(gameID) {
 
 				//Otherwise, parse the data!
 				var data = JSON.parse(body);
+
+				if (!data.participantIdentities) {
+					//Error value returned instead!
+					reject("Data returned does not contain match data!");
+				}
 
 				for (var i=0;i<data.participantIdentities.length;i++) {
 					insertUserToScrape(data.participantIdentities[i].player.currentAccountId);
