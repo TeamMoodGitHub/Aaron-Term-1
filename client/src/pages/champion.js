@@ -37,8 +37,6 @@ class Champion extends React.Component {
 	}
 
 	render() {
-		//console.log(this.state.winRate);
-		//console.log(this.state);
 		//Searching for no champion?! What?!?
 		if (!this.state.query) {
 			return (

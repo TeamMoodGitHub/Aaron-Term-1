@@ -70,10 +70,10 @@ app.get('/api/jungler/:champ/wr', (req, res) => {
 });
 
 /**
-* Called when webapp requests jungle routes for specific champion 
+* Called when webapp requests jungle routes for specific jungler 
 * and side. Returns array of jungle routes.
 */
-app.get('/api/champion/:champ/jungleRoutes/:side', (req, res) => {
+app.get('/api/jungler/:champ/jungleRoutes/:side', (req, res) => {
 	const testReturnValue = 
 			[
 				{
@@ -102,10 +102,10 @@ app.get('/api/champion/:champ/jungleRoutes/:side', (req, res) => {
 });
 
 /**
-* Called when webapp requests starting items for specific champion.
+* Called when webapp requests starting items for specific jungler.
 * Returns array of starting Items.
 */
-app.get('/api/champion/:champ/startingItems', (req, res) => {
+app.get('/api/jungler/:champ/startingItems', (req, res) => {
 	const testReturnValue = 
 			[
 				{

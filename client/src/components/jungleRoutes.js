@@ -18,7 +18,7 @@ class JungleRoutes extends React.Component {
 	}
 
 	getRoutes() {
-		fetch('/api/champion/'+this.props.champ+'/jungleRoutes/' + (this.state.blueSide ? 'blue' : 'red'))
+		fetch('/api/jungler/'+this.props.champ+'/jungleRoutes/' + (this.state.blueSide ? 'blue' : 'red'))
 			.then(res => res.json())
 			.then(routes => this.setState({routes}));
 	}

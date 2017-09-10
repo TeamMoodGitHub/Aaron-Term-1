@@ -16,7 +16,7 @@ class StartingItems extends React.Component {
 	}
 
 	getStartingItems() {
-		fetch('/api/champion/'+this.props.champ+'/startingItems')
+		fetch('/api/jungler/'+this.props.champ+'/startingItems')
 			.then(res => res.json())
 			.then(startingItems => this.setState({startingItems}));
 	}
