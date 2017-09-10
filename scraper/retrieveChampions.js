@@ -8,16 +8,16 @@ const updateChampInfo = require('./updateChampInfo');
 const url = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&dataById=false&api_key="+RIOT_API_KEY;
 
 module.exports = function(db) {
-	//console.log("Retrieve Champions Cron Job Started.");
-	
+
 	//Pull initially in case there are problems with the database. (Or database is wiped)
-	pull(db);
+	retrieveChampions(db);
 
 	//Currently, cron runs once per day at midnight.
-	cron.schedule('0 0 * * *', pull);
+	cron.schedule('0 0 * * *', retrieveChampions);
+	//console.log("Retrieve Champions Cron Job Started.");
 }
 
-function pull(db) {
+function retrieveChampions(db) {
 
 	
 		//console.log("Retrieving champions from API");

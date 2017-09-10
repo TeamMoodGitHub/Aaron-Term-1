@@ -52,6 +52,24 @@ app.get('/api/champion/:champ/wr', (req, res) => {
 });
 
 /**
+* Called when webapp requests win rate for specific jungler in current patch.
+* Returns JSON object containing win rate and number of games scraped.
+*/
+app.get('/api/jungler/:champ/wr', (req, res) => {
+	db.collection("junglerStats").findOne({key: req.params.champ}, function(err, results) {
+		if (err) {
+			//Send Error Code 500 - Internal Server Error if query fails.
+			res.status(500).json({
+				source: "Error querying database for win rate!",
+				error: err
+			});
+			return;
+		}
+		res.json(results === null ? {source: "Champion not found!", found:-1} : results);
+	});
+});
+
+/**
 * Called when webapp requests jungle routes for specific champion 
 * and side. Returns array of jungle routes.
 */

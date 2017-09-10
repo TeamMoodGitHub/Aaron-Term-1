@@ -185,14 +185,15 @@ function insertMatchToScrape(id) {
 /**
 * Adds a victory for a jungler.
 */
-function addJunglerWin(champid) {
+function addJunglerWin(champid, platAndAbove=false) {
 	const query = {
 		champ: champid,
 		key: getKeyFromId(champid)
 	}
 	const update = {
 		$inc: {
-			wins: 1
+			wins: 1,
+			platWins: platAndAbove ? 1 : 0
 		}
 	}
 	const options = {
@@ -204,14 +205,15 @@ function addJunglerWin(champid) {
 /**
 * Adds match for a jungler.
 */
-function addJunglerGame(champid){
+function addJunglerGame(champid, platAndAbove=false){
 	const query = {
 		champ: champid,
 		key: getKeyFromId(champid)
 	}
 	const update = {
 		$inc: {
-			games: 1
+			games: 1,
+			platGames: platAndAbove ? 1 : 0
 		}
 	}
 	const options = {
@@ -223,14 +225,15 @@ function addJunglerGame(champid){
 /**
 * Adds match for a champion.
 */
-function addChampionWin(champid){
+function addChampionWin(champid, platAndAbove=false){
 	const query = {
 		champ: champid,
 		key: getKeyFromId(champid)
 	}
 	const update = {
 		$inc: {
-			wins: 1
+			wins: 1,
+			platWins: platAndAbove ? 1 : 0
 		}
 	}
 	const options = {
@@ -242,14 +245,15 @@ function addChampionWin(champid){
 /**
 * Adds match for a champion.
 */
-function addChampionGame(champid){
+function addChampionGame(champid, platAndAbove=false){
 	const query = {
 		champ: champid,
 		key: getKeyFromId(champid)
 	}
 	const update = {
 		$inc: {
-			games: 1
+			games: 1,
+			platGames: platAndAbove ? 1 : 0
 		}
 	}
 	const options = {
