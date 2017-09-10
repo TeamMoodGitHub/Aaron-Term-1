@@ -83,6 +83,10 @@ app.get('/api/champion/:champ/jungleRoutes/:side', (req, res) => {
 	res.json(testReturnValue);
 });
 
+/**
+* Called when webapp requests starting items for specific champion.
+* Returns array of starting Items.
+*/
 app.get('/api/champion/:champ/startingItems', (req, res) => {
 	const testReturnValue = 
 			[
