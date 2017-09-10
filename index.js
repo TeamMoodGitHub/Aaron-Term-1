@@ -15,6 +15,10 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(express.static(path.join(__dirname, 'static')));
 
 //Put all API endpoints under '/API'
+/**
+* Called when webapp requests list of champions for the search bar.
+* Returns a list of champions and their titles.
+*/
 app.get('/api/champions', (req, res) => {
 	db.collection("champions").find().toArray(function(err, results) {
 		if (err) {
@@ -29,6 +33,10 @@ app.get('/api/champions', (req, res) => {
 	});
 });
 
+/**
+* Called when webapp requests win rate for specific champion in current patch.
+* Returns JSON object containing win rate and number of games scraped.
+*/
 app.get('/api/champion/:champ/wr', (req, res) => {
 	db.collection("champStats").findOne({key: req.params.champ}, function(err, results) {
 		if (err) {
@@ -43,6 +51,10 @@ app.get('/api/champion/:champ/wr', (req, res) => {
 	});
 });
 
+/**
+* Called when webapp requests jungle routes for specific champion 
+* and side. Returns array of jungle routes.
+*/
 app.get('/api/champion/:champ/jungleRoutes/:side', (req, res) => {
 	const testReturnValue = 
 			[
@@ -74,7 +86,7 @@ app.get('/api/champion/:champ/jungleRoutes/:side', (req, res) => {
 ///Called when a user attempts to upvote a jungle route.
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.
-app.post('/api/champion/:champ/jungleRoutes/:side/inc/:id', (req res) => {
+app.post('/api/champion/:champ/jungleRoutes/:side/inc/:id', (req, res) => {
 	//req.params.champ
 	//req.params.side
 	//req.params.id
@@ -83,7 +95,7 @@ app.post('/api/champion/:champ/jungleRoutes/:side/inc/:id', (req res) => {
 ///Called when a user attempts to downvote a jungle route.
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.
-app.post('/api/champion/:champ/jungleRoutes/:side/dec/:id', (req res) => {
+app.post('/api/champion/:champ/jungleRoutes/:side/dec/:id', (req, res) => {
 	//req.params.champ
 	//req.params.side
 	//req.params.id
@@ -103,6 +115,9 @@ app.get('/api/champion/:champ', (req, res) => {
 	});
 });
 
+/*
+* Handles root API route and returns an error object.
+*/
 app.get('/api', (req, res) => {
 
 	res.status(400).json({
@@ -111,12 +126,12 @@ app.get('/api', (req, res) => {
 
 });
 
-//Anything else will send back React's index.html file.
-
+///Any other GET requests will be handled by React.
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
+///process.env.PORT is set when running on heroku.
 const port = process.env.PORT || 5000;
 
 //The database credentials are hidden for security purposes. 
