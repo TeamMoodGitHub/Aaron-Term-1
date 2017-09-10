@@ -5,23 +5,10 @@ class StartingItems extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			startingItems: 
-			[
-				{
-					id: 1,
-					items: [123,234,345,456],
-					score: 25
-				},
-				{
-					id: 2,
-					items: [4,7,1,2],
-					score: 10
-				}
-			]
-		};
+		//Set state to blank object rather than undefined so render() can attempt to access state values.
+		this.state = {};
 
-		this.getStartingItems = this.getRoutes.bind(this);
+		this.getStartingItems = this.getStartingItems.bind(this);
 	}
 
 	componentDidMount() {
@@ -31,17 +18,18 @@ class StartingItems extends React.Component {
 	getStartingItems() {
 		fetch('/api/champion/'+this.props.champ+'/startingItems')
 			.then(res => res.json())
-			.then(routes => this.setState({routes}));
+			.then(startingItems => this.setState({startingItems}));
 	}
 
 	render() {
 		//console.log(JSON.stringify(this.state));
-		if (this.state.startingItems === null) {
+		if (!this.state.startingItems) {
 			//Still include red/blue buttons
 			return <h1> Loading Starting Items... </h1>;
 		}
 		return (
 			<div id="startingItems">
+				<h1> Starting Items </h1>
 				{
 					this.state.startingItems.map(startingItemSet => 
 						(

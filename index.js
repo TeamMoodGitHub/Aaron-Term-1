@@ -83,6 +83,24 @@ app.get('/api/champion/:champ/jungleRoutes/:side', (req, res) => {
 	res.json(testReturnValue);
 });
 
+app.get('/api/champion/:champ/startingItems', (req, res) => {
+	const testReturnValue = 
+			[
+				{
+					id: 1,
+					items: [123,234,345,456],
+					score: 25
+				},
+				{
+					id: 2,
+					items: [4,7,1,2],
+					score: 10
+				}
+			];
+	
+	res.json(testReturnValue);
+});
+
 ///Called when a user attempts to upvote a jungle route.
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.

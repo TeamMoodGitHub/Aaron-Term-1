@@ -35,12 +35,13 @@ class JungleRoutes extends React.Component {
 
 	render() {
 		//console.log(JSON.stringify(this.state));
-		if (this.state.routes === null) {
+		if (!this.state.routes) {
 			//Still include red/blue buttons
 			return <h1> Loading Jungle Routes... </h1>;
 		}
 		return (
 			<div id="jungleRoutes">
+				<h1>Jungle Routes</h1>
 				<button onClick={this.toggleSides}>Toggle Sides</button>
 				{
 					this.state.routes.map(route => 
