@@ -47,24 +47,46 @@ app.get('/api/champion/:champ/jungleRoutes/:side', (req, res) => {
 	const testReturnValue = 
 			[
 				{
+					id: 1,
 					path: [1,2,3,4,5],
 					score: 1
 				},
 				{
+					id: 2,
 					path: [2,3,4,5,6],
 					score: 2
 				},
 				{
+					id: 3,
 					path: [3,4,5,6,7],
 					score: 3
 				},
 				{
+					id: 4,
 					path: [4,6,1,2,1],
 					score: 4
 				}
 			];
 	
 	res.json(testReturnValue);
+});
+
+///Called when a user attempts to upvote a jungle route.
+///Will return with success/fail as JSON Object.
+///Will also ensure user hasn't already voted before.
+app.post('/api/champion/:champ/jungleRoutes/:side/inc/:id', (req res) => {
+	//req.params.champ
+	//req.params.side
+	//req.params.id
+});
+
+///Called when a user attempts to downvote a jungle route.
+///Will return with success/fail as JSON Object.
+///Will also ensure user hasn't already voted before.
+app.post('/api/champion/:champ/jungleRoutes/:side/dec/:id', (req res) => {
+	//req.params.champ
+	//req.params.side
+	//req.params.id
 });
 
 app.get('/api/champion/:champ', (req, res) => {

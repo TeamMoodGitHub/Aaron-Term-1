@@ -7,22 +7,6 @@ class JungleRoutes extends React.Component {
 
 		this.state = {
 			blueSide: true,
-
-			//For debugging purposes - will be removed.
-			routes: [
-				{
-					path: [4,9,6,3,1],
-					score: 2497
-				},
-				{
-					path: [5,4,8,9,1],
-					score: 2497
-				},
-				{
-					path: [3,6,5,5,2],
-					score: 2497
-				}
-			]
 		};
 
 		this.getRoutes = this.getRoutes.bind(this);
@@ -62,6 +46,7 @@ class JungleRoutes extends React.Component {
 					this.state.routes.map(route => 
 						(
 						<div class="route">
+							<h3>ID: {route.id}</h3>
 							<h3>Path: {JSON.stringify(route.path)}</h3> 
 							<h4>Score: {route.score}</h4>
 						</div>
