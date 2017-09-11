@@ -291,6 +291,7 @@ function parseUserByID(userID) {
 				if (!data.matches) {
 					//Error value returned instead!
 					reject("Data returned does not contain match history!");
+					return;
 				}
 
 				for (var i=0;i<data.matches.length;i++) {
@@ -337,6 +338,7 @@ function parseGameByID(gameID) {
 				if (!data.participantIdentities) {
 					//Error value returned instead!
 					reject("Data returned does not contain match data!");
+					return;
 				}
 
 				for (var i=0;i<data.participantIdentities.length;i++) {
