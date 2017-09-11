@@ -3,11 +3,42 @@ import Autosuggest from 'react-autosuggest';
 
 const getSuggestionValue = suggestion => suggestion.key;
 
-const renderSuggestion = suggestion => (
-	<div className="suggestion">
-		<h3>{suggestion.name}: {suggestion.title}</h3>
-	</div>
-);
+const renderSuggestion = suggestion => {
+
+	const suggestionStyle = {padding: "20px 0", margin: 0};
+
+	return (
+		<div className="suggestion">
+			<h3 style={suggestionStyle}>{suggestion.name}: {suggestion.title}</h3>
+		</div>
+	);
+};
+
+const largeTheme = {
+	container: {
+		padding: 10
+	},
+	input: {
+		"font-size": 30,
+		width: "100%",
+		"text-align": "center"
+	},
+	suggestionsList: {
+		margin: 0,
+		padding: 0,
+		"list-style-type": "none"
+	},
+	suggestion: {
+		cursor: "pointer",
+		margin: 0,
+		padding: 0
+	},
+	suggestionHighlighted: {
+		"background-color": "#ddd"
+	}
+};
+
+const theme = {};
 
 class ChampionInput extends React.Component {
 
@@ -67,8 +98,11 @@ class ChampionInput extends React.Component {
 			onChange: this.onChange
 		};
 
+		console.log(this.props.theme);
+
 		return (
 			<Autosuggest
+				theme = {this.props.size === "large" ? largeTheme : theme}
 				suggestions = {suggestions}
 				onSuggestionsFetchRequested = {this.onSuggestionsFetchRequested}
 				onSuggestionsClearRequested = {this.onSuggestionsClearRequested}

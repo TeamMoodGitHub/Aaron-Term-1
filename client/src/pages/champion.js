@@ -1,8 +1,8 @@
 import React from 'react';
 
 import ChampionHeader from '../components/championHeader';
-//import StartingItems from './startingItems';
-//import JungleRoutes from './jungleRoutes';
+import StartingItems from '../components/startingItems';
+import JungleRoutes from '../components/jungleRoutes';
 
 class Champion extends React.Component {
 
@@ -37,7 +37,6 @@ class Champion extends React.Component {
 	}
 
 	render() {
-		//console.log(this.state);
 		//Searching for no champion?! What?!?
 		if (!this.state.query) {
 			return (
@@ -58,8 +57,8 @@ class Champion extends React.Component {
 			<div>
 				<h1>Champion: {this.state.champion.name}</h1>
 				<ChampionHeader champ={this.state.champion} version = {this.state.version}/>
-				{/*<StartingItems champ={champName} />*/}
-				{/*<JungleRoutes champ={champName} />*/}
+				<StartingItems champ={this.state.champion.name} />
+				<JungleRoutes champ={this.state.champion.name} />
 			</div>
 			);
 	}

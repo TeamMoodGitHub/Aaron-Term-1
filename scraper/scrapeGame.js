@@ -3,12 +3,12 @@ const MONGO_LINK = process.env.MONGO_LINK || require('../config').MONGO_LINK;
 const RIOT_API_KEY = process.env.RIOT_API_KEY || require('../config').RIOT_API_KEY;
 const https = require('https');
 
-//Update this with patch date to parse games only from current patch.
+///Update this with patch date to parse games only from current patch.
 const patchTime = new Date("August 24, 2017").getTime();
 
 //Delay in ms to prevent surpassing Riot API Limit.
-//Current development limit: 100 requests/2 mins = 5/6 requests per second = 1.2 seconds / request
-const delay = 1.2 * 1000;
+//Current development limit: 50 requests / second = 1 requests / 0.02 seconds
+const delay = 0.02 * 1000;
 
 const matchURL = (matchID) => "https://na1.api.riotgames.com/lol/match/v3/matches/"+ matchID +"?api_key="+ RIOT_API_KEY;
 const historyURL = (accountID) => "https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/"+ accountID + "?beginTime="+patchTime+"&api_key=" + RIOT_API_KEY;
@@ -21,6 +21,11 @@ const SMITE = 11;
 var currentPatch;
 var champIDs;
 
+/**
+* Gets the current patch from Riot's ddragon service.
+* Not considered a call to Riot's API.
+* used to pull most current champion logos.
+*/
 function getCurrentPatch() {
 	return new Promise(function (resolve, reject) { 
 		https.get(patchURL, function(res) {
@@ -50,6 +55,10 @@ function getCurrentPatch() {
 	});
 }
 
+/**
+* Used to retrieve the list of Champions and their IDs from Riot's ddragon service.
+* This allows the API to retrieve data based on champion names rather than id numbers.
+*/
 async function getChampionIDs() {
 	await https.get(champsURL(currentPatch), function(res) {
 		var body = '';
@@ -76,6 +85,9 @@ async function getChampionIDs() {
 	});
 }
 
+/**
+* Looks for the next unscraped game on Mongo and resolves with match ID.
+*/
 function scrapeNextGame() {
 	return new Promise(function (resolve, reject) {
 		const query = {
@@ -105,6 +117,9 @@ function scrapeNextGame() {
 	});
 }
 
+/**
+* Looks for the next unscraped user from Mongo and returns with User ID.
+*/
 function scrapeNextUser() {
 	return new Promise(function(resolve, reject) {
 		const query = {};
@@ -124,9 +139,9 @@ function scrapeNextUser() {
 			if (err) {
 				reject("Error retrieving next user to scrape: " + err);
 			} else {
-				const oneDay = 1000 * 60 * 60 * 24;
-				//If last search is more recent than a day, return false.
-				if (results.value.lastSearch > new Date().getTime() - oneDay) {
+				const oneMonth = 1000 * 60 * 60 * 24 * 30;
+				//If last search is more recent than 30 days, return false.
+				if (results.value.lastSearch > new Date().getTime() - oneMonth) {
 					resolve(false);
 					return;
 				}
@@ -136,6 +151,9 @@ function scrapeNextUser() {
 	});
 }
 
+/**
+* Adds user to scrape into Mongo.
+*/
 function insertUserToScrape(id) {
 	db.collection('scraperUsers').findOneAndUpdate({
 		userID: id
@@ -148,6 +166,9 @@ function insertUserToScrape(id) {
 	});
 }
 
+/**
+* Adds match to scrape into Mongo.
+*/
 function insertMatchToScrape(id) {
 	db.collection('scraperGames').findOneAndUpdate({
 		matchID: id,
@@ -161,14 +182,18 @@ function insertMatchToScrape(id) {
 	});
 }
 
-function addJunglerWin(champid) {
+/**
+* Adds a victory for a jungler.
+*/
+function addJunglerWin(champid, platAndAbove=false) {
 	const query = {
 		champ: champid,
 		key: getKeyFromId(champid)
 	}
 	const update = {
 		$inc: {
-			wins: 1
+			wins: 1,
+			platWins: platAndAbove ? 1 : 0
 		}
 	}
 	const options = {
@@ -176,14 +201,19 @@ function addJunglerWin(champid) {
 	}
 	db.collection("junglerStats").updateOne(query, update, options);
 }
-function addJunglerGame(champid){
+
+/**
+* Adds match for a jungler.
+*/
+function addJunglerGame(champid, platAndAbove=false){
 	const query = {
 		champ: champid,
 		key: getKeyFromId(champid)
 	}
 	const update = {
 		$inc: {
-			games: 1
+			games: 1,
+			platGames: platAndAbove ? 1 : 0
 		}
 	}
 	const options = {
@@ -191,29 +221,19 @@ function addJunglerGame(champid){
 	}
 	db.collection("junglerStats").updateOne(query, update, options);
 }
-function addChampionWin(champid){
+
+/**
+* Adds match for a champion.
+*/
+function addChampionWin(champid, platAndAbove=false){
 	const query = {
 		champ: champid,
 		key: getKeyFromId(champid)
 	}
 	const update = {
 		$inc: {
-			wins: 1
-		}
-	}
-	const options = {
-		upsert: true
-	}
-	db.collection("champStats").updateOne(query, update, options);
-}
-function addChampionGame(champid){
-	const query = {
-		champ: champid,
-		key: getKeyFromId(champid)
-	}
-	const update = {
-		$inc: {
-			games: 1
+			wins: 1,
+			platWins: platAndAbove ? 1 : 0
 		}
 	}
 	const options = {
@@ -222,6 +242,31 @@ function addChampionGame(champid){
 	db.collection("champStats").updateOne(query, update, options);
 }
 
+/**
+* Adds match for a champion.
+*/
+function addChampionGame(champid, platAndAbove=false){
+	const query = {
+		champ: champid,
+		key: getKeyFromId(champid)
+	}
+	const update = {
+		$inc: {
+			games: 1,
+			platGames: platAndAbove ? 1 : 0
+		}
+	}
+	const options = {
+		upsert: true
+	}
+	db.collection("champStats").updateOne(query, update, options);
+}
+
+/**
+* Pulls user's match history from Riot API.
+* Adds all matches from match history into match list.
+* Mongo will by default ignore any repeats added to match list.
+*/
 function parseUserByID(userID) {
 	return new Promise(function(resolve, reject) {
 		https.get(historyURL(userID), function(res) {
@@ -242,6 +287,12 @@ function parseUserByID(userID) {
 				var data = JSON.parse(body);
 				//console.log(JSON.stringify(userID) + " !! " + JSON.stringify(data));
 				var count=0;
+
+				if (!data.matches) {
+					//Error value returned instead!
+					reject("Data returned does not contain match history!");
+				}
+
 				for (var i=0;i<data.matches.length;i++) {
 					if (isRanked(data.matches[i].queue)) {
 						insertMatchToScrape(data.matches[i].gameId);
@@ -258,6 +309,11 @@ function parseUserByID(userID) {
 	});
 }
 
+/**
+* Pulls match data from Riot API.
+* Also adds all players from match to player list.
+* Mongo will by default ignore any repeats added to player list.
+*/
 function parseGameByID(gameID) {
 	return new Promise(function(resolve, reject) {
 		https.get(matchURL(gameID), function(res) {
@@ -277,6 +333,11 @@ function parseGameByID(gameID) {
 
 				//Otherwise, parse the data!
 				var data = JSON.parse(body);
+
+				if (!data.participantIdentities) {
+					//Error value returned instead!
+					reject("Data returned does not contain match data!");
+				}
 
 				for (var i=0;i<data.participantIdentities.length;i++) {
 					insertUserToScrape(data.participantIdentities[i].player.currentAccountId);
@@ -327,12 +388,18 @@ function parseGameByID(gameID) {
 	});
 }
 
+/**
+* Checks if a queue ID is for a ranked Summoner's Rift match.
+*/
 function isRanked(queue) {
 	//IDs mapped from https://developer.riotgames.com/game-constants.html.
 	const rankedIDs = [4,6,42,410,420,440];
 	return rankedIDs.includes(queue);
 }
 
+/**
+* Returns champion name from champion ID number.
+*/
 function getKeyFromId(champid) {
 	for (var i=0;i<champIDs.length;i++) {
 		if (champIDs[i].key == champid) {
@@ -342,6 +409,9 @@ function getKeyFromId(champid) {
 	throw "Error getting key for: " + champid;
 }
 
+/**
+* Scrape all unscraped games from game list.
+*/
 async function scrapeAllGames() {
 	while (id = await scrapeNextGame()) {
 		await parseGameByID(id);
@@ -349,6 +419,10 @@ async function scrapeAllGames() {
 	}
 }
 
+/**
+* Scrape n unscraped users. If <n available, scrape until
+* no unscraped users more are left.
+*/
 async function scrapeUsers(n=10) {
 	for (var i=0;i<n;i++) {
 		const id = scrapeNextUser();
@@ -362,28 +436,49 @@ async function scrapeUsers(n=10) {
 	return n;
 }
 
+/**
+* Called to start scraping users and matches.
+*/
 async function startScraping() {
 	while (await scrapeUsers(10) !== 0) {
 		await scrapeAllGames();
 	}
 }
 
+/**
+* Pause execution of code for a certain number of milliseconds.
+* Used to keep within Riot's API rate limits.
+*/
 function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+/**
+* Called upon execution to retrieve patch number, champion IDs, and start scraping.
+* Also called again recursively after a 30 second delay if any error is thrown while scraping.
+*/
+function start() {
+	getCurrentPatch()
+	.then(getChampionIDs)
+	.then(startScraping)
+	.then(() => console.log("Done scraping."))
+	.catch(function(err) {
+		console.log("Error on promise chain: " + err);
+		console.log("Restarting...");
+		sleep(30000)
+		.then(start);
+	});
+}
+
+/**
+* Connect to Mongo then start program execution.
+*/
 MongoClient.connect(MONGO_LINK, (err, database) => {
 	if (err) {
 		console.log(err);
 		return;
 	}
 	db = database;
-
-	getCurrentPatch()
-	.then(getChampionIDs)
-	.then(startScraping)
-	.then(() => console.log("Done scraping."))
-	.catch((err) => console.log("Error on promise chain: " + err));
-	
-
+	start();
 });
+
