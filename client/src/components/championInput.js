@@ -98,8 +98,6 @@ class ChampionInput extends React.Component {
 			onChange: this.onChange
 		};
 
-		console.log(this.props.theme);
-
 		return (
 			<Autosuggest
 				theme = {this.props.size === "large" ? largeTheme : theme}
