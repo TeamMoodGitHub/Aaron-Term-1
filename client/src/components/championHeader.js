@@ -13,12 +13,14 @@ class ChampionHeader extends React.Component {
 	}
 
 	getWinRates() {
-		fetch('/api/champion/' + this.props.champ.key + '/wr')
-			.then(res => res.json())
-			.then(championWinRate => this.setState({championWinRate}));
-		fetch('/api/jungler/' + this.props.champ.key + '/wr')
-			.then(res => res.json())
-			.then(junglerWinRate => this.setState({junglerWinRate}));
+		if (this.props.champ.key) {
+			fetch('/api/champion/' + this.props.champ.key + '/wr')
+				.then(res => res.json())
+				.then(championWinRate => this.setState({championWinRate}));
+			fetch('/api/jungler/' + this.props.champ.key + '/wr')
+				.then(res => res.json())
+				.then(junglerWinRate => this.setState({junglerWinRate}));
+		}
 	}
 
 	render() {

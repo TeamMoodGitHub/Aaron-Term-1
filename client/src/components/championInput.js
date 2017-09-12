@@ -5,7 +5,8 @@ const getSuggestionValue = suggestion => suggestion.key;
 
 const renderSuggestion = suggestion => {
 
-	const suggestionStyle = {padding: "20px 0", margin: 0};
+	const largeSuggestionStyle = {padding: "20px 0", margin: 0};
+	const suggestionStyle = {padding: "20px 0", margin: 0, "font-size": 15}
 
 	return (
 		<div className="suggestion">
@@ -38,7 +39,34 @@ const largeTheme = {
 	}
 };
 
-const theme = {};
+const theme = {
+	container: {
+		display: "inline-block",
+		"margin-right": 15
+	},
+	input: {
+		"font-size": 15,
+		width: "100%",
+		"text-align": "center"
+	},	
+	suggestionsList: {
+		margin: 0,
+		padding: 0,
+		"list-style-type": "none",
+		position: "absolute",
+		width: 173
+	},
+	suggestion: {
+		cursor: "pointer",
+		margin: 0,
+		padding: 0,
+		"background-color": "white"
+	},
+	suggestionHighlighted: {
+		"background-color": "#ddd"
+	},
+
+};
 
 class ChampionInput extends React.Component {
 

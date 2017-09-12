@@ -1,8 +1,11 @@
 import React from 'react';
 
+import Header from '../components/header';
+
 import ChampionHeader from '../components/championHeader';
 import StartingItems from '../components/startingItems';
 import JungleRoutes from '../components/jungleRoutes';
+
 
 class Champion extends React.Component {
 
@@ -17,6 +20,16 @@ class Champion extends React.Component {
 	componentDidMount() {
 		this.loadChampionDetails();
 		this.getPatchNumber();
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.match.params.championName !== this.props.match.params.championName) {
+			this.setState({
+				query: nextProps.match.params.championName,
+				found: false,
+				champion: null
+			}, this.loadChampionDetails);
+		}
 	}
 
 	loadChampionDetails() {
@@ -37,6 +50,9 @@ class Champion extends React.Component {
 	}
 
 	render() {
+
+		//console.log(this.props);
+
 		//Searching for no champion?! What?!?
 		if (!this.state.query) {
 			return (
@@ -55,7 +71,7 @@ class Champion extends React.Component {
 
 		return (
 			<div>
-				<h1>Champion: {this.state.champion.name}</h1>
+				<Header />
 				<ChampionHeader champ={this.state.champion} version = {this.state.version}/>
 				<StartingItems champ={this.state.champion.name} />
 				<JungleRoutes champ={this.state.champion.name} />
