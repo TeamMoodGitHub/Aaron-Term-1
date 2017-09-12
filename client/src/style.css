@@ -3,6 +3,10 @@ body {
 	background-color: #fafbfc;
 }
 
+#root {
+	padding: 10px 50px;
+}
+
 * {
 	-webkit-appearance: none;
 }

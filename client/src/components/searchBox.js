@@ -12,6 +12,8 @@ const largeFormStyle = {
 const formStyle = {
 	"text-align": "center",
 	display: "inline-block",
+	padding: "24px 0px",
+	float: "right"
 };
 
 const submitStyle = (large=false) => ({
@@ -47,6 +49,8 @@ class SearchBox extends React.Component {
 			//alert("You didn't enter anything!");
 			return;
 		}
+		console.log(this.state);
+		console.log(this.props);
 		//Prevent default form actions.
 		//Manually redirect user to next page.
 		this.setState({redirect: true});
@@ -56,7 +60,14 @@ class SearchBox extends React.Component {
 		const large = this.props.size === "large";
 		//If redirect is enabled, send to the page for that champion.
 		if (this.state.redirect) {
-			return <Redirect push to={"/champion/"+this.state.champ} />;
+			return (
+				//Include whole form in case redirect is to same page..
+				<form className={large ? "search-large" : "search"} onSubmit={this.onSubmit} style={large ? largeFormStyle : formStyle}> 
+					<Redirect push to={"/champion/"+this.state.champ} />
+					<ChampionInput onChange={this.champChanged} value={this.state.champ} size={this.props.size}/>
+					<input type="submit" value="Go!" style={submitStyle(this.props.size === "large")}/>
+				</form>
+			);
 		}
 
 		//Otherwise, return the Champion Input Search field and the submit button.
