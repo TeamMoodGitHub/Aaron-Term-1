@@ -23,7 +23,8 @@ class Champion extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.match.params.championName !== this.props.match.params.championName) {
+		console.log(nextProps);
+		if (nextProps.location.key !== this.props.location.key) {
 			this.setState({
 				query: nextProps.match.params.championName,
 				found: false,

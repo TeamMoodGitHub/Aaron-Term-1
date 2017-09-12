@@ -49,8 +49,6 @@ class SearchBox extends React.Component {
 			//alert("You didn't enter anything!");
 			return;
 		}
-		console.log(this.state);
-		console.log(this.props);
 		//Prevent default form actions.
 		//Manually redirect user to next page.
 		this.setState({redirect: true});
