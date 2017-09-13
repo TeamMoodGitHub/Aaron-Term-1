@@ -1,10 +1,7 @@
 /*GLOBAL STYLING ONLY*/
 body {
 	background-color: #fafbfc;
-}
-
-#root {
-	padding: 10px 50px;
+	margin: 0px;
 }
 
 * {

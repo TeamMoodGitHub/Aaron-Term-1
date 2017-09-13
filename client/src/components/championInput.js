@@ -3,17 +3,10 @@ import Autosuggest from 'react-autosuggest';
 
 const getSuggestionValue = suggestion => suggestion.key;
 
-const renderSuggestion = suggestion => {
 
-	const largeSuggestionStyle = {padding: "20px 0", margin: 0};
-	const suggestionStyle = {padding: "20px 0", margin: 0, "font-size": 15}
 
-	return (
-		<div className="suggestion">
-			<h3 style={suggestionStyle}>{suggestion.name}: {suggestion.title}</h3>
-		</div>
-	);
-};
+const largeSuggestionStyle = {padding: "20px 0", margin: 0};
+const suggestionStyle = {padding: "20px 0", margin: 0, "font-size": 15}
 
 const largeTheme = {
 	container: {
@@ -45,8 +38,7 @@ const theme = {
 		"margin-right": 15
 	},
 	input: {
-		"font-size": 15,
-		width: "100%",
+		"font-size": 20,
 		"text-align": "center"
 	},	
 	suggestionsList: {
@@ -54,7 +46,7 @@ const theme = {
 		padding: 0,
 		"list-style-type": "none",
 		position: "absolute",
-		width: 173
+		width: 214
 	},
 	suggestion: {
 		cursor: "pointer",
@@ -117,6 +109,14 @@ class ChampionInput extends React.Component {
 			);
 	}
 
+	renderSuggestion = suggestion => {
+		return (
+			<div className="suggestion">
+				<h3 style={this.props.size==="large" ? largeSuggestionStyle : suggestionStyle}>{suggestion.name}: {suggestion.title}</h3>
+			</div>
+		);
+	};
+
 	render() {
 		const {suggestions} = this.state;
 		const text = this.props.value;
@@ -133,7 +133,7 @@ class ChampionInput extends React.Component {
 				onSuggestionsFetchRequested = {this.onSuggestionsFetchRequested}
 				onSuggestionsClearRequested = {this.onSuggestionsClearRequested}
 				getSuggestionValue = {getSuggestionValue}
-				renderSuggestion = {renderSuggestion}
+				renderSuggestion = {this.renderSuggestion}
 				inputProps = {inputProps}
 			/>
 		)

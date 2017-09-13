@@ -12,13 +12,13 @@ const largeFormStyle = {
 const formStyle = {
 	"text-align": "center",
 	display: "inline-block",
-	padding: "24px 0px",
+	padding: "35px 0px",
 	float: "right"
 };
 
 const submitStyle = (large=false) => ({
-	"font-size": large ? 30 : 15,
-	width: large ? "100%" : 30,
+	"font-size": large ? 30 : 20,
+	width: large ? "100%" : undefined,
 	"text-align": "center",
 	padding: large ? 10 : 0
 });

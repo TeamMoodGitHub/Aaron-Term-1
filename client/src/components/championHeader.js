@@ -1,5 +1,21 @@
 import React from 'react';
 
+const headerStyle = {
+	display: "flex",
+	"justify-content": "space-between",
+	"flex-wrap": "wrap"
+}
+
+const imgStyle = {
+	"object-fit": "contain"
+}
+
+const divStyle = {
+	display: "inline-block",
+	"vertical-align": "top",
+	padding: "0px 10px"
+};
+
 class ChampionHeader extends React.Component {
 
 	constructor(props) {
@@ -41,20 +57,21 @@ class ChampionHeader extends React.Component {
 
 		return (
 
-			<div class="champHeader">
-
-				<img src={image} alt={"Splash logo for " + name}/>
-				<div class="champHeaderNamePanel">
-					<h2>{name}</h2>
-					<h3>{title}</h3>
+			<div style={headerStyle} className="champHeader">
+				<div className="champHeaderMainPanel">
+					<img style={imgStyle} src={image} alt={"Splash logo for " + name}/>
+					<div style={divStyle} className="champHeaderNamePanel">
+						<h2>{name}</h2>
+						<h3>{title}</h3>
+					</div>
 				</div>
 				{/*Tags*/}
-				<div class="champHeaderWinRatePanel">
+				<div style={divStyle} className="champHeaderWinRatePanel">
 					<h2>Current Win Rate</h2>
 					<h2>{champWinRatePercentage}</h2>
 					<h3>(From {champWinRateGameCount} ranked games)</h3>
 				</div>	
-				<div class="junglerHeaderWinRatePanel">
+				<div style={divStyle} className="junglerHeaderWinRatePanel">
 					<h2>Current Win Rate when Jungling</h2>
 					<h2>{junglerWinRatePercentage}</h2>
 					<h3>(From {junglerWinRateGameCount} ranked games)</h3>

@@ -6,6 +6,9 @@ import ChampionHeader from '../components/championHeader';
 import StartingItems from '../components/startingItems';
 import JungleRoutes from '../components/jungleRoutes';
 
+const pageBodyStyle = {
+	padding: "10px 50px"
+}
 
 class Champion extends React.Component {
 
@@ -71,11 +74,13 @@ class Champion extends React.Component {
 		}
 
 		return (
-			<div>
+			<div className="page">
 				<Header />
-				<ChampionHeader champ={this.state.champion} version = {this.state.version}/>
-				<StartingItems champ={this.state.champion.name} />
-				<JungleRoutes champ={this.state.champion.name} />
+				<div className="pageBody" style={pageBodyStyle}>
+					<ChampionHeader champ={this.state.champion} version = {this.state.version}/>
+					<StartingItems champ={this.state.champion.name} />
+					<JungleRoutes champ={this.state.champion.name} />
+				</div>
 			</div>
 			);
 	}
