@@ -19,10 +19,10 @@ h2.mobLabel {
 	display: none;
 	font-size: 1.6vw;
 	text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
+    -0.1vw -0.1vw 0 #000,
+    0.1vw -0.1vw 0 #000,
+    -0.1vw 0.1vw 0 #000,
+    0.1vw 0.1vw 0 #000;
 }
 
 img#blueGromp {
@@ -30,8 +30,8 @@ img#blueGromp {
 	bottom: 50%;
 	left: 16%;
 	transform: scaleX(-1);
-	filter: drop-shadow(3px 3px 0 blue) 
-    drop-shadow(-3px -3px 0 blue);
+	filter: drop-shadow(0.2vw 0.2vw 0 blue) 
+    drop-shadow(-0.2vw -0.2vw 0 blue);
 }
 
 img#blueGromp:hover {
@@ -55,8 +55,8 @@ img#blueBase {
 	width: 5%;
 	bottom: 6%;
 	left: 9%;
-	filter: drop-shadow(3px 3px 0 blue) 
-    drop-shadow(-3px -3px 0 blue);
+	filter: drop-shadow(0.2vw 0.2vw 0 blue) 
+    drop-shadow(-0.2vw -0.2vw 0 blue);
 }
 
 img#blueBase:hover {
@@ -81,8 +81,8 @@ img#blueWolves {
 	bottom: 41%;
 	left: 23%;
 	transform: scaleX(-1);
-	filter: drop-shadow(3px 3px 0 blue) 
-    drop-shadow(-3px -3px 0 blue);
+	filter: drop-shadow(0.2vw 0.2vw 0 blue) 
+    drop-shadow(-0.2vw -0.2vw 0 blue);
 }
 
 img#blueWolves:hover {
@@ -106,8 +106,8 @@ img#blueBlue {
 	width: 5%;
 	bottom: 52%;
 	left: 23%;
-	filter: drop-shadow(3px 3px 0 blue) 
-    drop-shadow(-3px -3px 0 blue);
+	filter: drop-shadow(0.2vw 0.2vw 0 blue) 
+    drop-shadow(-0.2vw -0.2vw 0 blue);
 }
 
 img#blueBlue:hover {
@@ -131,8 +131,8 @@ img#blueRaptors {
 	width: 5%;
 	bottom: 37%;
 	left: 37%;
-	filter: drop-shadow(3px 3px 0 blue) 
-    drop-shadow(-3px -3px 0 blue);
+	filter: drop-shadow(0.2vw 0.2vw 0 blue) 
+    drop-shadow(-0.2vw -0.2vw 0 blue);
 }
 
 img#blueRaptors:hover {
@@ -156,8 +156,8 @@ img#blueRed {
 	width: 5%;
 	bottom: 27%;
 	left: 39%;
-	filter: drop-shadow(3px 3px 0 blue) 
-    drop-shadow(-3px -3px 0 blue);
+	filter: drop-shadow(0.2vw 0.2vw 0 blue) 
+    drop-shadow(-0.2vw -0.2vw 0 blue);
 }
 
 img#blueRed:hover {
@@ -181,8 +181,8 @@ img#blueKrugs {
 	width: 5%;
 	bottom: 19%;
 	left: 43%;
-	filter: drop-shadow(3px 3px 0 blue) 
-    drop-shadow(-3px -3px 0 blue);
+	filter: drop-shadow(0.2vw 0.2vw 0 blue) 
+    drop-shadow(-0.2vw -0.2vw 0 blue);
 }
 
 img#blueKrugs:hover {
@@ -209,8 +209,8 @@ img#redGromp {
 	width: 5%;
 	top: 51%;
 	left: 59%;
-	filter: drop-shadow(3px 3px 0 red) 
-    drop-shadow(-3px -3px 0 red);
+	filter: drop-shadow(0.2vw 0.2vw 0 red) 
+    drop-shadow(-0.2vw -0.2vw 0 red);
 }
 
 img#redGromp:hover {
@@ -234,8 +234,8 @@ img#redBase {
 	width: 5%;
 	top: 6.5%;
 	left: 63.5%;
-	filter: drop-shadow(3px 3px 0 red) 
-    drop-shadow(-3px -3px 0 red);
+	filter: drop-shadow(0.2vw 0.2vw 0 red) 
+    drop-shadow(-0.2vw -0.2vw 0 red);
 }
 
 img#redBase:hover {
@@ -259,8 +259,8 @@ img#redWolves {
 	width: 5%;
 	top: 41%;
 	left: 52%;
-	filter: drop-shadow(3px 3px 0 red) 
-    drop-shadow(-3px -3px 0 red);
+	filter: drop-shadow(0.2vw 0.2vw 0 red) 
+    drop-shadow(-0.2vw -0.2vw 0 red);
 }
 
 img#redWolves:hover {
@@ -285,8 +285,8 @@ img#redBlue {
 	top: 50%;
 	left: 53%;
 	transform: scaleX(-1);
-	filter: drop-shadow(3px 3px 0 red) 
-    drop-shadow(-3px -3px 0 red);
+	filter: drop-shadow(0.2vw 0.2vw 0 red) 
+    drop-shadow(-0.2vw -0.2vw 0 red);
 }
 
 img#redBlue:hover {
@@ -311,8 +311,8 @@ img#redRaptors {
 	top: 36%;
 	left: 39%;
 	transform: scaleX(-1);
-	filter: drop-shadow(3px 3px 0 red) 
-    drop-shadow(-3px -3px 0 red);
+	filter: drop-shadow(0.2vw 0.2vw 0 red) 
+    drop-shadow(-0.2vw -0.2vw 0 red);
 }
 
 img#redRaptors:hover {
@@ -337,8 +337,8 @@ img#redRed {
 	top: 27%;
 	left: 36%;
 	transform: scaleX(-1);
-	filter: drop-shadow(3px 3px 0 red) 
-    drop-shadow(-3px -3px 0 red);
+	filter: drop-shadow(0.2vw 0.2vw 0 red) 
+    drop-shadow(-0.2vw -0.2vw 0 red);
 }
 
 img#redRed:hover {
@@ -363,8 +363,8 @@ img#redKrugs {
 	top: 19%;
 	left: 34%;
 	transform: scaleX(-1);
-	filter: drop-shadow(3px 3px 0 red) 
-    drop-shadow(-3px -3px 0 red);
+	filter: drop-shadow(0.2vw 0.2vw 0 red) 
+    drop-shadow(-0.2vw -0.2vw 0 red);
 }
 
 img#redKrugs:hover {
@@ -391,8 +391,8 @@ img#dragon {
 	width: 5%;
 	bottom: 29%;
 	left: 48%;
-	filter: drop-shadow(3px 3px 0 yellow) 
-    drop-shadow(-3px -3px 0 yellow);
+	filter: drop-shadow(0.2vw 0.2vw 0 yellow) 
+    drop-shadow(-0.2vw -0.2vw 0 yellow);
 }
 
 img#dragon:hover {
@@ -417,8 +417,8 @@ img#baron {
 	width: 5%;
 	bottom: 64%;
 	left: 27.5%;
-	filter: drop-shadow(3px 3px 0 yellow) 
-    drop-shadow(-3px -3px 0 yellow);
+	filter: drop-shadow(0.2vw 0.2vw 0 yellow) 
+    drop-shadow(-0.2vw -0.2vw 0 yellow);
 }
 
 img#baron:hover {
@@ -442,8 +442,8 @@ img#top {
 	width: 5%;
 	bottom: 76%;
 	left: 16%;
-	filter: drop-shadow(3px 3px 0 black) 
-    drop-shadow(-3px -3px 0 black);
+	filter: drop-shadow(0.2vw 0.2vw 0 black) 
+    drop-shadow(-0.2vw -0.2vw 0 black);
 }
 
 img#top:hover {
@@ -467,8 +467,8 @@ img#mid {
 	width: 5%;
 	bottom: 46%;
 	left: 37%;
-	filter: drop-shadow(3px 3px 0 black) 
-    drop-shadow(-3px -3px 0 black);
+	filter: drop-shadow(0.2vw 0.2vw 0 black) 
+    drop-shadow(-0.2vw -0.2vw 0 black);
 }
 
 img#mid:hover {
@@ -492,8 +492,8 @@ img#bot {
 	width: 5%;
 	bottom: 14%;
 	left: 60%;
-	filter: drop-shadow(3px 3px 0 black) 
-    drop-shadow(-3px -3px 0 black);
+	filter: drop-shadow(0.2vw 0.2vw 0 black) 
+    drop-shadow(-0.2vw -0.2vw 0 black);
 }
 
 img#bot:hover {
