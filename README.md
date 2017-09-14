@@ -12,11 +12,12 @@ If you'd like to run your own version of Jungle.GG, follow these steps:
 2. You will also need an API key from the Riot Games API. You can click [here](https://developer.riotgames.com/) for more information.
 3. Ensure that you have node/npm installed on your machine.
 4. Clone this git repository. 
-5. Create a file called `config.js` in the root directory of the cloned repository. Add the following lines of code to this file where `<YourMongoURI>` should be of the form `"mongodb://<dbuser>:<dbpassword>@<serveraddress>/<databasename>"` and `<RiotApiKey>` should be of the form `"RGAPI-xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"`.
+5. Create a file called `config.js` in the root directory of the cloned repository. Add the following lines of code to this file where `<YourMongoURI>` should be of the form `"mongodb://<dbuser>:<dbpassword>@<serveraddress>/<databasename>"`, `<RiotApiKey>` should be of the form `"RGAPI-xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"`, and `<CurrentPatch>` should be the current League of Legends patch version (At the time of writing, it is `"7.18"`).
 ```javascript
 module.exports = {
     MONGO_LINK: <YourMongoURI>,
-    RIOT_API_KEY: <RiotApiKey>    
+    RIOT_API_KEY: <RiotApiKey>,
+    CURRENT_PATCH: <CurrentPatch>   
 }
 ```
 

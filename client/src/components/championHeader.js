@@ -49,11 +49,11 @@ class ChampionHeader extends React.Component {
 		const title = champion.title || "Loading...";
 		const image = champion.image ? "http://ddragon.leagueoflegends.com/cdn/"+this.props.version+"/img/champion/" + champion.image.full : ""; 
 
-		const champWinRatePercentage =  championWinRateData ? (100 * (championWinRateData.wins || 0) / championWinRateData.games).toFixed(2) + "%" : "Loading...";
-		const champWinRateGameCount =  championWinRateData ? championWinRateData.games : "Loading...";
+		const champWinRatePercentage =  championWinRateData ? (100 * (championWinRateData.wins || 0) / (championWinRateData.games || 1)).toFixed(2) + "%" : "Loading...";
+		const champWinRateGameCount =  championWinRateData ? (championWinRateData.games || 0) : "Loading...";
 
-		const junglerWinRatePercentage =  junglerWinRateData ? (100 * (junglerWinRateData.wins || 0) / junglerWinRateData.games).toFixed(2) + "%" : "Loading...";
-		const junglerWinRateGameCount =  junglerWinRateData ? junglerWinRateData.games : "Loading...";
+		const junglerWinRatePercentage =  junglerWinRateData ? (100 * (junglerWinRateData.wins || 0) / (junglerWinRateData.games || 1)).toFixed(2) + "%" : "Loading...";
+		const junglerWinRateGameCount =  junglerWinRateData ? (junglerWinRateData.games || 0) : "Loading...";
 
 		return (
 

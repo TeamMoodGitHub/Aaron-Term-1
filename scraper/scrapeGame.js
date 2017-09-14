@@ -5,7 +5,7 @@ const https = require('https');
 
 ///Update this with patch date to parse games only from current patch.
 const patchTime = new Date("September 14, 2017").getTime();
-const patchPrefix = "7.18";
+const patchPrefix = process.env.CURRENT_PATCH || require('../config').CURRENT_PATCH;
 
 //Delay in ms to prevent surpassing Riot API Limit.
 //Current development limit: 50 requests / second = 1 requests / 0.02 seconds

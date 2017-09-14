@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const MongoClient = require('mongodb').MongoClient;
 const MONGO_LINK = process.env.MONGO_LINK || require('./config').MONGO_LINK;
+const CURRENT_PATCH = process.env.CURRENT_PATCH || require('./config').CURRENT_PATCH;
 const retrieveChampionsHourly = require('./scraper/retrieveChampions');
 
 const app = express();
@@ -38,7 +39,7 @@ app.get('/api/champions', (req, res) => {
 * Returns JSON object containing win rate and number of games scraped.
 */
 app.get('/api/champion/:champ/wr', (req, res) => {
-	db.collection("champStats").findOne({key: req.params.champ}, function(err, results) {
+	db.collection("champStats" + CURRENT_PATCH).findOne({key: req.params.champ}, function(err, results) {
 		if (err) {
 			//Send Error Code 500 - Internal Server Error if query fails.
 			res.status(500).json({
@@ -56,7 +57,7 @@ app.get('/api/champion/:champ/wr', (req, res) => {
 * Returns JSON object containing win rate and number of games scraped.
 */
 app.get('/api/jungler/:champ/wr', (req, res) => {
-	db.collection("junglerStats").findOne({key: req.params.champ}, function(err, results) {
+	db.collection("junglerStats" + CURRENT_PATCH).findOne({key: req.params.champ}, function(err, results) {
 		if (err) {
 			//Send Error Code 500 - Internal Server Error if query fails.
 			res.status(500).json({
