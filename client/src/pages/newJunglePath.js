@@ -39,6 +39,9 @@ class NewJunglePath extends React.Component {
 	}
 
 	clearRoute() {
+		var c = this.refs.canvas;
+        var ctx = c.getContext("2d");
+		ctx.clearRect(0, 0, c.width, c.height);
 		this.setState({
 			route: [],
 			lastX: -1,
