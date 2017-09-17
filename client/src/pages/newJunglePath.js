@@ -27,6 +27,15 @@ class NewJunglePath extends React.Component {
 
 		this.clearRoute = this.clearRoute.bind(this);
 		this.addToRoute = this.addToRoute.bind(this);
+		this.mapLoaded = this.mapLoaded.bind(this);
+	}
+
+	componentDidMount() {
+	  window.addEventListener('resize', this.mapLoaded)
+	}
+
+	componentWillUnmount() {
+	  window.removeEventListener('resize', this.mapLoaded)
 	}
 
 	clearRoute() {
@@ -99,6 +108,12 @@ class NewJunglePath extends React.Component {
         ctx.fill();
     }
 
+    mapLoaded() {
+    	this.refs.canvas.width = this.refs.map.width;
+    	this.refs.canvas.height = this.refs.map.height;
+    	this.clearRoute();
+    }
+
 
 	render() {
 		return (
@@ -106,8 +121,9 @@ class NewJunglePath extends React.Component {
 				<h1>Create a new Jungle Path for: {this.props.match.params.championName}</h1>
 				<button onClick={this.clearRoute}><p>Clear Route</p></button>
 				<p>Current State: {JSON.stringify(this.state.route)}</p>
+				<p>Warning! Resizing your window will clear any routes you're in the middle of creating!</p>
 				<div id="routeMaker">
-					<img ref="map" id="map" src={riftMap} alt="Summoner's Rift Map"/>
+					<img ref="map" id="map" src={riftMap} alt="Summoner's Rift Map" onLoad={this.mapLoaded}/>
 					
 					<img id="dragon" className="mob" src={dragon} alt="Dragon" onClick={this.addToRoute} data-mobID={5} />
 					<h2 id="dragonLabel" className="mobLabel">Dragon!</h2>
@@ -152,7 +168,7 @@ class NewJunglePath extends React.Component {
 					<img id="redKrugs" className="mob" src={krugs} alt="Red Krugs" onClick={this.addToRoute} data-mobID={26}/>
 					<h2 id="redKrugsLabel" className="mobLabel">Red Krugs!</h2>
 
-					<canvas id="canvas" ref="canvas" width={1280} height={911}/>
+					<canvas id="canvas" ref="canvas" width={0} height={0}/>
 				</div>
 			</div>
 		);
