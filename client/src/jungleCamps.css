@@ -1,13 +1,24 @@
 div#routeMaker {
 	position:relative;
+	width: 80%;
 }
 
 img#map {
-	width: 80%;
+	width: 100%;
+	z-index: -100;
 }
 
 img.mob {
 	position: absolute;
+	z-index: 100;
+}
+
+canvas {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left:0;
+	z-index: 0;
 }
 
 img.mob:hover {
@@ -27,8 +38,8 @@ h2.mobLabel {
 
 img#blueGromp {
 	width: 5%;
-	bottom: 50%;
-	left: 16%;
+	bottom: 53%;
+	left: 21%;
 	transform: scaleX(-1);
 	filter: drop-shadow(0.2vw 0.2vw 0 blue) 
     drop-shadow(-0.2vw -0.2vw 0 blue);
@@ -36,12 +47,12 @@ img#blueGromp {
 
 img#blueGromp:hover {
 	width:8%;
-	left: 15%;
-	bottom: 48%;
+	left: 20%;
+	bottom: 53%;
 }
 
 #blueGrompLabel {
-	left: 16%;
+	left: 18.5%;
 	bottom: 61%;
 	width: 15%;
 	color: blue;
@@ -54,20 +65,20 @@ img#blueGromp:hover~#blueGrompLabel {
 img#blueBase {
 	width: 5%;
 	bottom: 6%;
-	left: 9%;
+	left: 11%;
 	filter: drop-shadow(0.2vw 0.2vw 0 blue) 
     drop-shadow(-0.2vw -0.2vw 0 blue);
 }
 
 img#blueBase:hover {
 	width:8%;
-	left: 8%;
-	bottom: 5%;
+	left: 10.5%;
+	bottom: 6%;
 }
 
 #blueBaseLabel {
-	left: 8.5%;
-	bottom: 17%;
+	left: 10%;
+	bottom: 15%;
 	width: 15%;
 	color: blue;
 }
@@ -79,7 +90,7 @@ img#blueBase:hover~#blueBaseLabel {
 img#blueWolves {
 	width: 5%;
 	bottom: 41%;
-	left: 23%;
+	left: 28%;
 	transform: scaleX(-1);
 	filter: drop-shadow(0.2vw 0.2vw 0 blue) 
     drop-shadow(-0.2vw -0.2vw 0 blue);
@@ -87,12 +98,12 @@ img#blueWolves {
 
 img#blueWolves:hover {
 	width:8%;
-	left: 22%;
+	left: 27%;
 	bottom: 38%;
 }
 
 #blueWolvesLabel {
-	left: 21%;
+	left: 26%;
 	bottom: 33%;
 	width: 44%;
 	color: blue;
@@ -105,19 +116,19 @@ img#blueWolves:hover~#blueWolvesLabel {
 img#blueBlue {
 	width: 5%;
 	bottom: 52%;
-	left: 23%;
+	left: 28%;
 	filter: drop-shadow(0.2vw 0.2vw 0 blue) 
     drop-shadow(-0.2vw -0.2vw 0 blue);
 }
 
 img#blueBlue:hover {
 	width:8%;
-	left: 22%;
+	left: 27%;
 	bottom: 51%;
 }
 
 #blueBlueLabel {
-	left: 20%;
+	left: 24%;
 	bottom: 59%;
 	width: 44%;
 	color: blue;
@@ -130,19 +141,19 @@ img#blueBlue:hover~#blueBlueLabel {
 img#blueRaptors {
 	width: 5%;
 	bottom: 37%;
-	left: 37%;
+	left: 45%;
 	filter: drop-shadow(0.2vw 0.2vw 0 blue) 
     drop-shadow(-0.2vw -0.2vw 0 blue);
 }
 
 img#blueRaptors:hover {
 	width:8%;
-	left: 36%;
+	left: 44%;
 	bottom: 36%;
 }
 
 #blueRaptorsLabel {
-	left: 36%;
+	left: 43%;
 	bottom: 40%;
 	width: 44%;
 	color: blue;
@@ -155,19 +166,19 @@ img#blueRaptors:hover~#blueRaptorsLabel {
 img#blueRed {
 	width: 5%;
 	bottom: 27%;
-	left: 39%;
+	left: 49%;
 	filter: drop-shadow(0.2vw 0.2vw 0 blue) 
     drop-shadow(-0.2vw -0.2vw 0 blue);
 }
 
 img#blueRed:hover {
 	width:8%;
-	left: 38%;
+	left: 48%;
 	bottom: 26%;
 }
 
 #blueRedLabel {
-	left: 37%;
+	left: 45%;
 	bottom: 30%;
 	width: 44%;
 	color: blue;
@@ -180,19 +191,19 @@ img#blueRed:hover~#blueRedLabel {
 img#blueKrugs {
 	width: 5%;
 	bottom: 19%;
-	left: 43%;
+	left: 53%;
 	filter: drop-shadow(0.2vw 0.2vw 0 blue) 
     drop-shadow(-0.2vw -0.2vw 0 blue);
 }
 
 img#blueKrugs:hover {
 	width:8%;
-	left: 42%;
+	left: 52%;
 	bottom: 18%;
 }
 
 #blueKrugsLabel {
-	left: 41.8%;
+	left: 51%;
 	bottom: 12%;
 	width: 44%;
 	color: blue;
@@ -208,20 +219,20 @@ img#blueKrugs:hover~#blueKrugsLabel {
 img#redGromp {
 	width: 5%;
 	top: 51%;
-	left: 59%;
+	left:75%;
 	filter: drop-shadow(0.2vw 0.2vw 0 red) 
     drop-shadow(-0.2vw -0.2vw 0 red);
 }
 
 img#redGromp:hover {
 	width:8%;
-	left: 57%;
+	left: 73%;
 	top: 48%;
 }
 
 #redGrompLabel {
-	left: 57%;
-	top: 61%;
+	left: 72%;
+	top: 57%;
 	width: 15%;
 	color: red;
 }
@@ -233,20 +244,20 @@ img#redGromp:hover~#redGrompLabel {
 img#redBase {
 	width: 5%;
 	top: 6.5%;
-	left: 63.5%;
+	left: 81.5%;
 	filter: drop-shadow(0.2vw 0.2vw 0 red) 
     drop-shadow(-0.2vw -0.2vw 0 red);
 }
 
 img#redBase:hover {
 	width:8%;
-	left: 62%;
+	left: 80%;
 	top: 5%;
 }
 
 #redBaseLabel {
-	left: 62.5%;
-	top: 17%;
+	left: 80%;
+	top: 15%;
 	width: 15%;
 	color: red;
 }
@@ -258,19 +269,19 @@ img#redBase:hover~#redBaseLabel {
 img#redWolves {
 	width: 5%;
 	top: 41%;
-	left: 52%;
+	left: 67%;
 	filter: drop-shadow(0.2vw 0.2vw 0 red) 
     drop-shadow(-0.2vw -0.2vw 0 red);
 }
 
 img#redWolves:hover {
 	width:8%;
-	left: 51%;
+	left: 66%;
 	top: 38%;
 }
 
 #redWolvesLabel {
-	left: 51%;
+	left: 65%;
 	top: 33%;
 	width: 44%;
 	color: red;
@@ -283,7 +294,7 @@ img#redWolves:hover~#redWolvesLabel {
 img#redBlue {
 	width: 5%;
 	top: 50%;
-	left: 53%;
+	left: 68%;
 	transform: scaleX(-1);
 	filter: drop-shadow(0.2vw 0.2vw 0 red) 
     drop-shadow(-0.2vw -0.2vw 0 red);
@@ -291,13 +302,13 @@ img#redBlue {
 
 img#redBlue:hover {
 	width:8%;
-	left: 52%;
+	left: 67%;
 	top: 49%;
 }
 
 #redBlueLabel {
-	left: 50%;
-	top: 59%;
+	left: 63%;
+	top: 57%;
 	width: 44%;
 	color: red;
 }
@@ -309,7 +320,7 @@ img#redBlue:hover~#redBlueLabel {
 img#redRaptors {
 	width: 5%;
 	top: 36%;
-	left: 39%;
+	left: 49%;
 	transform: scaleX(-1);
 	filter: drop-shadow(0.2vw 0.2vw 0 red) 
     drop-shadow(-0.2vw -0.2vw 0 red);
@@ -317,12 +328,12 @@ img#redRaptors {
 
 img#redRaptors:hover {
 	width:8%;
-	left: 38%;
+	left: 48%;
 	top: 35%;
 }
 
 #redRaptorsLabel {
-	left: 38%;
+	left: 47%;
 	top: 39%;
 	width: 44%;
 	color: red;
@@ -335,7 +346,7 @@ img#redRaptors:hover~#redRaptorsLabel {
 img#redRed {
 	width: 5%;
 	top: 27%;
-	left: 36%;
+	left: 46%;
 	transform: scaleX(-1);
 	filter: drop-shadow(0.2vw 0.2vw 0 red) 
     drop-shadow(-0.2vw -0.2vw 0 red);
@@ -343,13 +354,13 @@ img#redRed {
 
 img#redRed:hover {
 	width:8%;
-	left: 35%;
+	left: 45%;
 	top: 26%;
 }
 
 #redRedLabel {
-	left: 31.5%;
-	top: 30%;
+	left: 41%;
+	top: 32%;
 	width: 44%;
 	color: red;
 }
@@ -361,7 +372,7 @@ img#redRed:hover~#redRedLabel {
 img#redKrugs {
 	width: 5%;
 	top: 19%;
-	left: 34%;
+	left: 43%;
 	transform: scaleX(-1);
 	filter: drop-shadow(0.2vw 0.2vw 0 red) 
     drop-shadow(-0.2vw -0.2vw 0 red);
@@ -369,12 +380,12 @@ img#redKrugs {
 
 img#redKrugs:hover {
 	width:8%;
-	left: 33%;
+	left: 42%;
 	top: 18%;
 }
 
 #redKrugsLabel {
-	left: 32%;
+	left: 41.5%;
 	top: 12%;
 	width: 44%;
 	color: red;
@@ -390,19 +401,19 @@ img#redKrugs:hover~#redKrugsLabel {
 img#dragon {
 	width: 5%;
 	bottom: 29%;
-	left: 48%;
+	left: 61%;
 	filter: drop-shadow(0.2vw 0.2vw 0 yellow) 
     drop-shadow(-0.2vw -0.2vw 0 yellow);
 }
 
 img#dragon:hover {
 	width:8%;
-	left: 47%;
+	left: 60%;
 	bottom: 28%;
 }
 
 #dragonLabel {
-	left: 48%;
+	left: 60.5%;
 	bottom: 36%;
 	width: 44%;
 	color: white;
@@ -416,20 +427,20 @@ img#dragon:hover~#dragonLabel {
 img#baron {
 	width: 5%;
 	bottom: 64%;
-	left: 27.5%;
+	left: 35%;
 	filter: drop-shadow(0.2vw 0.2vw 0 yellow) 
     drop-shadow(-0.2vw -0.2vw 0 yellow);
 }
 
 img#baron:hover {
 	width:8%;
-	left: 26.5%;
+	left: 34%;
 	bottom: 62.5%;
 }
 
 #baronLabel {
-	left: 26%;
-	bottom: 61%;
+	left: 32.5%;
+	bottom: 58%;
 	width: 44%;
 	color: white;
 }
@@ -441,20 +452,20 @@ img#baron:hover~#baronLabel {
 img#top {
 	width: 5%;
 	bottom: 76%;
-	left: 16%;
+	left: 20%;
 	filter: drop-shadow(0.2vw 0.2vw 0 black) 
     drop-shadow(-0.2vw -0.2vw 0 black);
 }
 
 img#top:hover {
 	width:8%;
-	left: 15%;
+	left: 19%;
 	bottom: 75%;
 }
 
 #topLabel {
-	left: 15.3%;
-	bottom: 87%;
+	left: 18.5%;
+	bottom: 85%;
 	width: 44%;
 	color: white;
 }
@@ -466,19 +477,19 @@ img#top:hover~#topLabel {
 img#mid {
 	width: 5%;
 	bottom: 46%;
-	left: 37%;
+	left: 47%;
 	filter: drop-shadow(0.2vw 0.2vw 0 black) 
     drop-shadow(-0.2vw -0.2vw 0 black);
 }
 
 img#mid:hover {
 	width:8%;
-	left: 36%;
+	left: 46%;
 	bottom: 45%;
 }
 
 #midLabel {
-	left: 36.5%;
+	left: 45.5%;
 	bottom: 47%;
 	width: 44%;
 	color: white;
@@ -491,19 +502,19 @@ img#mid:hover~#midLabel {
 img#bot {
 	width: 5%;
 	bottom: 14%;
-	left: 60%;
+	left: 75%;
 	filter: drop-shadow(0.2vw 0.2vw 0 black) 
     drop-shadow(-0.2vw -0.2vw 0 black);
 }
 
 img#bot:hover {
 	width:8%;
-	left: 59%;
+	left: 74%;
 	bottom: 13%;
 }
 
 #botLabel {
-	left: 59.5%;
+	left: 74%;
 	bottom: 7%;
 	width: 44%;
 	color: white;
