@@ -34,6 +34,7 @@ h2.mobLabel {
     0.1vw -0.1vw 0 #000,
     -0.1vw 0.1vw 0 #000,
     0.1vw 0.1vw 0 #000;
+    z-index: 200;
 }
 
 img#blueGromp {
