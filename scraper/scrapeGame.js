@@ -4,7 +4,8 @@ const RIOT_API_KEY = process.env.RIOT_API_KEY || require('../config').RIOT_API_K
 const https = require('https');
 
 ///Update this with patch date to parse games only from current patch.
-const patchTime = new Date("August 24, 2017").getTime();
+const patchTime = new Date("September 14, 2017").getTime();
+const patchPrefix = process.env.CURRENT_PATCH || require('../config').CURRENT_PATCH;
 
 //Delay in ms to prevent surpassing Riot API Limit.
 //Current development limit: 50 requests / second = 1 requests / 0.02 seconds
@@ -92,7 +93,7 @@ function scrapeNextGame() {
 	return new Promise(function (resolve, reject) {
 		const query = {
 			scraped: false,
-			patch: currentPatch
+			patch: patchPrefix
 		};
 		const update = {
 			$set: {
@@ -102,7 +103,7 @@ function scrapeNextGame() {
 		//Sort by last search time ascending.
 		const options = null;
 
-		db.collection('scraperGames').findOneAndUpdate(query, update, options, function(err, results) {
+		db.collection('scraperGames' + patchPrefix).findOneAndUpdate(query, update, options, function(err, results) {
 			if (err) {
 				reject("Error retrieving next game to scrape: " + err);
 			} else {
@@ -135,7 +136,7 @@ function scrapeNextUser() {
 			}
 		};
 
-		db.collection('scraperUsers').findOneAndUpdate(query, update, options, function(err, results) {
+		db.collection('scraperUsers' + patchPrefix).findOneAndUpdate(query, update, options, function(err, results) {
 			if (err) {
 				reject("Error retrieving next user to scrape: " + err);
 			} else {
@@ -155,7 +156,7 @@ function scrapeNextUser() {
 * Adds user to scrape into Mongo.
 */
 function insertUserToScrape(id) {
-	db.collection('scraperUsers').findOneAndUpdate({
+	db.collection('scraperUsers' + patchPrefix).findOneAndUpdate({
 		userID: id
 	}, {
 		$setOnInsert: {
@@ -170,12 +171,12 @@ function insertUserToScrape(id) {
 * Adds match to scrape into Mongo.
 */
 function insertMatchToScrape(id) {
-	db.collection('scraperGames').findOneAndUpdate({
+	db.collection('scraperGames' + patchPrefix).findOneAndUpdate({
 		matchID: id,
 	}, {
 		$setOnInsert: {
 			scraped: false,
-			patch: currentPatch
+			patch: patchPrefix
 		}
 	}, {
 		upsert: true
@@ -199,7 +200,7 @@ function addJunglerWin(champid, platAndAbove=false) {
 	const options = {
 		upsert: true
 	}
-	db.collection("junglerStats").updateOne(query, update, options);
+	db.collection("junglerStats" + patchPrefix).updateOne(query, update, options);
 }
 
 /**
@@ -219,7 +220,7 @@ function addJunglerGame(champid, platAndAbove=false){
 	const options = {
 		upsert: true
 	}
-	db.collection("junglerStats").updateOne(query, update, options);
+	db.collection("junglerStats" + patchPrefix).updateOne(query, update, options);
 }
 
 /**
@@ -239,7 +240,7 @@ function addChampionWin(champid, platAndAbove=false){
 	const options = {
 		upsert: true
 	}
-	db.collection("champStats").updateOne(query, update, options);
+	db.collection("champStats" + patchPrefix).updateOne(query, update, options);
 }
 
 /**
@@ -259,7 +260,7 @@ function addChampionGame(champid, platAndAbove=false){
 	const options = {
 		upsert: true
 	}
-	db.collection("champStats").updateOne(query, update, options);
+	db.collection("champStats" + patchPrefix).updateOne(query, update, options);
 }
 
 /**
@@ -291,6 +292,7 @@ function parseUserByID(userID) {
 				if (!data.matches) {
 					//Error value returned instead!
 					reject("Data returned does not contain match history!");
+					return;
 				}
 
 				for (var i=0;i<data.matches.length;i++) {
@@ -337,6 +339,7 @@ function parseGameByID(gameID) {
 				if (!data.participantIdentities) {
 					//Error value returned instead!
 					reject("Data returned does not contain match data!");
+					return;
 				}
 
 				for (var i=0;i<data.participantIdentities.length;i++) {
@@ -344,8 +347,8 @@ function parseGameByID(gameID) {
 					//console.log("Added Account ID " + data.participantIdentities[i].player.currentAccountId + " to scrape.");
 				}
 
-				if (!data.gameVersion.startsWith(currentPatch)) {
-					console.log(data.gameVersion + " < " + currentPatch + ". Skipping.");
+				if (!data.gameVersion.startsWith(patchPrefix)) {
+					console.log(data.gameVersion + " < " + patchPrefix + ". Skipping.");
 					resolve();
 					return;
 				}

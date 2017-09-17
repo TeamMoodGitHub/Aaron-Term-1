@@ -1,5 +1,21 @@
 import React from 'react';
 
+const headerStyle = {
+	display: "flex",
+	"justify-content": "space-between",
+	"flex-wrap": "wrap"
+}
+
+const imgStyle = {
+	"object-fit": "contain"
+}
+
+const divStyle = {
+	display: "inline-block",
+	"vertical-align": "top",
+	padding: "0px 10px"
+};
+
 class ChampionHeader extends React.Component {
 
 	constructor(props) {
@@ -13,12 +29,14 @@ class ChampionHeader extends React.Component {
 	}
 
 	getWinRates() {
-		fetch('/api/champion/' + this.props.champ.key + '/wr')
-			.then(res => res.json())
-			.then(championWinRate => this.setState({championWinRate}));
-		fetch('/api/jungler/' + this.props.champ.key + '/wr')
-			.then(res => res.json())
-			.then(junglerWinRate => this.setState({junglerWinRate}));
+		if (this.props.champ.key) {
+			fetch('/api/champion/' + this.props.champ.key + '/wr')
+				.then(res => res.json())
+				.then(championWinRate => this.setState({championWinRate}));
+			fetch('/api/jungler/' + this.props.champ.key + '/wr')
+				.then(res => res.json())
+				.then(junglerWinRate => this.setState({junglerWinRate}));
+		}
 	}
 
 	render() {
@@ -31,28 +49,29 @@ class ChampionHeader extends React.Component {
 		const title = champion.title || "Loading...";
 		const image = champion.image ? "http://ddragon.leagueoflegends.com/cdn/"+this.props.version+"/img/champion/" + champion.image.full : ""; 
 
-		const champWinRatePercentage =  championWinRateData ? (100 * (championWinRateData.wins || 0) / championWinRateData.games).toFixed(2) + "%" : "Loading...";
-		const champWinRateGameCount =  championWinRateData ? championWinRateData.games : "Loading...";
+		const champWinRatePercentage =  championWinRateData ? (100 * (championWinRateData.wins || 0) / (championWinRateData.games || 1)).toFixed(2) + "%" : "Loading...";
+		const champWinRateGameCount =  championWinRateData ? (championWinRateData.games || 0) : "Loading...";
 
-		const junglerWinRatePercentage =  junglerWinRateData ? (100 * (junglerWinRateData.wins || 0) / junglerWinRateData.games).toFixed(2) + "%" : "Loading...";
-		const junglerWinRateGameCount =  junglerWinRateData ? junglerWinRateData.games : "Loading...";
+		const junglerWinRatePercentage =  junglerWinRateData ? (100 * (junglerWinRateData.wins || 0) / (junglerWinRateData.games || 1)).toFixed(2) + "%" : "Loading...";
+		const junglerWinRateGameCount =  junglerWinRateData ? (junglerWinRateData.games || 0) : "Loading...";
 
 		return (
 
-			<div class="champHeader">
-
-				<img src={image} alt={"Splash logo for " + name}/>
-				<div class="champHeaderNamePanel">
-					<h2>{name}</h2>
-					<h3>{title}</h3>
+			<div style={headerStyle} className="champHeader">
+				<div className="champHeaderMainPanel">
+					<img style={imgStyle} src={image} alt={"Splash logo for " + name}/>
+					<div style={divStyle} className="champHeaderNamePanel">
+						<h2>{name}</h2>
+						<h3>{title}</h3>
+					</div>
 				</div>
 				{/*Tags*/}
-				<div class="champHeaderWinRatePanel">
+				<div style={divStyle} className="champHeaderWinRatePanel">
 					<h2>Current Win Rate</h2>
 					<h2>{champWinRatePercentage}</h2>
 					<h3>(From {champWinRateGameCount} ranked games)</h3>
 				</div>	
-				<div class="junglerHeaderWinRatePanel">
+				<div style={divStyle} className="junglerHeaderWinRatePanel">
 					<h2>Current Win Rate when Jungling</h2>
 					<h2>{junglerWinRatePercentage}</h2>
 					<h3>(From {junglerWinRateGameCount} ranked games)</h3>

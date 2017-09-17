@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 class JungleRoutes extends React.Component {
 
@@ -42,6 +43,7 @@ class JungleRoutes extends React.Component {
 		return (
 			<div id="jungleRoutes">
 				<h1>Jungle Routes</h1>
+				<Link to={'/champion/'+this.props.champ+'/newPath'}><button>Create new Jungle Route!</button></Link>
 				<button onClick={this.toggleSides}>Toggle Sides</button>
 				{
 					this.state.routes.map(route => 

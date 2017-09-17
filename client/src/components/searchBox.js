@@ -2,18 +2,25 @@ import React from 'react';
 import ChampionInput from './championInput';
 import {Redirect} from 'react-router';
 
-const formStyle = {
+const largeFormStyle = {
 	"text-align": "center",
 	display: "block",
 	margin: "20px auto",
 	width: 500
 };
 
-const submitStyle = (large=false) => ({
-	"font-size": 30,
-	width: "100%",
+const formStyle = {
 	"text-align": "center",
-	padding: 10
+	display: "inline-block",
+	padding: "35px 0px",
+	float: "right"
+};
+
+const submitStyle = (large=false) => ({
+	"font-size": large ? 30 : 20,
+	width: large ? "100%" : undefined,
+	"text-align": "center",
+	padding: large ? 10 : 0
 });
 
 class SearchBox extends React.Component {
@@ -48,16 +55,23 @@ class SearchBox extends React.Component {
 	}
 
 	render() {
-
+		const large = this.props.size === "large";
 		//If redirect is enabled, send to the page for that champion.
 		if (this.state.redirect) {
-			return <Redirect push to={"/champion/"+this.state.champ} />;
+			return (
+				//Include whole form in case redirect is to same page..
+				<form className={large ? "search-large" : "search"} onSubmit={this.onSubmit} style={large ? largeFormStyle : formStyle}> 
+					<Redirect push to={"/champion/"+this.state.champ} />
+					<ChampionInput onChange={this.champChanged} value={this.state.champ} size={this.props.size}/>
+					<input type="submit" value="Go!" style={submitStyle(this.props.size === "large")}/>
+				</form>
+			);
 		}
 
 		//Otherwise, return the Champion Input Search field and the submit button.
 		return (
-			<form className={this.props.size === "large" ? "search-large" : "search"} onSubmit={this.onSubmit} style={formStyle}> 
-				<ChampionInput onChange={this.champChanged} value={this.state.champ} size="large"/>
+			<form className={large ? "search-large" : "search"} onSubmit={this.onSubmit} style={large ? largeFormStyle : formStyle}> 
+				<ChampionInput onChange={this.champChanged} value={this.state.champ} size={this.props.size}/>
 				<input type="submit" value="Go!" style={submitStyle(this.props.size === "large")}/>
 			</form>
 			)

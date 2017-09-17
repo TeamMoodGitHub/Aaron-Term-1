@@ -1,4 +1,9 @@
 /*GLOBAL STYLING ONLY*/
 body {
 	background-color: #fafbfc;
+	margin: 0px;
+}
+
+* {
+	-webkit-appearance: none;
 }

@@ -1,8 +1,14 @@
 import React from 'react';
 
+import Header from '../components/header';
+
 import ChampionHeader from '../components/championHeader';
 import StartingItems from '../components/startingItems';
 import JungleRoutes from '../components/jungleRoutes';
+
+const pageBodyStyle = {
+	padding: "10px 50px"
+}
 
 class Champion extends React.Component {
 
@@ -17,6 +23,17 @@ class Champion extends React.Component {
 	componentDidMount() {
 		this.loadChampionDetails();
 		this.getPatchNumber();
+	}
+
+	componentWillReceiveProps(nextProps) {
+		console.log(nextProps);
+		if (nextProps.location.key !== this.props.location.key) {
+			this.setState({
+				query: nextProps.match.params.championName,
+				found: false,
+				champion: null
+			}, this.loadChampionDetails);
+		}
 	}
 
 	loadChampionDetails() {
@@ -37,6 +54,9 @@ class Champion extends React.Component {
 	}
 
 	render() {
+
+		//console.log(this.props);
+
 		//Searching for no champion?! What?!?
 		if (!this.state.query) {
 			return (
@@ -54,11 +74,13 @@ class Champion extends React.Component {
 		}
 
 		return (
-			<div>
-				<h1>Champion: {this.state.champion.name}</h1>
-				<ChampionHeader champ={this.state.champion} version = {this.state.version}/>
-				<StartingItems champ={this.state.champion.name} />
-				<JungleRoutes champ={this.state.champion.name} />
+			<div className="page">
+				<Header />
+				<div className="pageBody" style={pageBodyStyle}>
+					<ChampionHeader champ={this.state.champion} version = {this.state.version}/>
+					<StartingItems champ={this.state.champion.name} />
+					<JungleRoutes champ={this.state.champion.name} />
+				</div>
 			</div>
 			);
 	}

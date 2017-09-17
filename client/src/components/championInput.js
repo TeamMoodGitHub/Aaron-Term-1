@@ -3,16 +3,10 @@ import Autosuggest from 'react-autosuggest';
 
 const getSuggestionValue = suggestion => suggestion.key;
 
-const renderSuggestion = suggestion => {
 
-	const suggestionStyle = {padding: "20px 0", margin: 0};
 
-	return (
-		<div className="suggestion">
-			<h3 style={suggestionStyle}>{suggestion.name}: {suggestion.title}</h3>
-		</div>
-	);
-};
+const largeSuggestionStyle = {padding: "20px 0", margin: 0};
+const suggestionStyle = {padding: "20px 0", margin: 0, "font-size": 15}
 
 const largeTheme = {
 	container: {
@@ -38,7 +32,33 @@ const largeTheme = {
 	}
 };
 
-const theme = {};
+const theme = {
+	container: {
+		display: "inline-block",
+		"margin-right": 15
+	},
+	input: {
+		"font-size": 20,
+		"text-align": "center"
+	},	
+	suggestionsList: {
+		margin: 0,
+		padding: 0,
+		"list-style-type": "none",
+		position: "absolute",
+		width: 214
+	},
+	suggestion: {
+		cursor: "pointer",
+		margin: 0,
+		padding: 0,
+		"background-color": "white"
+	},
+	suggestionHighlighted: {
+		"background-color": "#ddd"
+	},
+
+};
 
 class ChampionInput extends React.Component {
 
@@ -89,6 +109,14 @@ class ChampionInput extends React.Component {
 			);
 	}
 
+	renderSuggestion = suggestion => {
+		return (
+			<div className="suggestion">
+				<h3 style={this.props.size==="large" ? largeSuggestionStyle : suggestionStyle}>{suggestion.name}: {suggestion.title}</h3>
+			</div>
+		);
+	};
+
 	render() {
 		const {suggestions} = this.state;
 		const text = this.props.value;
@@ -98,8 +126,6 @@ class ChampionInput extends React.Component {
 			onChange: this.onChange
 		};
 
-		console.log(this.props.theme);
-
 		return (
 			<Autosuggest
 				theme = {this.props.size === "large" ? largeTheme : theme}
@@ -107,7 +133,7 @@ class ChampionInput extends React.Component {
 				onSuggestionsFetchRequested = {this.onSuggestionsFetchRequested}
 				onSuggestionsClearRequested = {this.onSuggestionsClearRequested}
 				getSuggestionValue = {getSuggestionValue}
-				renderSuggestion = {renderSuggestion}
+				renderSuggestion = {this.renderSuggestion}
 				inputProps = {inputProps}
 			/>
 		)
