@@ -4,6 +4,7 @@ const MongoClient = require('mongodb').MongoClient;
 const MONGO_LINK = process.env.MONGO_LINK || require('./config').MONGO_LINK;
 const CURRENT_PATCH = process.env.CURRENT_PATCH || require('./config').CURRENT_PATCH;
 const retrieveChampionsHourly = require('./scraper/retrieveChampions');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -14,6 +15,11 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 //Serve static files from static folder.
 app.use(express.static(path.join(__dirname, 'static')));
+
+//Add Body Parser to parse POST request data.
+app.use(bodyParser.urlencoded({extended: false}));
+//Parse JSON Format for POST body data.
+app.use(bodyParser.json());
 
 //Put all API endpoints under '/API'
 /**
@@ -71,10 +77,10 @@ app.get('/api/jungler/:champ/wr', (req, res) => {
 });
 
 /**
-* Called when webapp requests jungle routes for specific jungler 
-* and side. Returns array of jungle routes.
+* Called when webapp requests jungle routes for specific jungler. 
+* Returns array of jungle routes.
 */
-app.get('/api/jungler/:champ/jungleRoutes/:side', (req, res) => {
+app.get('/api/jungler/:champ/jungleRoutes', (req, res) => {
 	const testReturnValue = 
 			[
 				{
@@ -127,19 +133,27 @@ app.get('/api/jungler/:champ/startingItems', (req, res) => {
 ///Called when a user attempts to upvote a jungle route.
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.
-app.post('/api/champion/:champ/jungleRoutes/:side/inc/:id', (req, res) => {
+app.post('/api/champion/:champ/jungleRoute/inc/:id', (req, res) => {
 	//req.params.champ
-	//req.params.side
 	//req.params.id
 });
 
-///Called when a user attempts to downvote a jungle route.
+///Called when a user attempts to decrement a jungle route.
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.
-app.post('/api/champion/:champ/jungleRoutes/:side/dec/:id', (req, res) => {
+app.post('/api/champion/:champ/jungleRoute/dec/:id', (req, res) => {
 	//req.params.champ
-	//req.params.side
 	//req.params.id
+});
+
+
+///Called when a user attempts to submit a jungle route.
+///Will return with success/fail as JSON Object.
+app.post('/api/champion/:champ/jungleRoute', (req, res) => {
+	console.log("Received Jungle Route: ");
+	console.log(JSON.stringify(req.body));
+	res.json(req.body);
+	//req.params.champ
 });
 
 app.get('/api/champion/:champ', (req, res) => {

@@ -5,13 +5,10 @@ class JungleRoutes extends React.Component {
 
 	constructor(props) {
 		super(props);
-
 		this.state = {
-			blueSide: true,
+			routes: null
 		};
-
 		this.getRoutes = this.getRoutes.bind(this);
-		this.toggleSides = this.toggleSides.bind(this);
 	}
 
 	componentDidMount() {
@@ -19,32 +16,20 @@ class JungleRoutes extends React.Component {
 	}
 
 	getRoutes() {
-		fetch('/api/jungler/'+this.props.champ+'/jungleRoutes/' + (this.state.blueSide ? 'blue' : 'red'))
+		fetch('/api/jungler/'+this.props.champ+'/jungleRoutes')
 			.then(res => res.json())
 			.then(routes => this.setState({routes}));
-	}
-
-	toggleSides(e) {
-		//Currently only called from button. If called elsewhere, add check to ensure e is defined.
-		e.preventDefault();
-		this.setState({
-			blueSide: !this.state.blueSide,
-			routes: null
-		});
-		this.getRoutes();
 	}
 
 	render() {
 		//console.log(JSON.stringify(this.state));
 		if (!this.state.routes) {
-			//Still include red/blue buttons
 			return <h1> Loading Jungle Routes... </h1>;
 		}
 		return (
 			<div id="jungleRoutes">
 				<h1>Jungle Routes</h1>
 				<Link to={'/champion/'+this.props.champ+'/newPath'}><button>Create new Jungle Route!</button></Link>
-				<button onClick={this.toggleSides}>Toggle Sides</button>
 				{
 					this.state.routes.map(route => 
 						(

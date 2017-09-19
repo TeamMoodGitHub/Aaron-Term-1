@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {Redirect} from 'react-router';
+
 import '../jungleCamps.css';
 
 import riftMap from '../images/riftMap.png';
@@ -22,12 +24,14 @@ class NewJunglePath extends React.Component {
 		this.state = {
 			route: [],
 			lastX: -1,
-			lastY: -1
+			lastY: -1,
+			redirect: false
 		};
 
 		this.clearRoute = this.clearRoute.bind(this);
 		this.addToRoute = this.addToRoute.bind(this);
 		this.mapLoaded = this.mapLoaded.bind(this);
+		this.submit = this.submit.bind(this);
 	}
 
 	componentDidMount() {
@@ -117,8 +121,28 @@ class NewJunglePath extends React.Component {
     	this.clearRoute();
     }
 
+    submit() {
+    	if (!this.state.route || this.state.route.length <= 0) {
+    		return;
+    	}
+    	fetch('/api/champion/'+this.props.match.params.championName+'/jungleRoute', {
+    		headers: {
+		    	'Accept': 'application/json, text/plain, */*',
+		    	'Content-Type': 'application/json'
+		    },
+		    method: "POST",
+		    body: JSON.stringify(this.state.route)
+    	})
+    	.then(() => this.setState({redirect: true}));
+    }
+
 
 	render() {
+
+		if (this.state.redirect) {
+			return <Redirect push to={"/champion/"+this.props.match.params.championName} />;
+		}
+
 		return (
 			<div>
 				<h1>Create a new Jungle Path for: {this.props.match.params.championName}</h1>
@@ -173,6 +197,8 @@ class NewJunglePath extends React.Component {
 
 					<canvas id="canvas" ref="canvas" width={0} height={0}/>
 				</div>
+
+				<button onClick={this.submit}><p>Submit</p></button>
 			</div>
 		);
 	}
