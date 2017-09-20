@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectID;
 const MONGO_LINK = process.env.MONGO_LINK || require('./config').MONGO_LINK;
 const CURRENT_PATCH = process.env.CURRENT_PATCH || require('./config').CURRENT_PATCH;
 const retrieveChampionsHourly = require('./scraper/retrieveChampions');
@@ -81,31 +82,17 @@ app.get('/api/jungler/:champ/wr', (req, res) => {
 * Returns array of jungle routes.
 */
 app.get('/api/jungler/:champ/jungleRoutes', (req, res) => {
-	const testReturnValue = 
-			[
-				{
-					id: 1,
-					path: [1,2,3,4,5],
-					score: 1
-				},
-				{
-					id: 2,
-					path: [2,3,4,5,6],
-					score: 2
-				},
-				{
-					id: 3,
-					path: [3,4,5,6,7],
-					score: 3
-				},
-				{
-					id: 4,
-					path: [4,6,1,2,1],
-					score: 4
-				}
-			];
-	
-	res.json(testReturnValue);
+	db.collection("jungleRoutes" + CURRENT_PATCH).find({champ: req.params.champ}).sort({score: -1}).toArray(function(err, results) {
+		if (err) {
+			//Send Error Code 500 - Internal Server Error if query fails.
+			res.status(500).json({
+				source: "Error querying database for jungle Routes!",
+				error: err
+			});
+			return;
+		}
+		res.json(results === null ? {source: "Routes not found!", found: -1} : results);
+	});
 });
 
 /**
@@ -134,25 +121,75 @@ app.get('/api/jungler/:champ/startingItems', (req, res) => {
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.
 app.post('/api/champion/:champ/jungleRoute/inc/:id', (req, res) => {
-	//req.params.champ
-	//req.params.id
+	db.collection("jungleRoutes" + CURRENT_PATCH).updateOne({
+		"_id": new ObjectId(req.params.id),
+		champ: req.params.champ
+	}, {
+		$inc: {
+			up: 1,
+			score: 1
+		}
+	}, function(err, results) {
+		if (err) {
+			res.status(500).json({
+				source: "Error incrementing jungle route " + req.params.id + "!",
+				error: err
+			});
+		} else {
+			res.json({success: 1, results});
+		}
+	});
 });
 
-///Called when a user attempts to decrement a jungle route.
+///Called when a user attempts to downvote a jungle route.
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.
 app.post('/api/champion/:champ/jungleRoute/dec/:id', (req, res) => {
-	//req.params.champ
-	//req.params.id
+	db.collection("jungleRoutes" + CURRENT_PATCH).updateOne({
+		"_id": new ObjectId(req.params.id),
+		champ: req.params.champ
+	}, {
+		$inc: {
+			down: 1,
+			score: -1
+		}
+	}, function(err, results) {
+		if (err) {
+			res.status(500).json({
+				source: "Error decrementing jungle route " + req.params.id + "!",
+				error: err
+			});
+		} else {
+			res.json({success: 1, results});
+		}
+	});
 });
 
 
 ///Called when a user attempts to submit a jungle route.
 ///Will return with success/fail as JSON Object.
 app.post('/api/champion/:champ/jungleRoute', (req, res) => {
-	console.log("Received Jungle Route: ");
-	console.log(JSON.stringify(req.body));
-	res.json(req.body);
+	db.collection("jungleRoutes" + CURRENT_PATCH).findOneAndUpdate({
+		champ: req.params.champ,
+		route: req.body
+	}, {
+		$setOnInsert: {
+			up: 0,
+			down: 0,
+			score: 0
+		}
+	}, {
+		upsert: true
+	}, function(err, results) {
+		if (err) {
+			res.status(500).json({
+				source: "Error adding Jungle Route!",
+				error: err
+			});
+		} else {
+			res.json({success: 1, results});
+		}
+	});
 	//req.params.champ
 });
 

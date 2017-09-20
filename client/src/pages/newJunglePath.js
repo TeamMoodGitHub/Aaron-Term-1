@@ -133,7 +133,14 @@ class NewJunglePath extends React.Component {
 		    method: "POST",
 		    body: JSON.stringify(this.state.route)
     	})
-    	.then(() => this.setState({redirect: true}));
+    	.then((res) => res.json())
+    	.then((json) => {
+    		if (json.success) {
+    			this.setState({redirect: true});
+    		} else {
+    			alert("There was a problem with your submission: " + json);
+    		}
+    	});
     }
 
 

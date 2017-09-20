@@ -9,6 +9,7 @@ class JungleRoutes extends React.Component {
 			routes: null
 		};
 		this.getRoutes = this.getRoutes.bind(this);
+		this.vote = this.vote.bind(this);
 	}
 
 	componentDidMount() {
@@ -19,6 +20,24 @@ class JungleRoutes extends React.Component {
 		fetch('/api/jungler/'+this.props.champ+'/jungleRoutes')
 			.then(res => res.json())
 			.then(routes => this.setState({routes}));
+	}
+
+	vote(id, upvote) {
+		fetch('/api/champion/'+this.props.champ+'/jungleRoute/' + (upvote ? "inc/" : "dec/") + id, {
+    		headers: {
+		    	'Accept': 'application/json, text/plain, */*',
+		    	'Content-Type': 'application/json'
+		    },
+		    method: "POST"
+    	})
+    	.then((res) => res.json())
+    	.then((json) => {
+    		if (json.success) {
+    			this.getRoutes();
+    		} else {
+    			alert("There was a problem with your request. Please try again later.");
+    		}
+    	});
 	}
 
 	render() {
@@ -34,9 +53,11 @@ class JungleRoutes extends React.Component {
 					this.state.routes.map(route => 
 						(
 						<div class="route">
-							<h3>ID: {route.id}</h3>
-							<h3>Path: {JSON.stringify(route.path)}</h3> 
+							<h3>ID: {route._id}</h3>
+							<h3>Path: {JSON.stringify(route.route)}</h3> 
 							<h4>Score: {route.score}</h4>
+							<button onClick={() => this.vote(route._id, true)}><p>+</p></button>
+							<button onClick={() => this.vote(route._id, false)}><p>-</p></button>
 						</div>
 						)
 					)
