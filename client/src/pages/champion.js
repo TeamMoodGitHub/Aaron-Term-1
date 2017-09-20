@@ -78,8 +78,8 @@ class Champion extends React.Component {
 				<Header />
 				<div className="pageBody" style={pageBodyStyle}>
 					<ChampionHeader champ={this.state.champion} version = {this.state.version}/>
-					<StartingItems champ={this.state.champion.name} />
-					<JungleRoutes champ={this.state.champion.name} />
+					<StartingItems champ={this.state.query} />
+					<JungleRoutes champ={this.state.query} />
 				</div>
 			</div>
 			);

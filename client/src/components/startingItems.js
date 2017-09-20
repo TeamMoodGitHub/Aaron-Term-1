@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 class StartingItems extends React.Component {
 
@@ -30,6 +31,7 @@ class StartingItems extends React.Component {
 		return (
 			<div id="startingItems">
 				<h1> Starting Items </h1>
+				<Link to={'/champion/'+this.props.champ+'/newSet'}><button>Create new Item Set!</button></Link>
 				{
 					this.state.startingItems.map(startingItemSet => 
 						(

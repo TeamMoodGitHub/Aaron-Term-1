@@ -4,7 +4,7 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID;
 const MONGO_LINK = process.env.MONGO_LINK || require('./config').MONGO_LINK;
 const CURRENT_PATCH = process.env.CURRENT_PATCH || require('./config').CURRENT_PATCH;
-const retrieveChampionsHourly = require('./scraper/retrieveChampions');
+const retrieveChampionsDaily = require('./scraper/retrieveChampions');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -207,6 +207,20 @@ app.get('/api/champion/:champ', (req, res) => {
 	});
 });
 
+app.get('/api/items', (req, res) => {
+	db.collection("items").find().toArray(function(err, results) {
+		if (err) {
+			//Send Error Code 500 - Internal Server Error if query fails.
+			res.status(500).json({
+				source: "Error querying database for items!",
+				error: err
+			});
+			return;
+		}
+		res.json(results === null ? {source: "Items not found!", found: -1} : results);
+	});
+});
+
 /*
 * Handles root API route and returns an error object.
 */
@@ -226,6 +240,8 @@ app.get('*', (req, res) => {
 ///process.env.PORT is set when running on heroku.
 const port = process.env.PORT || 5000;
 
+console.log("Waiting for Connection to Mongo...");
+
 //The database credentials are hidden for security purposes. 
 //When hosting locally, it is stored in a local configuration file, 
 //and when hosting on Heroku, it is stored as an environment variable.
@@ -235,10 +251,10 @@ MongoClient.connect(MONGO_LINK, (err, database) => {
 		return;
 	}
 	db = database;
-
+	console.log("Connected to Mongo.");
 	app.listen(port, () => {
 		console.log(`Listening on port ${port}`);
 	});
 
-	retrieveChampionsHourly(db);
+	retrieveChampionsDaily(db);
 });
