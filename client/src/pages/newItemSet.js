@@ -78,7 +78,7 @@ class NewItemSet extends React.Component {
 					<button onClick={this.submit}><p>Submit</p></button>
 					<button onClick={this.clearSet}><p>Clear Items</p></button>
 					<div id="items">
-						{this.state.items.map(item => <Item onClick={() => this.addToSet(item)} button={true} item={item} />)}
+						{this.state.items.map(item => <Item onClick={() => this.addToSet(item)} button={true} item={item} version={this.props.version} />)}
 					</div>
 				</div>
 			);
