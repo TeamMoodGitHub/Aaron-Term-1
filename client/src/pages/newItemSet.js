@@ -14,6 +14,8 @@ class NewItemSet extends React.Component {
 
 		this.getItems = this.getItems.bind(this);
 		this.submit = this.submit.bind(this);
+		this.clearSet = this.clearSet.bind(this);
+		this.addToSet = this.addToSet.bind(this);
 
 		this.getItems();
 	}
@@ -52,6 +54,12 @@ class NewItemSet extends React.Component {
     	});
     }
 
+    clearSet() {
+    	this.setState({
+    		set: []
+    	});
+    }
+
 	render() {
 		if (this.state.redirect) {
 			return <Redirect push to={"/champion/"+this.props.match.params.championName} />;
@@ -68,7 +76,10 @@ class NewItemSet extends React.Component {
 					<h1>Create a new Item Set for: {this.props.match.params.championName}</h1>
 					<h1>State: {JSON.stringify(this.state.set)}</h1>
 					<button onClick={this.submit}><p>Submit</p></button>
-					{this.state.items.map(item => <Item onClick={() => this.addToSet(item)} button={true} item={item} />)}
+					<button onClick={this.clearSet}><p>Clear Items</p></button>
+					<div id="items">
+						{this.state.items.map(item => <Item onClick={() => this.addToSet(item)} button={true} item={item} />)}
+					</div>
 				</div>
 			);
 		}

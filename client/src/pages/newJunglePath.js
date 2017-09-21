@@ -54,6 +54,9 @@ class NewJunglePath extends React.Component {
 	}
 
 	addToRoute(val) {
+		if (val.target.getAttribute("data-mobID") === this.state.route[this.state.route.length-1]) {
+			return;
+		}
 		if (this.state.lastX >= 0 && this.state.lastY >= 0) {
 			var toX = val.target.offsetLeft + val.target.width/2;
 			var toY = val.target.offsetTop + val.target.height/2
