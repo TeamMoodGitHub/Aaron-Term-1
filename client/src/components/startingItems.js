@@ -10,6 +10,7 @@ class StartingItems extends React.Component {
 		this.state = {};
 
 		this.getStartingItems = this.getStartingItems.bind(this);
+		this.vote = this.vote.bind(this);
 	}
 
 	componentDidMount() {
@@ -17,9 +18,27 @@ class StartingItems extends React.Component {
 	}
 
 	getStartingItems() {
-		fetch('/api/jungler/'+this.props.champ+'/startingItems')
+		fetch('/api/jungler/'+this.props.champ+'/itemSets')
 			.then(res => res.json())
 			.then(startingItems => this.setState({startingItems}));
+	}
+
+	vote(id, upvote) {
+		fetch('/api/jungler/'+this.props.champ+'/itemSet/' + (upvote ? "inc/" : "dec/") + id, {
+    		headers: {
+		    	'Accept': 'application/json, text/plain, */*',
+		    	'Content-Type': 'application/json'
+		    },
+		    method: "POST"
+    	})
+    	.then((res) => res.json())
+    	.then((json) => {
+    		if (json.success) {
+    			this.getStartingItems();
+    		} else {
+    			alert("There was a problem with your request. Please try again later.");
+    		}
+    	});
 	}
 
 	render() {
@@ -36,8 +55,10 @@ class StartingItems extends React.Component {
 					this.state.startingItems.map(startingItemSet => 
 						(
 						<div class="startingItemSet">
-							<h3>{startingItemSet.id}: {JSON.stringify(startingItemSet.items)}</h3> 
+							<h3>{startingItemSet._id}: {JSON.stringify(startingItemSet.set)}</h3> 
 							<h4>Score: {startingItemSet.score}</h4>
+							<button onClick={() => this.vote(startingItemSet._id, true)}><p>+</p></button>
+							<button onClick={() => this.vote(startingItemSet._id, false)}><p>-</p></button>
 						</div>
 						)
 					)

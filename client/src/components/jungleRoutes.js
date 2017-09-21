@@ -23,7 +23,7 @@ class JungleRoutes extends React.Component {
 	}
 
 	vote(id, upvote) {
-		fetch('/api/champion/'+this.props.champ+'/jungleRoute/' + (upvote ? "inc/" : "dec/") + id, {
+		fetch('/api/jungler/'+this.props.champ+'/jungleRoute/' + (upvote ? "inc/" : "dec/") + id, {
     		headers: {
 		    	'Accept': 'application/json, text/plain, */*',
 		    	'Content-Type': 'application/json'

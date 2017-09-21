@@ -86,7 +86,7 @@ app.get('/api/jungler/:champ/jungleRoutes', (req, res) => {
 		if (err) {
 			//Send Error Code 500 - Internal Server Error if query fails.
 			res.status(500).json({
-				source: "Error querying database for jungle Routes!",
+				source: "Error querying database for Jungle Routes!",
 				error: err
 			});
 			return;
@@ -99,28 +99,24 @@ app.get('/api/jungler/:champ/jungleRoutes', (req, res) => {
 * Called when webapp requests starting items for specific jungler.
 * Returns array of starting Items.
 */
-app.get('/api/jungler/:champ/startingItems', (req, res) => {
-	const testReturnValue = 
-			[
-				{
-					id: 1,
-					items: [123,234,345,456],
-					score: 25
-				},
-				{
-					id: 2,
-					items: [4,7,1,2],
-					score: 10
-				}
-			];
-	
-	res.json(testReturnValue);
+app.get('/api/jungler/:champ/itemSets', (req, res) => {
+	db.collection("itemSets" + CURRENT_PATCH).find({champ: req.params.champ}).sort({score: -1}).toArray(function(err, results) {
+		if (err) {
+			//Send Error Code 500 - Internal Server Error if query fails.
+			res.status(500).json({
+				source: "Error querying database for Item Sets!",
+				error: err
+			});
+			return;
+		}
+		res.json(results === null ? {source: "Sets not found!", found: -1} : results);
+	});
 });
 
 ///Called when a user attempts to upvote a jungle route.
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.
-app.post('/api/champion/:champ/jungleRoute/inc/:id', (req, res) => {
+app.post('/api/jungler/:champ/jungleRoute/inc/:id', (req, res) => {
 	db.collection("jungleRoutes" + CURRENT_PATCH).updateOne({
 		"_id": new ObjectId(req.params.id),
 		champ: req.params.champ
@@ -144,7 +140,7 @@ app.post('/api/champion/:champ/jungleRoute/inc/:id', (req, res) => {
 ///Called when a user attempts to downvote a jungle route.
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.
-app.post('/api/champion/:champ/jungleRoute/dec/:id', (req, res) => {
+app.post('/api/jungler/:champ/jungleRoute/dec/:id', (req, res) => {
 	db.collection("jungleRoutes" + CURRENT_PATCH).updateOne({
 		"_id": new ObjectId(req.params.id),
 		champ: req.params.champ
@@ -165,10 +161,58 @@ app.post('/api/champion/:champ/jungleRoute/dec/:id', (req, res) => {
 	});
 });
 
+///Called when a user attempts to upvote a jungle route.
+///Will return with success/fail as JSON Object.
+///Will also ensure user hasn't already voted before.
+app.post('/api/jungler/:champ/itemSet/inc/:id', (req, res) => {
+	db.collection("itemSets" + CURRENT_PATCH).updateOne({
+		"_id": new ObjectId(req.params.id),
+		champ: req.params.champ
+	}, {
+		$inc: {
+			up: 1,
+			score: 1
+		}
+	}, function(err, results) {
+		if (err) {
+			res.status(500).json({
+				source: "Error incrementing item set " + req.params.id + "!",
+				error: err
+			});
+		} else {
+			res.json({success: 1, results});
+		}
+	});
+});
+
+///Called when a user attempts to downvote a jungle route.
+///Will return with success/fail as JSON Object.
+///Will also ensure user hasn't already voted before.
+app.post('/api/jungler/:champ/itemSet/dec/:id', (req, res) => {
+	db.collection("itemSets" + CURRENT_PATCH).updateOne({
+		"_id": new ObjectId(req.params.id),
+		champ: req.params.champ
+	}, {
+		$inc: {
+			down: 1,
+			score: -1
+		}
+	}, function(err, results) {
+		if (err) {
+			res.status(500).json({
+				source: "Error decrementing item set " + req.params.id + "!",
+				error: err
+			});
+		} else {
+			res.json({success: 1, results});
+		}
+	});
+});
+
 
 ///Called when a user attempts to submit a jungle route.
 ///Will return with success/fail as JSON Object.
-app.post('/api/champion/:champ/jungleRoute', (req, res) => {
+app.post('/api/jungler/:champ/jungleRoute', (req, res) => {
 	db.collection("jungleRoutes" + CURRENT_PATCH).findOneAndUpdate({
 		champ: req.params.champ,
 		route: req.body
@@ -184,6 +228,33 @@ app.post('/api/champion/:champ/jungleRoute', (req, res) => {
 		if (err) {
 			res.status(500).json({
 				source: "Error adding Jungle Route!",
+				error: err
+			});
+		} else {
+			res.json({success: 1, results});
+		}
+	});
+	//req.params.champ
+});
+
+///Called when a user attempts to submit an item set.
+///Will return with success/fail as JSON Object.
+app.post('/api/jungler/:champ/itemSet', (req, res) => {
+	db.collection("itemSets" + CURRENT_PATCH).findOneAndUpdate({
+		champ: req.params.champ,
+		set: req.body
+	}, {
+		$setOnInsert: {
+			up: 0,
+			down: 0,
+			score: 0
+		}
+	}, {
+		upsert: true
+	}, function(err, results) {
+		if (err) {
+			res.status(500).json({
+				source: "Error adding Item Set!",
 				error: err
 			});
 		} else {

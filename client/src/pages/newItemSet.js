@@ -1,16 +1,19 @@
 import React from 'react';
 
 import Item from '../components/item';
+import {Redirect} from 'react-router';
 
 class NewItemSet extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			items: null
+			items: null,
+			set: []
 		}
 
 		this.getItems = this.getItems.bind(this);
+		this.submit = this.submit.bind(this);
 
 		this.getItems();
 	}
@@ -21,8 +24,38 @@ class NewItemSet extends React.Component {
 		.then((items) => this.setState({items}));
 	}
 
+	submit() {
+    	if (!this.state.set || this.state.set.length <= 0) {
+    		return;
+    	}
+    	fetch('/api/jungler/'+this.props.match.params.championName+'/itemSet', {
+    		headers: {
+		    	'Accept': 'application/json, text/plain, */*',
+		    	'Content-Type': 'application/json'
+		    },
+		    method: "POST",
+		    body: JSON.stringify(this.state.set)
+    	})
+    	.then((res) => res.json())
+    	.then((json) => {
+    		if (json.success) {
+    			this.setState({redirect: true});
+    		} else {
+    			alert("There was a problem with your submission: " + json);
+    		}
+    	});
+    }
+
+    addToSet(item) {
+    	this.setState({
+    		set: this.state.set.concat(item.key)
+    	});
+    }
+
 	render() {
-		if (!this.state.items) {
+		if (this.state.redirect) {
+			return <Redirect push to={"/champion/"+this.props.match.params.championName} />;
+		} else if (!this.state.items) {
 			return (
 				<div id="itemSetCreator">
 					<h1>Create a new Item Set for: {this.props.match.params.championName}</h1>
@@ -33,7 +66,9 @@ class NewItemSet extends React.Component {
 			return (
 				<div id="itemSetCreator">
 					<h1>Create a new Item Set for: {this.props.match.params.championName}</h1>
-					{this.state.items.map(item => <Item button={true} item={item} />)}
+					<h1>State: {JSON.stringify(this.state.set)}</h1>
+					<button onClick={this.submit}><p>Submit</p></button>
+					{this.state.items.map(item => <Item onClick={() => this.addToSet(item)} button={true} item={item} />)}
 				</div>
 			);
 		}

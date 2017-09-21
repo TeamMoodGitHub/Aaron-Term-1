@@ -56,7 +56,7 @@ function pullItems(patch, db) {
 			var items = JSON.parse(body).data;
 			var keys = Object.keys(items);
 			if (db) {
-				//For each champion, create an upsert request into Mongo.
+				//For each item, create an upsert request into Mongo.
 				var request = [];
 				for (var key in items) {
 					request.push({
@@ -71,8 +71,6 @@ function pullItems(patch, db) {
 						}
 					});
 
-					//Also grab champion-specific info from champion-specific API.
-					//updateChampInfo(list.data[key].id);
 				}
 
 				//Use the bulkWrite method from Mongo to handle the upsert requests.

@@ -125,7 +125,7 @@ class NewJunglePath extends React.Component {
     	if (!this.state.route || this.state.route.length <= 0) {
     		return;
     	}
-    	fetch('/api/champion/'+this.props.match.params.championName+'/jungleRoute', {
+    	fetch('/api/jungler/'+this.props.match.params.championName+'/jungleRoute', {
     		headers: {
 		    	'Accept': 'application/json, text/plain, */*',
 		    	'Content-Type': 'application/json'
