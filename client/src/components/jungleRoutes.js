@@ -22,6 +22,12 @@ class JungleRoutes extends React.Component {
 			.then(routes => this.setState({routes}));
 	}
 
+	/**
+	* Submits a user vote by making POST Request to the API.
+	* If successful, the API will return a JSON object with the 
+	* "success" key set to true. If successful, then this component
+	* will be re-rendered with new data.
+	*/
 	vote(id, upvote) {
 		fetch('/api/jungler/'+this.props.champ+'/jungleRoute/' + (upvote ? "inc/" : "dec/") + id, {
     		headers: {
