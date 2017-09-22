@@ -23,4 +23,4 @@ module.exports = {
 
 6. Navigate to the root directory of the repository in your terminal and run: `npm install`. Do the same in the `client` directory. This will install all the dependencies for this node application.
 7. Return to the root directory and run `npm run dev`. This will start running the server. If hosting locally, you can view the site at [http://localhost:5000](http://localhost:5000).
-8. (Optional) If you want to gather win rates you must scrape the game data yourself. You can do so by navigating to the `scraper` directory and running the `scraper.js` file. You may need to adjust the `delay` variable in this file depending on your Riot API Key's rate limit. 
+8. (Optional) If you want to gather win rates you must scrape the game data yourself. You can do so by navigating to the `scraper` directory and running the `scrapeGame.js` file. You may need to adjust the `delay` variable in this file depending on your Riot API Key's rate limit. 
