@@ -1,9 +1,11 @@
 const express = require('express');
 const path = require('path');
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectID;
 const MONGO_LINK = process.env.MONGO_LINK || require('./config').MONGO_LINK;
 const CURRENT_PATCH = process.env.CURRENT_PATCH || require('./config').CURRENT_PATCH;
-const retrieveChampionsHourly = require('./scraper/retrieveChampions');
+const retrieveChampionsDaily = require('./scraper/retrieveChampions');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -14,6 +16,11 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 //Serve static files from static folder.
 app.use(express.static(path.join(__dirname, 'static')));
+
+//Add Body Parser to parse POST request data.
+app.use(bodyParser.urlencoded({extended: false}));
+//Parse JSON Format for POST body data.
+app.use(bodyParser.json());
 
 //Put all API endpoints under '/API'
 /**
@@ -71,75 +78,190 @@ app.get('/api/jungler/:champ/wr', (req, res) => {
 });
 
 /**
-* Called when webapp requests jungle routes for specific jungler 
-* and side. Returns array of jungle routes.
+* Called when webapp requests jungle routes for specific jungler. 
+* Returns array of jungle routes.
 */
-app.get('/api/jungler/:champ/jungleRoutes/:side', (req, res) => {
-	const testReturnValue = 
-			[
-				{
-					id: 1,
-					path: [1,2,3,4,5],
-					score: 1
-				},
-				{
-					id: 2,
-					path: [2,3,4,5,6],
-					score: 2
-				},
-				{
-					id: 3,
-					path: [3,4,5,6,7],
-					score: 3
-				},
-				{
-					id: 4,
-					path: [4,6,1,2,1],
-					score: 4
-				}
-			];
-	
-	res.json(testReturnValue);
+app.get('/api/jungler/:champ/jungleRoutes', (req, res) => {
+	db.collection("jungleRoutes" + CURRENT_PATCH).find({champ: req.params.champ}).sort({score: -1}).toArray(function(err, results) {
+		if (err) {
+			//Send Error Code 500 - Internal Server Error if query fails.
+			res.status(500).json({
+				source: "Error querying database for Jungle Routes!",
+				error: err
+			});
+			return;
+		}
+		res.json(results === null ? {source: "Routes not found!", found: -1} : results);
+	});
 });
 
 /**
 * Called when webapp requests starting items for specific jungler.
 * Returns array of starting Items.
 */
-app.get('/api/jungler/:champ/startingItems', (req, res) => {
-	const testReturnValue = 
-			[
-				{
-					id: 1,
-					items: [123,234,345,456],
-					score: 25
-				},
-				{
-					id: 2,
-					items: [4,7,1,2],
-					score: 10
-				}
-			];
-	
-	res.json(testReturnValue);
+app.get('/api/jungler/:champ/itemSets', (req, res) => {
+	db.collection("itemSets" + CURRENT_PATCH).find({champ: req.params.champ}).sort({score: -1}).toArray(function(err, results) {
+		if (err) {
+			//Send Error Code 500 - Internal Server Error if query fails.
+			res.status(500).json({
+				source: "Error querying database for Item Sets!",
+				error: err
+			});
+			return;
+		}
+		res.json(results === null ? {source: "Sets not found!", found: -1} : results);
+	});
 });
 
 ///Called when a user attempts to upvote a jungle route.
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.
-app.post('/api/champion/:champ/jungleRoutes/:side/inc/:id', (req, res) => {
-	//req.params.champ
-	//req.params.side
-	//req.params.id
+app.post('/api/jungler/:champ/jungleRoute/inc/:id', (req, res) => {
+	db.collection("jungleRoutes" + CURRENT_PATCH).updateOne({
+		"_id": new ObjectId(req.params.id),
+		champ: req.params.champ
+	}, {
+		$inc: {
+			up: 1,
+			score: 1
+		}
+	}, function(err, results) {
+		if (err) {
+			res.status(500).json({
+				source: "Error incrementing jungle route " + req.params.id + "!",
+				error: err
+			});
+		} else {
+			res.json({success: 1, results});
+		}
+	});
 });
 
 ///Called when a user attempts to downvote a jungle route.
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.
-app.post('/api/champion/:champ/jungleRoutes/:side/dec/:id', (req, res) => {
+app.post('/api/jungler/:champ/jungleRoute/dec/:id', (req, res) => {
+	db.collection("jungleRoutes" + CURRENT_PATCH).updateOne({
+		"_id": new ObjectId(req.params.id),
+		champ: req.params.champ
+	}, {
+		$inc: {
+			down: 1,
+			score: -1
+		}
+	}, function(err, results) {
+		if (err) {
+			res.status(500).json({
+				source: "Error decrementing jungle route " + req.params.id + "!",
+				error: err
+			});
+		} else {
+			res.json({success: 1, results});
+		}
+	});
+});
+
+///Called when a user attempts to upvote a jungle route.
+///Will return with success/fail as JSON Object.
+///Will also ensure user hasn't already voted before.
+app.post('/api/jungler/:champ/itemSet/inc/:id', (req, res) => {
+	db.collection("itemSets" + CURRENT_PATCH).updateOne({
+		"_id": new ObjectId(req.params.id),
+		champ: req.params.champ
+	}, {
+		$inc: {
+			up: 1,
+			score: 1
+		}
+	}, function(err, results) {
+		if (err) {
+			res.status(500).json({
+				source: "Error incrementing item set " + req.params.id + "!",
+				error: err
+			});
+		} else {
+			res.json({success: 1, results});
+		}
+	});
+});
+
+///Called when a user attempts to downvote a jungle route.
+///Will return with success/fail as JSON Object.
+///Will also ensure user hasn't already voted before.
+app.post('/api/jungler/:champ/itemSet/dec/:id', (req, res) => {
+	db.collection("itemSets" + CURRENT_PATCH).updateOne({
+		"_id": new ObjectId(req.params.id),
+		champ: req.params.champ
+	}, {
+		$inc: {
+			down: 1,
+			score: -1
+		}
+	}, function(err, results) {
+		if (err) {
+			res.status(500).json({
+				source: "Error decrementing item set " + req.params.id + "!",
+				error: err
+			});
+		} else {
+			res.json({success: 1, results});
+		}
+	});
+});
+
+
+///Called when a user attempts to submit a jungle route.
+///Will return with success/fail as JSON Object.
+app.post('/api/jungler/:champ/jungleRoute', (req, res) => {
+	db.collection("jungleRoutes" + CURRENT_PATCH).findOneAndUpdate({
+		champ: req.params.champ,
+		route: req.body
+	}, {
+		$setOnInsert: {
+			up: 0,
+			down: 0,
+			score: 0
+		}
+	}, {
+		upsert: true
+	}, function(err, results) {
+		if (err) {
+			res.status(500).json({
+				source: "Error adding Jungle Route!",
+				error: err
+			});
+		} else {
+			res.json({success: 1, results});
+		}
+	});
 	//req.params.champ
-	//req.params.side
-	//req.params.id
+});
+
+///Called when a user attempts to submit an item set.
+///Will return with success/fail as JSON Object.
+app.post('/api/jungler/:champ/itemSet', (req, res) => {
+	db.collection("itemSets" + CURRENT_PATCH).findOneAndUpdate({
+		champ: req.params.champ,
+		set: req.body
+	}, {
+		$setOnInsert: {
+			up: 0,
+			down: 0,
+			score: 0
+		}
+	}, {
+		upsert: true
+	}, function(err, results) {
+		if (err) {
+			res.status(500).json({
+				source: "Error adding Item Set!",
+				error: err
+			});
+		} else {
+			res.json({success: 1, results});
+		}
+	});
+	//req.params.champ
 });
 
 app.get('/api/champion/:champ', (req, res) => {
@@ -153,6 +275,20 @@ app.get('/api/champion/:champ', (req, res) => {
 			return;
 		}
 		res.json(results === null ? {source: "Champion not found!", found: -1} : results);
+	});
+});
+
+app.get('/api/items', (req, res) => {
+	db.collection("items").find().toArray(function(err, results) {
+		if (err) {
+			//Send Error Code 500 - Internal Server Error if query fails.
+			res.status(500).json({
+				source: "Error querying database for items!",
+				error: err
+			});
+			return;
+		}
+		res.json(results === null ? {source: "Items not found!", found: -1} : results);
 	});
 });
 
@@ -175,6 +311,8 @@ app.get('*', (req, res) => {
 ///process.env.PORT is set when running on heroku.
 const port = process.env.PORT || 5000;
 
+console.log("Waiting for Connection to Mongo...");
+
 //The database credentials are hidden for security purposes. 
 //When hosting locally, it is stored in a local configuration file, 
 //and when hosting on Heroku, it is stored as an environment variable.
@@ -184,10 +322,10 @@ MongoClient.connect(MONGO_LINK, (err, database) => {
 		return;
 	}
 	db = database;
-
+	console.log("Connected to Mongo.");
 	app.listen(port, () => {
 		console.log(`Listening on port ${port}`);
 	});
 
-	retrieveChampionsHourly(db);
+	retrieveChampionsDaily(db);
 });

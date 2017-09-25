@@ -4,6 +4,7 @@ const MONGO_LINK = process.env.MONGO_LINK || require('../config').MONGO_LINK;
 const RIOT_API_KEY = process.env.RIOT_API_KEY || require('../config').RIOT_API_KEY;
 const https = require('https');
 const updateChampInfo = require('./updateChampInfo');
+const updateItemInfo = require('./updateItemInfo');
 
 const url = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&dataById=false&api_key="+RIOT_API_KEY;
 
@@ -77,5 +78,6 @@ function retrieveChampions(db) {
 		});
 		//Then pull detailed champion info from API.
 		updateChampInfo(db);
+		updateItemInfo(db);
 
 }

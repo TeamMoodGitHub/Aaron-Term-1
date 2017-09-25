@@ -22,11 +22,9 @@ class Champion extends React.Component {
 
 	componentDidMount() {
 		this.loadChampionDetails();
-		this.getPatchNumber();
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log(nextProps);
 		if (nextProps.location.key !== this.props.location.key) {
 			this.setState({
 				query: nextProps.match.params.championName,
@@ -45,24 +43,14 @@ class Champion extends React.Component {
 			}));
 	}
 
-	getPatchNumber() {
-		fetch('https://ddragon.leagueoflegends.com/api/versions.json')
-			.then(res => res.json())
-			.then(versions => this.setState({
-				version: versions[0]
-			}));
-	}
-
 	render() {
-
-		//console.log(this.props);
 
 		//Searching for no champion?! What?!?
 		if (!this.state.query) {
 			return (
 				<h1> You're not searching for anything!! </h1>
 				);
-		} else if (!this.state.champion || !this.state.version) {
+		} else if (!this.state.champion || !this.props.version) {
 			//Pass javascript object with only search query as champion name while loading.
 			return (
 				<ChampionHeader champ={{name: this.props.match.params.championName}} />
@@ -77,9 +65,9 @@ class Champion extends React.Component {
 			<div className="page">
 				<Header />
 				<div className="pageBody" style={pageBodyStyle}>
-					<ChampionHeader champ={this.state.champion} version = {this.state.version}/>
-					<StartingItems champ={this.state.champion.name} />
-					<JungleRoutes champ={this.state.champion.name} />
+					<ChampionHeader champ={this.state.champion} version = {this.props.version}/>
+					<StartingItems champ={this.state.query} version={this.props.version} />
+					<JungleRoutes champ={this.state.query} />
 				</div>
 			</div>
 			);

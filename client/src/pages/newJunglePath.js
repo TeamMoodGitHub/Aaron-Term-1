@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {Redirect} from 'react-router';
+
 import '../jungleCamps.css';
 
 import riftMap from '../images/riftMap.png';
@@ -22,12 +24,14 @@ class NewJunglePath extends React.Component {
 		this.state = {
 			route: [],
 			lastX: -1,
-			lastY: -1
+			lastY: -1,
+			redirect: false
 		};
 
 		this.clearRoute = this.clearRoute.bind(this);
 		this.addToRoute = this.addToRoute.bind(this);
 		this.mapLoaded = this.mapLoaded.bind(this);
+		this.submit = this.submit.bind(this);
 	}
 
 	componentDidMount() {
@@ -50,6 +54,9 @@ class NewJunglePath extends React.Component {
 	}
 
 	addToRoute(val) {
+		if (val.target.getAttribute("data-mobID") === this.state.route[this.state.route.length-1]) {
+			return;
+		}
 		if (this.state.lastX >= 0 && this.state.lastY >= 0) {
 			var toX = val.target.offsetLeft + val.target.width/2;
 			var toY = val.target.offsetTop + val.target.height/2
@@ -117,8 +124,35 @@ class NewJunglePath extends React.Component {
     	this.clearRoute();
     }
 
+    submit() {
+    	if (!this.state.route || this.state.route.length <= 0) {
+    		return;
+    	}
+    	fetch('/api/jungler/'+this.props.match.params.championName+'/jungleRoute', {
+    		headers: {
+		    	'Accept': 'application/json, text/plain, */*',
+		    	'Content-Type': 'application/json'
+		    },
+		    method: "POST",
+		    body: JSON.stringify(this.state.route)
+    	})
+    	.then((res) => res.json())
+    	.then((json) => {
+    		if (json.success) {
+    			this.setState({redirect: true});
+    		} else {
+    			alert("There was a problem with your submission: " + json);
+    		}
+    	});
+    }
+
 
 	render() {
+
+		if (this.state.redirect) {
+			return <Redirect push to={"/champion/"+this.props.match.params.championName} />;
+		}
+
 		return (
 			<div>
 				<h1>Create a new Jungle Path for: {this.props.match.params.championName}</h1>
@@ -173,6 +207,8 @@ class NewJunglePath extends React.Component {
 
 					<canvas id="canvas" ref="canvas" width={0} height={0}/>
 				</div>
+
+				<button onClick={this.submit}><p>Submit</p></button>
 			</div>
 		);
 	}
