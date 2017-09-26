@@ -77,7 +77,7 @@ class StartingItems extends React.Component {
 				{
 					this.state.startingItems.map(startingItemSet => 
 						(
-						<div class="startingItemSet">
+						<div className="startingItemSet">
 							<h3>{startingItemSet.set.map(item => <Item item={this.getItemById(item)} version={this.props.version}/>)}</h3> 
 							<h4>Score: {startingItemSet.score}</h4>
 							<button onClick={() => this.vote(startingItemSet._id, true)}><p>+</p></button>

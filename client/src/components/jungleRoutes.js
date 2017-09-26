@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import JungleRoute from './jungleRoute';
 
 class JungleRoutes extends React.Component {
 
@@ -58,9 +59,8 @@ class JungleRoutes extends React.Component {
 				{
 					this.state.routes.map(route => 
 						(
-						<div class="route">
-							<h3>ID: {route._id}</h3>
-							<h3>Path: {JSON.stringify(route.route)}</h3> 
+						<div className="route">
+							<JungleRoute route={route.route} />
 							<h4>Score: {route.score}</h4>
 							<button onClick={() => this.vote(route._id, true)}><p>+</p></button>
 							<button onClick={() => this.vote(route._id, false)}><p>-</p></button>
