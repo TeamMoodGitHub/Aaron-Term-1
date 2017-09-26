@@ -5,7 +5,7 @@ import SearchBox from './searchBox';
 
 const style = {
 	"background-color": "#eee",
-	"padding": "18px 35px",
+	"padding": "18px 35px"
 }
 
 class Header extends React.Component {

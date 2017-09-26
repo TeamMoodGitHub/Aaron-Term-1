@@ -8,7 +8,10 @@ const largeFormStyle = {
 	"text-align": "center",
 	display: "block",
 	margin: "20px auto",
-	width: 500
+	width: 500,
+	"@media (max-width: 540px)": {
+		width: "80%"
+	}
 };
 
 const formStyle = {

@@ -7,7 +7,11 @@ const largeStyle = {
 	display: "block",
 	margin: "20px auto",
 	width: 500,
-	"font-size": 80
+	"font-size": 80,
+	"@media (max-width: 540px)": {
+		"font-size": 50,
+		"width": "80%"
+	}
 };
 
 const style = {
