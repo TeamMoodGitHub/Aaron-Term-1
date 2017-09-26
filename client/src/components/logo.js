@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import Radium from 'radium';
 
 const largeStyle = {
 	"text-align": "center",
@@ -12,12 +13,35 @@ const largeStyle = {
 const style = {
 	display: "inline-block",
 	"font-size": 40,
-	"margin": "22px 0px"
+	"margin": "22px 0px",
+	"@media (max-width: 540px)": {
+		"margin": "auto",
+		"float": "none"
+	}
 }
 
-const logo = (props) => (props.size === "large") ? 
-(<h1 className="logo-large" style={largeStyle}>Jungle.GG</h1>)
-:
-(<Link to="/"><h4 className="logo" style = {style}>Jungle.GG</h4></Link>);
+const linkStyle = {
+	"@media (max-width: 540px)": {
+		display: "block",
+		margin: "auto",
+		"text-align": "center"
+	}	
+}
 
-export default logo;
+class Logo extends React.Component {
+
+	render() {
+		
+		//Make React Router Link Radium-Aware
+		const RadiumLink = Radium(Link);
+
+		if (this.props.size === "large") {
+			return (<h1 className="logo-large" style={largeStyle}>Jungle.GG</h1>);
+		} else {
+			return (<RadiumLink style = {linkStyle} to="/"><h4 className="logo" style = {style}>Jungle.GG</h4></RadiumLink>);
+		}
+	}
+
+}
+
+export default Radium(Logo);
