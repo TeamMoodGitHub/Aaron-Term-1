@@ -54,16 +54,20 @@ class JungleRoutes extends React.Component {
 		}
 		return (
 			<div id="jungleRoutes">
-				<h1>Jungle Routes</h1>
-				<Link to={'/champion/'+this.props.champ+'/newPath'}><button>Create new Jungle Route!</button></Link>
+				<div id="jungleRoutesHeader">
+					<h1 style={{display: "inline-block"}}>Jungle Routes</h1>
+					<Link style={{margin: 15}} to={'/champion/'+this.props.champ+'/newPath'}><button style={{"font-size": 20}}>+</button></Link>
+				</div>
 				{
 					this.state.routes.map(route => 
 						(
 						<div className="route">
 							<JungleRoute route={route.route} />
-							<h4>Score: {route.score}</h4>
-							<button onClick={() => this.vote(route._id, true)}><p>+</p></button>
-							<button onClick={() => this.vote(route._id, false)}><p>-</p></button>
+							<div style={{display: "inline-block", "vertical-align": "top", "margin": 23}} className="scoreInfo">
+								<button onClick={() => this.vote(route._id, true)}><p style={{margin:0}}>+</p></button>
+								<h4 style={{margin: "10px 0px", "text-align": "center"}}>{route.score}</h4>
+								<button onClick={() => this.vote(route._id, false)}><p style={{margin:0}}>-</p></button>
+							</div>
 						</div>
 						)
 					)

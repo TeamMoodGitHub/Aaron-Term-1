@@ -5,7 +5,7 @@ class JungleRoute extends React.Component {
 
 	render() {
 		return (
-			<div className="jungleRoute">
+			<div style={{display: "inline-block"}} className="jungleRoute">
 				{this.props.route.map((camp, index) => <Camp camp={camp} drawArrow={index>0}/>)}
 			</div>
 		);
