@@ -1,4 +1,6 @@
 import React from 'react';
+import Radium from 'radium';
+
 import {Link} from 'react-router-dom';
 import Item from './item';
 
@@ -79,9 +81,9 @@ class StartingItems extends React.Component {
 				{
 					this.state.startingItems.map(startingItemSet => 
 						(
-						<div className="startingItemSet">
-							<h3 style={{display: "inline-block"}} >{startingItemSet.set.map(item => <Item item={this.getItemById(item)} version={this.props.version}/>)}</h3> 
-							<div style={{display: "inline-block", "vertical-align": "top", "margin": 23}} className="scoreInfo">
+						<div className="startingItemSet" style={{display: "flex", "align-items": "center"}}>
+							<h3 style={{display: "inline-block", "@media (max-width: 540px)": {width: "80%"}}} >{startingItemSet.set.map(item => <Item item={this.getItemById(item)} version={this.props.version}/>)}</h3> 
+							<div style={{display: "inline-block", "vertical-align": "top", "margin": 23, "text-align": "center", "@media (max-width: 540px)": {width: "20%", margin: 0}}} className="scoreInfo">
 								<button onClick={() => this.vote(startingItemSet._id, true)}><p style={{margin:0}}>+</p></button>
 								<h4 style={{margin: "10px 0px", "text-align": "center"}}>{startingItemSet.score}</h4>
 								<button onClick={() => this.vote(startingItemSet._id, false)}><p style={{margin:0}}>-</p></button>
@@ -96,4 +98,4 @@ class StartingItems extends React.Component {
 
 }
 
-export default StartingItems;
+export default Radium(StartingItems);

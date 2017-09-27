@@ -1,4 +1,5 @@
 import React from 'react';
+import Radium from 'radium';
 
 const imageURL = (version, id) => "http://ddragon.leagueoflegends.com/cdn/"+version+"/img/item/"+id+".png";
 const divStyle = {
@@ -7,7 +8,10 @@ const divStyle = {
 };
 
 const pStyle = {
-	"font-size": 16
+	"font-size": 16,
+	"@media (max-width: 540px)": {
+		"font-size": 12
+	}
 }
 
 
@@ -25,4 +29,4 @@ class Item extends React.Component {
 
 }
 
-export default Item;
+export default Radium(Item);

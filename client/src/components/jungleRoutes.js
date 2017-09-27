@@ -1,4 +1,6 @@
 import React from 'react';
+import Radium from 'radium';
+
 import {Link} from 'react-router-dom';
 import JungleRoute from './jungleRoute';
 
@@ -61,9 +63,9 @@ class JungleRoutes extends React.Component {
 				{
 					this.state.routes.map(route => 
 						(
-						<div className="route">
+						<div className="route" style={{display: "flex", "align-items": "center"}}>
 							<JungleRoute route={route.route} />
-							<div style={{display: "inline-block", "vertical-align": "top", "margin": 23}} className="scoreInfo">
+							<div style={{display: "inline-block", "vertical-align": "top", "width": "10%", "text-align": "center"}} className="scoreInfo">
 								<button onClick={() => this.vote(route._id, true)}><p style={{margin:0}}>+</p></button>
 								<h4 style={{margin: "10px 0px", "text-align": "center"}}>{route.score}</h4>
 								<button onClick={() => this.vote(route._id, false)}><p style={{margin:0}}>-</p></button>
@@ -78,4 +80,4 @@ class JungleRoutes extends React.Component {
 
 }
 
-export default JungleRoutes;
+export default Radium(JungleRoutes);

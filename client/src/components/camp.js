@@ -1,4 +1,5 @@
 import React from 'react';
+import Radium from 'radium';
 
 import dragon from '../images/dragon.png';
 import baron from '../images/baron.png';
@@ -15,12 +16,18 @@ import arrowRight from '../images/arrowRight.png';
 
 const divStyle = {
 	width: 100,
-	display: "inline-block"
+	display: "inline-block",
+	"@media (max-width: 540px)": {
+		width: 50
+	}
 }
 
 const h2Style = {
 	"font-size": 23,
-	display: "inline-block"
+	display: "inline-block",
+	"@media (max-width: 540px)": {
+		"font-size": 15
+	}
 };
 
 const imgStyle = {
@@ -28,7 +35,11 @@ const imgStyle = {
 	"max-height": 125,
 	width: "auto",
 	height: "auto",
-	display: "inline-block"
+	display: "inline-block",
+	"@media (max-width: 540px)": {
+		"max-width": 50,
+		"max-height": 50
+	}
 };
 
 class Camp extends React.Component {
@@ -108,4 +119,4 @@ class Camp extends React.Component {
 
 }
 
-export default Camp;
+export default Radium(Camp);
