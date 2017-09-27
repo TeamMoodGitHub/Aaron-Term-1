@@ -4,7 +4,7 @@ const RIOT_API_KEY = process.env.RIOT_API_KEY || require('../config').RIOT_API_K
 const https = require('https');
 
 ///Update this with patch date to parse games only from current patch.
-const patchTime = new Date("September 14, 2017").getTime();
+const patchTime = new Date("September 27, 2017").getTime();
 const patchPrefix = process.env.CURRENT_PATCH || require('../config').CURRENT_PATCH;
 
 //Delay in ms to prevent surpassing Riot API Limit.
@@ -443,7 +443,7 @@ async function scrapeUsers(n=10) {
 * Called to start scraping users and matches.
 */
 async function startScraping() {
-	while (await scrapeUsers(10) !== 0) {
+	while (await scrapeUsers(1) !== 0) {
 		await scrapeAllGames();
 	}
 }
