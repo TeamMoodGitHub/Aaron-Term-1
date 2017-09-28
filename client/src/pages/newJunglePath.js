@@ -4,6 +4,8 @@ import {Redirect} from 'react-router';
 
 import '../jungleCamps.css';
 
+import Camp from '../components/camp';
+
 import riftMap from '../images/riftMap.png';
 import dragon from '../images/dragon.png';
 import baron from '../images/baron.png';
@@ -157,7 +159,6 @@ class NewJunglePath extends React.Component {
 			<div>
 				<h1>Create a new Jungle Path for: {this.props.match.params.championName}</h1>
 				<button onClick={this.clearRoute}><p>Clear Route</p></button>
-				<p>Current State: {JSON.stringify(this.state.route)}</p>
 				<p>Warning! Resizing your window will clear any routes you're in the middle of creating!</p>
 				<div id="routeMaker">
 					<img ref="map" id="map" src={riftMap} alt="Summoner's Rift Map" onLoad={this.mapLoaded}/>
@@ -208,6 +209,7 @@ class NewJunglePath extends React.Component {
 					<canvas id="canvas" ref="canvas" width={0} height={0}/>
 				</div>
 
+				<p>Current Route: {this.state.route.map((campID, position) => <Camp camp={campID} drawArrow={position>0} />)}</p>
 				<button onClick={this.submit}><p>Submit</p></button>
 			</div>
 		);

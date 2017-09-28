@@ -17,6 +17,7 @@ import arrowRight from '../images/arrowRight.png';
 const divStyle = {
 	width: 100,
 	display: "inline-block",
+	"vertical-align": "text-top",
 	"@media (max-width: 540px)": {
 		width: 50
 	}

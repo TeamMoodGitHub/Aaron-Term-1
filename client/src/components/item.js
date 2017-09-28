@@ -4,7 +4,8 @@ import Radium from 'radium';
 const imageURL = (version, id) => "http://ddragon.leagueoflegends.com/cdn/"+version+"/img/item/"+id+".png";
 const divStyle = {
 	display: "inline-block",
-	padding: "0px 10px"
+	padding: "0px 10px",
+	"vertical-align": "text-top"
 };
 
 const pStyle = {
