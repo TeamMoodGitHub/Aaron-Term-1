@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {Redirect} from 'react-router';
+import {Link} from 'react-router-dom';
 
 import '../jungleCamps.css';
 
@@ -37,11 +38,29 @@ class NewJunglePath extends React.Component {
 	}
 
 	componentDidMount() {
-	  window.addEventListener('resize', this.mapLoaded)
+	  window.addEventListener('resize', this.mapLoaded);
+	  this.loadChampionsFromAPI();
 	}
 
 	componentWillUnmount() {
-	  window.removeEventListener('resize', this.mapLoaded)
+	  window.removeEventListener('resize', this.mapLoaded);
+	}
+
+	loadChampionsFromAPI() {
+		fetch('/api/champions')
+			.then(res => res.json())
+			.then(champions => this.setState({champions}));
+	}
+
+	getNameFromID(name) {
+		if (this.state.champions) {
+			for (var i=0;i<this.state.champions.length;i++) {
+				if (this.state.champions[i].key === name) {
+					return this.state.champions[i].name;
+				}
+			}
+		} 
+		return name;
 	}
 
 	clearRoute() {
@@ -156,8 +175,9 @@ class NewJunglePath extends React.Component {
 		}
 
 		return (
-			<div>
-				<h1>Create a new Jungle Path for: {this.props.match.params.championName}</h1>
+			<div id="jungleRouteCreator">
+				<Link to={"/champion/"+this.props.match.params.championName}><h3>Back</h3></Link>
+				<h1>Create a new Jungle Path for: {this.getNameFromID(this.props.match.params.championName)}</h1>
 				<button onClick={this.clearRoute}><p>Clear Route</p></button>
 				<p>Warning! Resizing your window will clear any routes you're in the middle of creating!</p>
 				<div id="routeMaker">
