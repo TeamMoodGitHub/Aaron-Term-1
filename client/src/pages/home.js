@@ -2,7 +2,6 @@ import React from 'react';
 
 import Logo from '../components/logo';
 import SearchBox from '../components/searchBox'
-import Loading from '../components/loading';
 
 const style = {
 	margin: "auto",

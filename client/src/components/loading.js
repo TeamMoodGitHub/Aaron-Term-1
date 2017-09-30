@@ -13,6 +13,15 @@ const style = {
 class Loading extends React.Component {
 
 	render() {
+
+		if (this.props.positioned) {
+			return (
+			<div className="loading">
+				<i style={{margin: 10}}className = "fa fa-3x fa-spinner fa-pulse fa-fw" />
+			</div>
+			);
+		}
+
 		return (
 			<div style={style} className="loading">
 				<i className = "fa fa-5x fa-spinner fa-pulse fa-fw" />

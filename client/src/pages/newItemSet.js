@@ -2,6 +2,7 @@ import React from 'react';
 
 import Item from '../components/item';
 import Header from '../components/header';
+import Loading from '../components/loading';
 
 import {Link} from 'react-router-dom';
 import {Redirect} from 'react-router';
@@ -99,11 +100,7 @@ class NewItemSet extends React.Component {
 			return <Redirect push to={"/champion/"+this.props.match.params.championName} />;
 		} else if (!this.state.items) {
 			return (
-				<div id="itemSetCreator" style={divStyle}>
-					<Header />
-					<h1>Create a new Item Set for: {this.getNameFromID(this.props.match.params.championName)}</h1>
-					<h1>Loading Items...</h1>
-				</div>
+				<Loading />
 			);
 		} else {
 			return (
