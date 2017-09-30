@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 import '../jungleCamps.css';
 
 import Camp from '../components/camp';
+import Header from '../components/header';
 
 import riftMap from '../images/riftMap.png';
 import dragon from '../images/dragon.png';
@@ -19,6 +20,15 @@ import krugs from '../images/krugs.png';
 import blueSide from '../images/blueSide.png';
 import redSide from '../images/redSide.png';
 import swords from '../images/swords.png';
+
+const divStyle = {
+	padding: "10px 50px",
+	"text-align": "center"
+};
+
+const buttonStyle = {
+	margin: "0px 30px"
+};
 
 class NewJunglePath extends React.Component {
 
@@ -175,12 +185,13 @@ class NewJunglePath extends React.Component {
 		}
 
 		return (
-			<div id="jungleRouteCreator">
-				<Link to={"/champion/"+this.props.match.params.championName}><h3>Back</h3></Link>
-				<h1>Create a new Jungle Path for: {this.getNameFromID(this.props.match.params.championName)}</h1>
-				<button onClick={this.clearRoute}><p>Clear Route</p></button>
+			<div>
+			<Header />
+			<div style={divStyle} id="jungleRouteCreator">
+				<Link to={"/champion/"+this.props.match.params.championName}><button style={{"margin": "1.5em 0em", float: "left"}}><h3 style={{display: "inline-block"}}>&lt; Back</h3></button></Link>
+				<h1 style={{display: "inline-block"}}>Create a new Jungle Path for: {this.getNameFromID(this.props.match.params.championName)}</h1>
 				<p>Warning! Resizing your window will clear any routes you're in the middle of creating!</p>
-				<div id="routeMaker">
+				<div id="routeMaker" style={{width: "100%", "text-align": "left"}}>
 					<img ref="map" id="map" src={riftMap} alt="Summoner's Rift Map" onLoad={this.mapLoaded}/>
 					
 					<img id="dragon" className="mob" src={dragon} alt="Dragon" onClick={this.addToRoute} data-mobID={5} />
@@ -229,8 +240,12 @@ class NewJunglePath extends React.Component {
 					<canvas id="canvas" ref="canvas" width={0} height={0}/>
 				</div>
 
-				<p>Current Route: {this.state.route.map((campID, position) => <Camp camp={campID} drawArrow={position>0} />)}</p>
-				<button onClick={this.submit}><p>Submit</p></button>
+				<h1>Current Route: {this.state.route.map((campID, position) => <Camp camp={campID} drawArrow={position>0} />)}</h1>
+				<div id="formButtons" style={{"text-align": "center"}}>
+					<button style={buttonStyle} onClick={this.clearRoute}><p>Clear Route</p></button>
+					<button style={buttonStyle} onClick={this.submit}><p>Submit</p></button>
+				</div>
+			</div>
 			</div>
 		);
 	}
