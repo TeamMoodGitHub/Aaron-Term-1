@@ -1,7 +1,9 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 
-const getSuggestionValue = suggestion => suggestion.key;
+import Loading from './loading';
+
+const getSuggestionValue = suggestion => suggestion ? suggestion.key : "";
 
 
 
@@ -101,15 +103,24 @@ class ChampionInput extends React.Component {
 	};
 
 	getSuggestions = value => {
+
+		if (this.state.champions.length === 0) {
+			return ["loading"];
+		}
+
 		const input = value.trim().toLowerCase();
 		const length = input.length;
-
 		return length === 0 ? [] : this.state.champions.filter(champ => 
 			champ.name.toLowerCase().startsWith(input)
 			);
 	}
 
 	renderSuggestion = suggestion => {
+
+		if (suggestion === "loading") {
+			return <Loading positioned={true}/>;
+		}
+
 		return (
 			<div className="suggestion">
 				<h3 style={this.props.size==="large" ? largeSuggestionStyle : suggestionStyle}>{suggestion.name}: {suggestion.title}</h3>

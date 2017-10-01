@@ -7,7 +7,10 @@ const style = {
 	margin: "auto",
 	position: "absolute",
 	top: 0, left: 0, bottom: 0, right: 0,
-	height: 300
+	height: 300,
+	"@media (max-width: 540px)": {
+		height: 235
+	}
 };
 
 const Home = (props) => (

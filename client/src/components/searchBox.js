@@ -1,4 +1,6 @@
 import React from 'react';
+import Radium from 'radium';
+
 import ChampionInput from './championInput';
 import {Redirect} from 'react-router';
 
@@ -6,14 +8,22 @@ const largeFormStyle = {
 	"text-align": "center",
 	display: "block",
 	margin: "20px auto",
-	width: 500
+	width: 500,
+	"@media (max-width: 540px)": {
+		width: "80%"
+	}
 };
 
 const formStyle = {
 	"text-align": "center",
 	display: "inline-block",
 	padding: "35px 0px",
-	float: "right"
+	float: "right",
+	"@media (max-width: 540px)": {
+		float: "none",
+		padding: 0,
+		display: "block"
+	}
 };
 
 const submitStyle = (large=false) => ({
@@ -79,4 +89,4 @@ class SearchBox extends React.Component {
 
 }
 
-export default SearchBox;
+export default Radium(SearchBox);

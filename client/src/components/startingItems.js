@@ -1,4 +1,6 @@
 import React from 'react';
+import Radium from 'radium';
+
 import {Link} from 'react-router-dom';
 import Item from './item';
 
@@ -72,16 +74,20 @@ class StartingItems extends React.Component {
 		}
 		return (
 			<div id="startingItems">
-				<h1> Starting Items </h1>
-				<Link to={'/champion/'+this.props.champ+'/newSet'}><button>Create new Item Set!</button></Link>
+				<div id="startingItemsHeader">
+					<h1 style={{display: "inline-block"}}> Starting Items </h1>
+					<Link style={{margin: 15}} to={'/champion/'+this.props.champ+'/newSet'}><button style={{"font-size": 20}}>+</button></Link>
+				</div>
 				{
 					this.state.startingItems.map(startingItemSet => 
 						(
-						<div class="startingItemSet">
-							<h3>{startingItemSet.set.map(item => <Item item={this.getItemById(item)} version={this.props.version}/>)}</h3> 
-							<h4>Score: {startingItemSet.score}</h4>
-							<button onClick={() => this.vote(startingItemSet._id, true)}><p>+</p></button>
-							<button onClick={() => this.vote(startingItemSet._id, false)}><p>-</p></button>
+						<div className="startingItemSet" style={{display: "flex", "align-items": "center"}}>
+							<h3 style={{display: "inline-block", "@media (max-width: 540px)": {width: "80%"}}} >{startingItemSet.set.map(item => <Item item={this.getItemById(item)} version={this.props.version}/>)}</h3> 
+							<div style={{display: "inline-block", "vertical-align": "top", "margin": 23, "text-align": "center", "@media (max-width: 540px)": {width: "20%", margin: 0}}} className="scoreInfo">
+								<button onClick={() => this.vote(startingItemSet._id, true)}><p style={{margin:0}}>+</p></button>
+								<h4 style={{margin: "10px 0px", "text-align": "center"}}>{startingItemSet.score}</h4>
+								<button onClick={() => this.vote(startingItemSet._id, false)}><p style={{margin:0}}>-</p></button>
+							</div>
 						</div>
 						)
 					)
@@ -92,4 +98,4 @@ class StartingItems extends React.Component {
 
 }
 
-export default StartingItems;
+export default Radium(StartingItems);

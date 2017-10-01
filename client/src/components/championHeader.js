@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Loading from './loading';
+
 const headerStyle = {
 	display: "flex",
 	"justify-content": "space-between",
@@ -45,8 +47,8 @@ class ChampionHeader extends React.Component {
 		const championWinRateData = this.state.championWinRate;
 		const junglerWinRateData = this.state.junglerWinRate;
 
-		const name = champion.name || "Loading...";
-		const title = champion.title || "Loading...";
+		const name = champion.name;
+		const title = champion.title;
 		const image = champion.image ? "http://ddragon.leagueoflegends.com/cdn/"+this.props.version+"/img/champion/" + champion.image.full : ""; 
 
 		const champWinRatePercentage =  championWinRateData ? (100 * (championWinRateData.wins || 0) / (championWinRateData.games || 1)).toFixed(2) + "%" : "Loading...";
@@ -54,6 +56,10 @@ class ChampionHeader extends React.Component {
 
 		const junglerWinRatePercentage =  junglerWinRateData ? (100 * (junglerWinRateData.wins || 0) / (junglerWinRateData.games || 1)).toFixed(2) + "%" : "Loading...";
 		const junglerWinRateGameCount =  junglerWinRateData ? (junglerWinRateData.games || 0) : "Loading...";
+
+		if (!name || !title || !champion.image || !championWinRateData || !junglerWinRateData) {
+			return <Loading />;
+		}
 
 		return (
 
