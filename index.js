@@ -9,6 +9,9 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+//Number of Routes per page.
+const countPerPage = 5;
+
 var db;
 
 //Serve static files from React app.
@@ -81,8 +84,8 @@ app.get('/api/jungler/:champ/wr', (req, res) => {
 * Called when webapp requests jungle routes for specific jungler. 
 * Returns array of jungle routes.
 */
-app.get('/api/jungler/:champ/jungleRoutes', (req, res) => {
-	db.collection("jungleRoutes" + CURRENT_PATCH).find({champ: req.params.champ}).sort({score: -1}).toArray(function(err, results) {
+app.get('/api/jungler/:champ/jungleRoutes/:page', (req, res) => {
+	db.collection("jungleRoutes" + CURRENT_PATCH).find({champ: req.params.champ}).sort({score: -1}).skip(countPerPage * req.params.page).limit(countPerPage).toArray(function(err, results) {
 		if (err) {
 			//Send Error Code 500 - Internal Server Error if query fails.
 			res.status(500).json({
@@ -99,8 +102,8 @@ app.get('/api/jungler/:champ/jungleRoutes', (req, res) => {
 * Called when webapp requests starting items for specific jungler.
 * Returns array of starting Items.
 */
-app.get('/api/jungler/:champ/itemSets', (req, res) => {
-	db.collection("itemSets" + CURRENT_PATCH).find({champ: req.params.champ}).sort({score: -1}).toArray(function(err, results) {
+app.get('/api/jungler/:champ/itemSets/:page', (req, res) => {
+	db.collection("itemSets" + CURRENT_PATCH).find({champ: req.params.champ}).sort({score: -1}).skip(countPerPage * req.params.page).limit(countPerPage).toArray(function(err, results) {
 		if (err) {
 			//Send Error Code 500 - Internal Server Error if query fails.
 			res.status(500).json({

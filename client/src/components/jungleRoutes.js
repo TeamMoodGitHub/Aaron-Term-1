@@ -20,7 +20,7 @@ class JungleRoutes extends React.Component {
 	}
 
 	getRoutes() {
-		fetch('/api/jungler/'+this.props.champ+'/jungleRoutes')
+		fetch('/api/jungler/'+this.props.champ+'/jungleRoutes/0')
 			.then(res => res.json())
 			.then(routes => this.setState({routes}));
 	}

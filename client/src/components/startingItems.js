@@ -23,7 +23,7 @@ class StartingItems extends React.Component {
 	}
 
 	getStartingItems() {
-		fetch('/api/jungler/'+this.props.champ+'/itemSets')
+		fetch('/api/jungler/'+this.props.champ+'/itemSets/0')
 			.then(res => res.json())
 			.then(startingItems => this.setState({startingItems}));
 	}
