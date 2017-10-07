@@ -1,6 +1,6 @@
-# Jungle.GG
+# Jungle.ninja
 
-**Jungle.GG** is a League of Legends online tool that allows users to create and share item builds and jungle routes with each other! Created item sets and jungle routes for specific junglers are displayed on a jungler's feed where users can vote to determine which ones are the best.
+**Jungle.ninja** is a League of Legends online tool that allows users to create and share item builds and jungle routes with each other! Created item sets and jungle routes for specific junglers are displayed on a jungler's feed where users can vote to determine which ones are the best.
 
 ![](https://media.giphy.com/media/l378xcoaUcDhTk3ao/giphy.gif)
 
@@ -18,8 +18,8 @@ The website is also mobile-friendly: view it on your phone!
 
 See the website live [here](http://www.jungle.ninja).
 
-## Running your own version of Jungle.GG
-If you'd like to run your own version of Jungle.GG, follow these steps:
+## Running your own version of Jungle.ninja
+If you'd like to run your own version of Jungle.ninja, follow these steps:
 
 1. You need a MongoDB server hosted either locally with your web server or online. I recommend [mLab](https://mlab.com/) if you want a free/online database.
 2. You will also need an API key from the Riot Games API. You can click [here](https://developer.riotgames.com/) for more information.

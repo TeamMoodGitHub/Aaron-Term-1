@@ -41,9 +41,9 @@ class Logo extends React.Component {
 		const RadiumLink = Radium(Link);
 
 		if (this.props.size === "large") {
-			return (<h1 className="logo-large" style={largeStyle}>Jungle.GG</h1>);
+			return (<h1 className="logo-large" style={largeStyle}>Jungle.ninja</h1>);
 		} else {
-			return (<RadiumLink style = {linkStyle} to="/"><h4 className="logo" style = {style}>Jungle.GG</h4></RadiumLink>);
+			return (<RadiumLink style = {linkStyle} to="/"><h4 className="logo" style = {style}>Jungle.ninja</h4></RadiumLink>);
 		}
 	}
 
