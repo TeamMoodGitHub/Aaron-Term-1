@@ -33,6 +33,10 @@ class JungleRoutes extends React.Component {
 				this.setState({
 					pageLimit: 0
 				});
+			} else if (this.state.routes.length < 5) {
+				this.setState({
+					pageLimit: this.state.page
+				});
 			}
 		}
 	}

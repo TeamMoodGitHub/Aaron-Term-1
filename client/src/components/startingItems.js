@@ -40,6 +40,10 @@ class StartingItems extends React.Component {
 				this.setState({
 					pageLimit: 0
 				});
+			} else if (this.state.startingItems.length < 5) {
+				this.setState({
+					pageLimit: this.state.page
+				});
 			}
 		}
 	}
