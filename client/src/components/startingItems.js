@@ -10,11 +10,15 @@ class StartingItems extends React.Component {
 		super(props);
 
 		//Set state to blank object rather than undefined so render() can attempt to access state values.
-		this.state = {};
+		this.state = {
+			page: 0
+		};
 
 		this.getStartingItems = this.getStartingItems.bind(this);
 		this.vote = this.vote.bind(this);
 		this.getItems = this.getItems.bind(this);
+		this.nextPage = this.nextPage.bind(this);
+		this.prevPage = this.prevPage.bind(this);
 	}
 
 	componentDidMount() {
@@ -22,8 +26,30 @@ class StartingItems extends React.Component {
 		this.getItems();
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if (prevState.page !== this.state.page) {
+			this.getStartingItems();
+		}
+		if (prevState.startingItems !== this.state.startingItems) {
+			if (this.state.startingItems.length <= 0 && this.state.page > 0) {
+				this.setState({
+					page: this.state.page - 1,
+					pageLimit: this.state.page - 1
+				});
+			} else if (this.state.startingItems.length <= 0) {
+				this.setState({
+					pageLimit: 0
+				});
+			} else if (this.state.startingItems.length < 5) {
+				this.setState({
+					pageLimit: this.state.page
+				});
+			}
+		}
+	}
+
 	getStartingItems() {
-		fetch('/api/jungler/'+this.props.champ+'/itemSets')
+		return fetch('/api/jungler/'+this.props.champ+'/itemSets/' + this.state.page)
 			.then(res => res.json())
 			.then(startingItems => this.setState({startingItems}));
 	}
@@ -66,6 +92,19 @@ class StartingItems extends React.Component {
     	});
 	}
 
+	nextPage() {
+		this.setState({
+			page: this.state.page + 1
+		});
+
+	}
+
+	prevPage() {
+		this.setState({
+			page: this.state.page - 1
+		});
+	}
+
 	render() {
 		//console.log(JSON.stringify(this.state));
 		if (!this.state.startingItems || !this.state.items) {
@@ -92,6 +131,8 @@ class StartingItems extends React.Component {
 						)
 					)
 				}
+				<button ref="prev" onClick={this.prevPage} disabled={this.state.page === 0} ><p>Previous Page</p></button>
+				<button ref="next" onClick={this.nextPage} disabled={this.state.page === this.state.pageLimit}><p>Next Page</p></button>
 			</div>
 		)
 	}

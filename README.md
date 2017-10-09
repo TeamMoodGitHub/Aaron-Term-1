@@ -1,18 +1,31 @@
-# Jungle.GG
+# Jungle.ninja
 
+**Jungle.ninja** is a League of Legends online tool that allows users to create and share item builds and jungle routes with each other! Created item sets and jungle routes for specific junglers are displayed on a jungler's feed where users can vote to determine which ones are the best.
 
-Currently in development; more info to come! 
+![](https://media.giphy.com/media/l378xcoaUcDhTk3ao/giphy.gif)
 
-See the temporary website [here](http://jungle-gg.herokuapp.com).
+Create a new item set to share with your friends!
 
-## Running your own version of Jungle.GG
-If you'd like to run your own version of Jungle.GG, follow these steps:
+![](https://media.giphy.com/media/3ohhwuV4zOWh7nFtJu/giphy.gif)
+
+Or share a jungle route using the route builder!
+
+![](https://media.giphy.com/media/l1J9FSCoWdbGTTbcQ/giphy.gif)
+
+The website is also mobile-friendly: view it on your phone!
+
+![](https://media.giphy.com/media/3o7aCX610Xs6GjIXBe/giphy.gif)
+
+See the website live [here](http://www.jungle.ninja).
+
+## Running your own version of Jungle.ninja
+If you'd like to run your own version of Jungle.ninja, follow these steps:
 
 1. You need a MongoDB server hosted either locally with your web server or online. I recommend [mLab](https://mlab.com/) if you want a free/online database.
 2. You will also need an API key from the Riot Games API. You can click [here](https://developer.riotgames.com/) for more information.
 3. Ensure that you have node/npm installed on your machine.
 4. Clone this git repository. 
-5. Create a file called `config.js` in the root directory of the cloned repository. Add the following lines of code to this file where `<YourMongoURI>` should be of the form `"mongodb://<dbuser>:<dbpassword>@<serveraddress>/<databasename>"`, `<RiotApiKey>` should be of the form `"RGAPI-xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"`, and `<CurrentPatch>` should be the current League of Legends patch version (At the time of writing, it is `"7.18"`).
+5. Create a file called `config.js` in the root directory of the cloned repository. Add the following lines of code to this file where `<YourMongoURI>` should be of the form `"mongodb://<dbuser>:<dbpassword>@<serveraddress>/<databasename>"`, `<RiotApiKey>` should be of the form `"RGAPI-xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"`, and `<CurrentPatch>` should be the current League of Legends patch version (At the time of writing, it is `"7.19"`).
 ```javascript
 module.exports = {
     MONGO_LINK: <YourMongoURI>,

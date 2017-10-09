@@ -9,6 +9,9 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+//Number of Routes per page.
+const countPerPage = 5;
+
 var db;
 
 //Serve static files from React app.
@@ -81,8 +84,8 @@ app.get('/api/jungler/:champ/wr', (req, res) => {
 * Called when webapp requests jungle routes for specific jungler. 
 * Returns array of jungle routes.
 */
-app.get('/api/jungler/:champ/jungleRoutes', (req, res) => {
-	db.collection("jungleRoutes" + CURRENT_PATCH).find({champ: req.params.champ}).sort({score: -1}).toArray(function(err, results) {
+app.get('/api/jungler/:champ/jungleRoutes/:page', (req, res) => {
+	db.collection("jungleRoutes" + CURRENT_PATCH).find({champ: req.params.champ}).sort({score: -1}).skip(countPerPage * req.params.page).limit(countPerPage).toArray(function(err, results) {
 		if (err) {
 			//Send Error Code 500 - Internal Server Error if query fails.
 			res.status(500).json({
@@ -99,8 +102,8 @@ app.get('/api/jungler/:champ/jungleRoutes', (req, res) => {
 * Called when webapp requests starting items for specific jungler.
 * Returns array of starting Items.
 */
-app.get('/api/jungler/:champ/itemSets', (req, res) => {
-	db.collection("itemSets" + CURRENT_PATCH).find({champ: req.params.champ}).sort({score: -1}).toArray(function(err, results) {
+app.get('/api/jungler/:champ/itemSets/:page', (req, res) => {
+	db.collection("itemSets" + CURRENT_PATCH).find({champ: req.params.champ}).sort({score: -1}).skip(countPerPage * req.params.page).limit(countPerPage).toArray(function(err, results) {
 		if (err) {
 			//Send Error Code 500 - Internal Server Error if query fails.
 			res.status(500).json({
@@ -117,23 +120,75 @@ app.get('/api/jungler/:champ/itemSets', (req, res) => {
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.
 app.post('/api/jungler/:champ/jungleRoute/inc/:id', (req, res) => {
-	db.collection("jungleRoutes" + CURRENT_PATCH).updateOne({
-		"_id": new ObjectId(req.params.id),
-		champ: req.params.champ
-	}, {
-		$inc: {
-			up: 1,
-			score: 1
-		}
-	}, function(err, results) {
+	db.collection("jungleRoutes" + CURRENT_PATCH).findOne({"_id": new ObjectId(req.params.id), champ: req.params.champ}, function(err, results) {
 		if (err) {
+			//Send Error Code 500 - Internal Server Error if query fails.
 			res.status(500).json({
-				source: "Error incrementing jungle route " + req.params.id + "!",
+				source: "Error checking if already voted!",
 				error: err
 			});
-		} else {
-			res.json({success: 1, results});
+			return;
 		}
+
+		const upvoted = results.upvoters && results.upvoters.includes(req.connection.remoteAddress);
+		const downvoted = results.downvoters && results.downvoters.includes(req.connection.remoteAddress);
+
+		var action;
+		if (!upvoted && !downvoted) {
+			action = 
+			{
+				$inc: {
+					up: 1,
+					score: 1
+				},
+				$push: {
+					upvoters: req.connection.remoteAddress
+				}
+			};
+		} else if (upvoted) {
+			action = 
+			{
+				$inc: {
+					up: -1,
+					score: -1
+				},
+				$pull: {
+					upvoters: req.connection.remoteAddress
+				}
+			};
+		} else if (downvoted) {
+			action = 
+			{
+				$inc: {
+					up: 1,
+					down: -1,
+					score: 2
+				},
+				$push: {
+					upvoters: req.connection.remoteAddress
+				},
+				$pull: {
+					downvoters: req.connection.remoteAddress
+				}
+			};
+		} else {
+			res.json({success: -1, message: "Internal Error! It looks like you've voted multiple times on this route!"});
+			return;
+		}
+
+		db.collection("jungleRoutes" + CURRENT_PATCH).updateOne({
+				"_id": new ObjectId(req.params.id),
+				champ: req.params.champ
+			}, action, function(err, results) {
+				if (err) {
+					res.status(500).json({
+						source: "Error incrementing jungle route " + req.params.id + "!",
+						error: err
+					});
+				} else {
+					res.json({success: 1, results});
+				}
+		});
 	});
 });
 
@@ -141,23 +196,75 @@ app.post('/api/jungler/:champ/jungleRoute/inc/:id', (req, res) => {
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.
 app.post('/api/jungler/:champ/jungleRoute/dec/:id', (req, res) => {
-	db.collection("jungleRoutes" + CURRENT_PATCH).updateOne({
-		"_id": new ObjectId(req.params.id),
-		champ: req.params.champ
-	}, {
-		$inc: {
-			down: 1,
-			score: -1
-		}
-	}, function(err, results) {
+	db.collection("jungleRoutes" + CURRENT_PATCH).findOne({"_id": new ObjectId(req.params.id), champ: req.params.champ}, function(err, results) {
 		if (err) {
+			//Send Error Code 500 - Internal Server Error if query fails.
 			res.status(500).json({
-				source: "Error decrementing jungle route " + req.params.id + "!",
+				source: "Error checking if already voted!",
 				error: err
 			});
-		} else {
-			res.json({success: 1, results});
+			return;
 		}
+
+		const upvoted = results.upvoters && results.upvoters.includes(req.connection.remoteAddress);
+		const downvoted = results.downvoters && results.downvoters.includes(req.connection.remoteAddress);
+
+		var action;
+		if (!upvoted && !downvoted) {
+			action = 
+			{
+				$inc: {
+					down: 1,
+					score: -1
+				},
+				$push: {
+					downvoters: req.connection.remoteAddress
+				}
+			};
+		} else if (upvoted) {
+			action = 
+			{
+				$inc: {
+					up: -1,
+					down: 1,
+					score: -2
+				},
+				$push: {
+					downvoters: req.connection.remoteAddress
+				},
+				$pull: {
+					upvoters: req.connection.remoteAddress
+				}
+			};
+		} else if (downvoted) {
+			action = 
+			{
+				$inc: {
+					down: -1,
+					score: 1
+				},
+				$pull: {
+					downvoters: req.connection.remoteAddress
+				}
+			};
+		} else {
+			res.json({success: -1, message: "Internal Error! It looks like you've voted multiple times on this route!"});
+			return;
+		}
+
+		db.collection("jungleRoutes" + CURRENT_PATCH).updateOne({
+				"_id": new ObjectId(req.params.id),
+				champ: req.params.champ
+			}, action, function(err, results) {
+				if (err) {
+					res.status(500).json({
+						source: "Error decrementing jungle route " + req.params.id + "!",
+						error: err
+					});
+				} else {
+					res.json({success: 1, results});
+				}
+		});
 	});
 });
 
@@ -165,23 +272,75 @@ app.post('/api/jungler/:champ/jungleRoute/dec/:id', (req, res) => {
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.
 app.post('/api/jungler/:champ/itemSet/inc/:id', (req, res) => {
-	db.collection("itemSets" + CURRENT_PATCH).updateOne({
-		"_id": new ObjectId(req.params.id),
-		champ: req.params.champ
-	}, {
-		$inc: {
-			up: 1,
-			score: 1
-		}
-	}, function(err, results) {
+	db.collection("itemSets" + CURRENT_PATCH).findOne({"_id": new ObjectId(req.params.id), champ: req.params.champ}, function(err, results) {
 		if (err) {
+			//Send Error Code 500 - Internal Server Error if query fails.
 			res.status(500).json({
-				source: "Error incrementing item set " + req.params.id + "!",
+				source: "Error checking if already voted!",
 				error: err
 			});
-		} else {
-			res.json({success: 1, results});
+			return;
 		}
+
+		const upvoted = results.upvoters && results.upvoters.includes(req.connection.remoteAddress);
+		const downvoted = results.downvoters && results.downvoters.includes(req.connection.remoteAddress);
+
+		var action;
+		if (!upvoted && !downvoted) {
+			action = 
+			{
+				$inc: {
+					up: 1,
+					score: 1
+				},
+				$push: {
+					upvoters: req.connection.remoteAddress
+				}
+			};
+		} else if (upvoted) {
+			action = 
+			{
+				$inc: {
+					up: -1,
+					score: -1
+				},
+				$pull: {
+					upvoters: req.connection.remoteAddress
+				}
+			};
+		} else if (downvoted) {
+			action = 
+			{
+				$inc: {
+					up: 1,
+					down: -1,
+					score: 2
+				},
+				$push: {
+					upvoters: req.connection.remoteAddress
+				},
+				$pull: {
+					downvoters: req.connection.remoteAddress
+				}
+			};
+		} else {
+			res.json({success: -1, message: "Internal Error! It looks like you've voted multiple times on this item set!"});
+			return;
+		}
+
+		db.collection("itemSets" + CURRENT_PATCH).updateOne({
+				"_id": new ObjectId(req.params.id),
+				champ: req.params.champ
+			}, action, function(err, results) {
+				if (err) {
+					res.status(500).json({
+						source: "Error incrementing item set " + req.params.id + "!",
+						error: err
+					});
+				} else {
+					res.json({success: 1, results});
+				}
+		});
 	});
 });
 
@@ -189,23 +348,75 @@ app.post('/api/jungler/:champ/itemSet/inc/:id', (req, res) => {
 ///Will return with success/fail as JSON Object.
 ///Will also ensure user hasn't already voted before.
 app.post('/api/jungler/:champ/itemSet/dec/:id', (req, res) => {
-	db.collection("itemSets" + CURRENT_PATCH).updateOne({
-		"_id": new ObjectId(req.params.id),
-		champ: req.params.champ
-	}, {
-		$inc: {
-			down: 1,
-			score: -1
-		}
-	}, function(err, results) {
+	db.collection("itemSets" + CURRENT_PATCH).findOne({"_id": new ObjectId(req.params.id), champ: req.params.champ}, function(err, results) {
 		if (err) {
+			//Send Error Code 500 - Internal Server Error if query fails.
 			res.status(500).json({
-				source: "Error decrementing item set " + req.params.id + "!",
+				source: "Error checking if already voted!",
 				error: err
 			});
-		} else {
-			res.json({success: 1, results});
+			return;
 		}
+
+		const upvoted = results.upvoters && results.upvoters.includes(req.connection.remoteAddress);
+		const downvoted = results.downvoters && results.downvoters.includes(req.connection.remoteAddress);
+
+		var action;
+		if (!upvoted && !downvoted) {
+			action = 
+			{
+				$inc: {
+					down: 1,
+					score: -1
+				},
+				$push: {
+					downvoters: req.connection.remoteAddress
+				}
+			};
+		} else if (upvoted) {
+			action = 
+			{
+				$inc: {
+					up: -1,
+					down: 1,
+					score: -2
+				},
+				$push: {
+					downvoters: req.connection.remoteAddress
+				},
+				$pull: {
+					upvoters: req.connection.remoteAddress
+				}
+			};
+		} else if (downvoted) {
+			action = 
+			{
+				$inc: {
+					down: -1,
+					score: 1
+				},
+				$pull: {
+					downvoters: req.connection.remoteAddress
+				}
+			};
+		} else {
+			res.json({success: -1, message: "Internal Error! It looks like you've voted multiple times on this item set!"});
+			return;
+		}
+
+		db.collection("itemSets" + CURRENT_PATCH).updateOne({
+				"_id": new ObjectId(req.params.id),
+				champ: req.params.champ
+			}, action, function(err, results) {
+				if (err) {
+					res.status(500).json({
+						source: "Error decrementing item set " + req.params.id + "!",
+						error: err
+					});
+				} else {
+					res.json({success: 1, results});
+				}
+		});
 	});
 });
 

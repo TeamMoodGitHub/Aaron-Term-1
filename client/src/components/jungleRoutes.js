@@ -9,10 +9,36 @@ class JungleRoutes extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			routes: null
+			routes: null,
+			page: 0
 		};
 		this.getRoutes = this.getRoutes.bind(this);
 		this.vote = this.vote.bind(this);
+		this.nextPage = this.nextPage.bind(this);
+		this.prevPage = this.prevPage.bind(this);
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.state.page !== prevState.page) {
+			this.getRoutes();
+		}
+
+		if (prevState.routes !== this.state.routes) {
+			if (this.state.routes.length <= 0 && this.state.page > 0) {
+				this.setState({
+					page: this.state.page - 1,
+					pageLimit: this.state.page - 1
+				});
+			} else if (this.state.routes.length <= 0) {
+				this.setState({
+					pageLimit: 0
+				});
+			} else if (this.state.routes.length < 5) {
+				this.setState({
+					pageLimit: this.state.page
+				});
+			}
+		}
 	}
 
 	componentDidMount() {
@@ -20,7 +46,7 @@ class JungleRoutes extends React.Component {
 	}
 
 	getRoutes() {
-		fetch('/api/jungler/'+this.props.champ+'/jungleRoutes')
+		fetch('/api/jungler/'+this.props.champ+'/jungleRoutes/' + this.state.page)
 			.then(res => res.json())
 			.then(routes => this.setState({routes}));
 	}
@@ -49,6 +75,19 @@ class JungleRoutes extends React.Component {
     	});
 	}
 
+	nextPage() {
+		this.setState({
+			page: this.state.page + 1
+		});
+
+	}
+
+	prevPage() {
+		this.setState({
+			page: this.state.page - 1
+		});
+	}
+
 	render() {
 		//console.log(JSON.stringify(this.state));
 		if (!this.state.routes) {
@@ -74,6 +113,8 @@ class JungleRoutes extends React.Component {
 						)
 					)
 				}
+				<button ref="prev" onClick={this.prevPage} disabled={this.state.page === 0} ><p>Previous Page</p></button>
+				<button ref="next" onClick={this.nextPage} disabled={this.state.page === this.state.pageLimit}><p>Next Page</p></button>
 			</div>
 		)
 	}
