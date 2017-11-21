@@ -6,6 +6,7 @@ const MONGO_LINK = process.env.MONGO_LINK || require('./config').MONGO_LINK;
 const CURRENT_PATCH = process.env.CURRENT_PATCH || require('./config').CURRENT_PATCH;
 const retrieveChampionsDaily = require('./scraper/retrieveChampions');
 const bodyParser = require('body-parser');
+const Jimp = require("jimp");
 
 const app = express();
 
@@ -24,6 +25,22 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.use(bodyParser.urlencoded({extended: false}));
 //Parse JSON Format for POST body data.
 app.use(bodyParser.json());
+
+
+app.get('/api/buildRoute/:route', (req, res) => {
+	console.log(req.params.route);
+	Jimp.read("client/src/images/riftMap.png", function (err, lenna) {
+	    if (err) throw err;
+	    lenna.resize(256, 256)            // resize 
+	         .quality(60)                 // set JPEG quality 
+	         .greyscale()                 // set greyscale 
+	         .getBuffer(Jimp.MIME_JPEG, function(err, buffer){
+             res.set("Content-Type", Jimp.MIME_JPEG);
+             res.send(buffer);
+         }); // save 
+	});
+});
+
 
 //Put all API endpoints under '/API'
 /**
