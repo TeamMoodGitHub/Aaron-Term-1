@@ -8,6 +8,8 @@ const retrieveChampionsDaily = require('./scraper/retrieveChampions');
 const bodyParser = require('body-parser');
 const Jimp = require("jimp");
 
+const routeBuilder = require("./routeBuilder");
+
 const app = express();
 
 //Number of Routes per page.
@@ -28,17 +30,9 @@ app.use(bodyParser.json());
 
 
 app.get('/api/buildRoute/:route', (req, res) => {
-	console.log(req.params.route);
-	Jimp.read("client/src/images/riftMap.png", function (err, lenna) {
-	    if (err) throw err;
-	    lenna.resize(256, 256)            // resize 
-	         .quality(60)                 // set JPEG quality 
-	         .greyscale()                 // set greyscale 
-	         .getBuffer(Jimp.MIME_JPEG, function(err, buffer){
-             res.set("Content-Type", Jimp.MIME_JPEG);
-             res.send(buffer);
-         }); // save 
-	});
+
+	routeBuilder.generateRoute(req, res);
+
 });
 
 
