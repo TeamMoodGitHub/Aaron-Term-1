@@ -7,7 +7,7 @@ class FinishedRoute extends React.Component {
 	}
 
 	render() {
-		return <h1>Finished Route</h1>;
+		return <h1>Finished Route: {JSON.stringify(this.props.route)}</h1>;
 	}
 }
 

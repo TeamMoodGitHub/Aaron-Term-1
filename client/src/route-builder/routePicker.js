@@ -1,4 +1,36 @@
 import React from 'react';
+import SelectionCamp from './selectionCamp';
+
+import camps from './camps';
+
+const divStyle = {
+	margin: 10, 
+	width: "30%", 
+	height: 700, 
+	"background-color": "red", 
+	display: "inline-block"
+};
+
+const blueStyle = {
+	width: "33.333%", 
+	height: 700, 
+	"background-color": "blue", 
+	display: "inline-block"
+};
+
+const redStyle = {
+	width: "33.333%", 
+	height: 700, 
+	"background-color": "red", 
+	display: "inline-block"
+};
+
+const greenStyle = {
+	width: "33.333%", 
+	height: 700, 
+	"background-color": "green", 
+	display: "inline-block"
+};
 
 class RoutePicker extends React.Component {
 
@@ -8,10 +40,16 @@ class RoutePicker extends React.Component {
 
 	render() {
 		return (
-			<div style={{margin: 10, width: "30%", height: 600, "background-color": "red", display: "inline-block"}}> 
-				<div style={{width: "33.333%", height: 600, "background-color": "orange", display: "inline-block"}} /> 
-				<div style={{width: "33.333%", height: 600, "background-color": "green", display: "inline-block"}} /> 
-				<div style={{width: "33.333%", height: 600, "background-color": "purple", display: "inline-block"}} /> 
+			<div style={divStyle}> 
+				<div style={blueStyle}>
+					{camps[0].map((camp) => <SelectionCamp camp={camp} />)}
+				</div> 
+				<div style={redStyle}>
+					{camps[1].map((camp) => <SelectionCamp camp={camp} />)}
+				</div> 
+				<div style={greenStyle}>
+					{camps[2].map((camp) => <SelectionCamp camp={camp} />)}
+				</div> 
 			</div>
 		);
 	}

@@ -1,4 +1,13 @@
 import React from 'react';
+import PreviewCamp from './previewCamp';
+
+const style = {
+	margin: 10,
+	width: "30%",
+	height: 700,
+	display: "inline-block",
+	"vertical-align": "top"
+};
 
 class RoutePreview extends React.Component {
 
@@ -8,10 +17,13 @@ class RoutePreview extends React.Component {
 
 	render() {
 		return (
-			<div style={{margin: 10, width: "30%", height: 600, "background-color": "blue", display: "inline-block"}}> 
-				<div style={{width: "50%", height: 600, "background-color": "black", display: "inline-block"}} /> 
-				<div style={{width: "50%", height: 600, "background-color": "grey", display: "inline-block"}} /> 
-			</div>
+			<section style={style}> 
+				{
+					this.props.route.map(
+						(camp, position) => <PreviewCamp camp={camp} number={position+1} />
+					)
+				}
+			</section>
 		);
 	}
 
