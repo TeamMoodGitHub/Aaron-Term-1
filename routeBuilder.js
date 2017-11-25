@@ -1,7 +1,9 @@
+const Jimp = require("jimp");
+
 module.exports = {
 
 	generateRoute: function(req, res) {
-		console.log(req.params.route);
+		//console.log(req.params.route);
 		var route = [];
 		for (var i = 0 ; i < req.params.route.length ; i+= 2) {
 			var current = req.params.route.substring(i, i+2);
@@ -11,12 +13,12 @@ module.exports = {
 			}
 			route.concat(camp);
 		}
-		sendRoute(route);
+		sendRoute(res, route);
 		return true;
 	}
 }
 
-function sendRoute(route) {
+function sendRoute(res, route) {
 	Jimp.read("client/src/images/riftMap.png", function (err, lenna) {
 	    if (err) throw err;
 	    lenna.resize(256, 256)            // resize 
@@ -30,7 +32,7 @@ function sendRoute(route) {
 }
 
 function getCamp(campString) {
-	if (current.length !== 2) {
+	if (campString.length !== 2) {
 		return null;
 	}
 	return null;

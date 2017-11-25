@@ -6,7 +6,6 @@ const MONGO_LINK = process.env.MONGO_LINK || require('./config').MONGO_LINK;
 const CURRENT_PATCH = process.env.CURRENT_PATCH || require('./config').CURRENT_PATCH;
 const retrieveChampionsDaily = require('./scraper/retrieveChampions');
 const bodyParser = require('body-parser');
-const Jimp = require("jimp");
 
 const routeBuilder = require("./routeBuilder");
 
