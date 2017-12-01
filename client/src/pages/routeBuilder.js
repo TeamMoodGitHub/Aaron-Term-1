@@ -41,7 +41,7 @@ class RouteBuilder extends React.Component {
 					<RoutePreview route={this.state.route}/>
 				</section>
 				<section>
-					<input style={submitStyle} type="submit" />
+					<input style={submitStyle} type="submit" value="Create Route" />
 				</section>
 				<FinishedRoute route={this.state.route} />
 			</div>

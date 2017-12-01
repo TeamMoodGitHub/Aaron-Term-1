@@ -92,7 +92,7 @@ const camps = [
 		}
 
 
-	], //End of column 3
+	] //End of column 3
 ];
 
 export default camps;
