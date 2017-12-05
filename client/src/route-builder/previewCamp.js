@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Gromp from './icons/gromp.png';
-
 const campStyle = {
 	width: "100%", 
 	height: 140, 
@@ -61,7 +59,7 @@ const photoItemStyle = {
 	position: "relative",
 	top: "50%",
 	transform: "translateY(-50%)",
-	height: "70%",
+	width: "70%",
 	"border-radius": 20
 };
 
@@ -80,10 +78,10 @@ class PreviewCamp extends React.Component {
 					<p style={numberItemStyle}>{this.props.number}</p>
 				</div> 
 				<div style={photoStyle}>
-					<img style={photoItemStyle} src={Gromp} />
+					<img style={photoItemStyle} src={this.props.camp.image} />
 				</div> 
 				<div style={nameStyle}>
-					<p style={nameItemStyle}>{this.props.camp}</p>
+					<p style={nameItemStyle}>{this.props.camp.name}</p>
 				</div> 
 
 			</div>

@@ -1,9 +1,10 @@
 import React from 'react';
 
-const paragraphStyle = {
-	margin: 0,
-	"vertical-align": "middle",
-	"line-height": 100
+const imageStyle = {
+	width: "60%",
+	height: "80%",
+	margin: "6%",
+	"border-radius": "20%"
 };
 
 const campStyle = {
@@ -21,7 +22,7 @@ class SelectionCamp extends React.Component {
 		return (
 
 			<div style={campStyle}>
-				<p style={paragraphStyle}>{this.props.camp.code}</p>
+				<img style={imageStyle} src={this.props.camp.image}/>
 			</div>
 
 		)

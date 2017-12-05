@@ -1,94 +1,128 @@
 import Gromp from './icons/gromp.png';
+import Red from './icons/red.png';
+import Blue from './icons/blue.png';
+import Raptors from './icons/raptors.png';
+import Herald from './icons/herald.png';
+import Scuttler from './icons/scuttler.png';
+import Base from './icons/recall.png';
+import Wolves from './icons/wolves.png';
+import Baron from './icons/baron.png';
+import Krugs from './icons/krugs.png';
+import Dragon from './icons/dragon.png';
+import Top from './icons/top.png';
+import Mid from './icons/mid.png';
+import Bot from './icons/bot.png';
 
 const camps = [
 	[
 		{
+			name: "Blue Gromp",
 			code: "BG",
 			image: Gromp
 		},
 		{
-			code: "BR",
-			image: Gromp
+			name: "Blue Raptors",
+			code: "BC",
+			image: Raptors
 		},
 		{
+			name: "Blue Wolves",
 			code: "BW",
-			image: Gromp
+			image: Wolves
 		},
 		{
+			name: "Blue Krugs",
 			code: "BK",
-			image: Gromp
+			image: Krugs
 		},
 		{
+			name: "Blue Side Blue",
 			code: "BB",
-			image: Gromp
+			image: Blue
 		},
 		{
+			name: "Blue Side Red",
 			code: "BR",
-			image: Gromp
+			image: Red
 		},
 		{
+			name: "Blue Base",
 			code: "BN",
-			image: Gromp
+			image: Base
 		}
 	], //End of column 1
 	[
 		{
+			name: "Red Gromp",
 			code: "RG",
 			image: Gromp
 		},
 		{
-			code: "RR",
-			image: Gromp
+			name: "Red Raptors",
+			code: "RC",
+			image: Raptors
 		},
 		{
+			name: "Red Wolves",
 			code: "RW",
-			image: Gromp
+			image: Wolves
 		},
 		{
+			name: "Red Krugs",
 			code: "RK",
-			image: Gromp
+			image: Krugs
 		},
 		{
+			name: "Red Side Blue",
 			code: "RB",
-			image: Gromp
+			image: Blue
 		},
 		{
+			name: "Red Side Red",
 			code: "RR",
-			image: Gromp
+			image: Red
 		},
 		{
+			name: "Red Base",
 			code: "RN",
-			image: Gromp
+			image: Base
 		}
 	], //End of column 2
 	[
 		{
+			name: "Dragon",
 			code: "DR",
-			image: Gromp
+			image: Dragon
 		},
 		{
+			name: "Baron",
 			code: "BA",
-			image: Gromp
+			image: Baron
 		},
 		{
-			code: "HT",
-			image: Gromp
+			name: "Top Scuttler",
+			code: "ST",
+			image: Scuttler
 		},
 		{
-			code: "HB",
-			image: Gromp
+			name: "Bot Scuttler",
+			code: "SB",
+			image: Scuttler
 		},
 		{
+			name: "Gank Top",
 			code: "GT",
-			image: Gromp
+			image: Top
 		},
 		{
+			name: "Gank Mid",
 			code: "GM",
-			image: Gromp
+			image: Mid
 		},
 		{
+			name: "Gank Bot",
 			code: "GB",
-			image: Gromp
+			image: Bot
 		}
 
 

@@ -4,6 +4,8 @@ import RoutePicker from '../route-builder/routePicker';
 import RoutePreview from '../route-builder/routePreview';
 import FinishedRoute from '../route-builder/finishedRoute';
 
+import camps from '../route-builder/camps';
+
 const pageStyle = {
 	"font-family": "AppleGothic",
 	"text-align": "center"
@@ -20,7 +22,7 @@ class RouteBuilder extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			route: ["Gromp", "Dragon", "Gank Bot"]
+			route: [camps[0][0], camps[1][0], camps[2][0]]
 		}
 	}
 
