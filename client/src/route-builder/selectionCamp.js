@@ -21,7 +21,7 @@ class SelectionCamp extends React.Component {
 	render() {
 		return (
 
-			<div style={campStyle}>
+			<div style={campStyle} onClick={ ()=>this.props.click(this.props.camp) }>
 				<img style={imageStyle} src={this.props.camp.image}/>
 			</div>
 

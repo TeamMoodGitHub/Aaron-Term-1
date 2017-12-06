@@ -42,13 +42,13 @@ class RoutePicker extends React.Component {
 		return (
 			<div style={divStyle}> 
 				<div style={blueStyle}>
-					{camps[0].map((camp) => <SelectionCamp camp={camp} />)}
+					{camps[0].map((camp) => <SelectionCamp camp={camp} click={this.props.insertFunction}/>)}
 				</div> 
 				<div style={redStyle}>
-					{camps[1].map((camp) => <SelectionCamp camp={camp} />)}
+					{camps[1].map((camp) => <SelectionCamp camp={camp} click={this.props.insertFunction}/>)}
 				</div> 
 				<div style={greenStyle}>
-					{camps[2].map((camp) => <SelectionCamp camp={camp} />)}
+					{camps[2].map((camp) => <SelectionCamp camp={camp} click={this.props.insertFunction}/>)}
 				</div> 
 			</div>
 		);

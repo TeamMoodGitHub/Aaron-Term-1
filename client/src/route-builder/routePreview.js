@@ -4,7 +4,6 @@ import PreviewCamp from './previewCamp';
 const style = {
 	margin: 10,
 	width: "30%",
-	height: 700,
 	display: "inline-block",
 	"vertical-align": "top"
 };

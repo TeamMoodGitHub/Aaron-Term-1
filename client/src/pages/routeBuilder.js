@@ -22,8 +22,11 @@ class RouteBuilder extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			route: [camps[0][0], camps[1][0], camps[2][0]]
+			route: []
 		}
+
+		this.addToRoute = this.addToRoute.bind(this);
+		this.clearRoute = this.clearRoute.bind(this);
 	}
 
 	addToRoute(camp) {
@@ -43,6 +46,7 @@ class RouteBuilder extends React.Component {
 					<RoutePreview route={this.state.route}/>
 				</section>
 				<section>
+					<button style={submitStyle} onClick={this.clearRoute}>Clear Route</button>
 					<input style={submitStyle} type="submit" value="Create Route" />
 				</section>
 				<FinishedRoute route={this.state.route} />

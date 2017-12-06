@@ -2,7 +2,7 @@ import React from 'react';
 
 const campStyle = {
 	width: "100%", 
-	height: 140, 
+	height: 70, 
 	"background-color": "red", 
 	display: "inline-block"
 };
@@ -59,7 +59,8 @@ const photoItemStyle = {
 	position: "relative",
 	top: "50%",
 	transform: "translateY(-50%)",
-	width: "70%",
+	width: "50%",
+	height: "90%",
 	"border-radius": 20
 };
 
