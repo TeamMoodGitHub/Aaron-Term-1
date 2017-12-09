@@ -32,7 +32,7 @@ class RoutePreview extends React.Component {
 			<section style={style} ref="scrollWindow"> 
 				{
 					this.props.route.map(
-						(camp, position) => <PreviewCamp camp={camp} smite={this.props.smites[position]} number={position+1} />
+						(camp, position) => <PreviewCamp camp={camp} smite={this.props.smites[position]} number={position+1}  deleteFunction={this.props.deleteFunction} />
 					)
 				}
 			</section>

@@ -89,7 +89,7 @@ class PreviewCamp extends React.Component {
 		//Number, Picture, Name
 		return (
 
-			<div style={campStyle}>
+			<div style={campStyle} onClick={() => this.props.deleteFunction(this.props.number - 1)}>
 				<div style={numberStyle}>
 					{
 						this.props.smite ? 

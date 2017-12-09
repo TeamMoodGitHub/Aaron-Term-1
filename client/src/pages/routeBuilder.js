@@ -28,6 +28,7 @@ class RouteBuilder extends React.Component {
 
 		this.addToRoute = this.addToRoute.bind(this);
 		this.clearRoute = this.clearRoute.bind(this);
+		this.deleteAtPosition = this.deleteAtPosition.bind(this);
 	}
 
 	addToRoute(camp) {
@@ -45,8 +46,15 @@ class RouteBuilder extends React.Component {
 		
 	}
 
+	deleteAtPosition(pos) {
+		this.state.route.splice(pos, 1);
+		this.state.smite.splice(pos, 1);
+
+		this.forceUpdate();
+	}
+
 	clearRoute() {
-		this.setState({route: []})
+		this.setState({route: [], smite: []});
 	}
 
 	render() {
@@ -55,7 +63,7 @@ class RouteBuilder extends React.Component {
 				<h1>Jungle.Ninja Route Builder</h1>
 				<section>
 					<RoutePicker insertFunction={this.addToRoute}/>
-					<RoutePreview route={this.state.route} smites={this.state.smite}/>
+					<RoutePreview route={this.state.route} smites={this.state.smite}  deleteFunction={this.deleteAtPosition}/>
 				</section>
 				<section>
 					<button style={submitStyle} onClick={this.clearRoute}>Clear Route</button>
