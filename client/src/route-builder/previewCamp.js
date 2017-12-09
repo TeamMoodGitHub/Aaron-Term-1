@@ -1,5 +1,7 @@
 import React from 'react';
 
+import smite from './icons/smite.png'
+
 const campStyle = {
 	width: "100%", 
 	height: 70, 
@@ -46,6 +48,19 @@ const numberItemStyle = {
 	"background-color": "white"
 };
 
+const smiteItemStyle = {
+	position: "relative",
+	top: "50%",
+	left: "50%",
+	"transform": "translateY(-50%) translateX(-50%)",
+	margin: 0,
+	border: "2px solid",
+	width: 44,
+	"font-size": 30,
+	"border-radius": "100%",
+	display: "block"
+};
+
 const nameItemStyle = {
 	"text-align": "center",
 	position: "relative",
@@ -76,7 +91,12 @@ class PreviewCamp extends React.Component {
 
 			<div style={campStyle}>
 				<div style={numberStyle}>
-					<p style={numberItemStyle}>{this.props.number}</p>
+					{
+						this.props.smite ? 
+						(<img style={smiteItemStyle} src={smite}/>)
+						:
+						(<p style={numberItemStyle}>{this.props.number}</p>)
+					}
 				</div> 
 				<div style={photoStyle}>
 					<img style={photoItemStyle} src={this.props.camp.image} />

@@ -22,7 +22,8 @@ class RouteBuilder extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			route: []
+			route: [],
+			smite: []
 		}
 
 		this.addToRoute = this.addToRoute.bind(this);
@@ -30,7 +31,18 @@ class RouteBuilder extends React.Component {
 	}
 
 	addToRoute(camp) {
-		this.setState({route: this.state.route.concat(camp)});
+
+		if (this.state.route.length == 0 || this.state.route[this.state.route.length - 1] != camp) {
+			this.setState({
+				route: this.state.route.concat(camp),
+				smite: this.state.smite.concat(false)
+			});
+		} else {
+			var currentSmite = this.state.smite;
+			currentSmite[currentSmite.length - 1] = !currentSmite[currentSmite.length - 1];
+			this.setState({smite: currentSmite});
+		}
+		
 	}
 
 	clearRoute() {
@@ -43,7 +55,7 @@ class RouteBuilder extends React.Component {
 				<h1>Jungle.Ninja Route Builder</h1>
 				<section>
 					<RoutePicker insertFunction={this.addToRoute}/>
-					<RoutePreview route={this.state.route}/>
+					<RoutePreview route={this.state.route} smites={this.state.smite}/>
 				</section>
 				<section>
 					<button style={submitStyle} onClick={this.clearRoute}>Clear Route</button>
