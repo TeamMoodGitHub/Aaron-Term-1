@@ -23,11 +23,14 @@ class RouteBuilder extends React.Component {
 		super(props);
 		this.state = {
 			route: [],
-			smite: []
+			smite: [],
+			routeImage: null
 		}
 
 		this.addToRoute = this.addToRoute.bind(this);
 		this.clearRoute = this.clearRoute.bind(this);
+		this.createRoute = this.createRoute.bind(this);
+		this.routeToAPIString = this.routeToAPIString.bind(this);
 		this.deleteAtPosition = this.deleteAtPosition.bind(this);
 	}
 
@@ -57,6 +60,20 @@ class RouteBuilder extends React.Component {
 		this.setState({route: [], smite: []});
 	}
 
+	routeToAPIString() {
+		var ret = "";
+		//Add camp code, add S if smite, add comma.
+		this.state.route.forEach((camp, position) => ret += camp.code + (this.state.smite[position] ? "S" : "") + ",");
+
+		//Truncate trailing comma and return.
+		return ret.slice(0, -1);
+	}
+
+	createRoute() {
+		this.setState({routeImage: '/api/buildRoute/' + this.routeToAPIString()});
+		console.log(this.state.routeImage);
+	}
+
 	render() {
 		return (
 			<div style={pageStyle}>
@@ -67,9 +84,9 @@ class RouteBuilder extends React.Component {
 				</section>
 				<section>
 					<button style={submitStyle} onClick={this.clearRoute}>Clear Route</button>
-					<input style={submitStyle} type="submit" value="Create Route" />
+					<input style={submitStyle} onClick={this.createRoute} type="submit" value="Create Route" />
 				</section>
-				<FinishedRoute route={this.state.route} />
+				<FinishedRoute routeImage={this.state.routeImage} />
 			</div>
 		);
 	}
