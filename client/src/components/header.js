@@ -4,8 +4,9 @@ import Logo from './logo';
 import SearchBox from './searchBox';
 
 const style = {
-	"background-color": "#eee",
-	"padding": "18px 35px"
+	"background-color": "#1B5E20",
+	"padding": "18px 35px",
+	color: "white"
 }
 
 class Header extends React.Component {
