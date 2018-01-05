@@ -7,15 +7,31 @@ import FinishedRoute from '../route-builder/finishedRoute';
 import camps from '../route-builder/camps';
 
 const pageStyle = {
-	"font-family": "AppleGothic",
+	"font-family": "Roboto",
 	"text-align": "center"
 };
 
 const submitStyle = {
-	"font-size": "2em",
-	"border-width": 2,
-	"border-radius": 15
-}
+    "background-color": "#b2ff59",
+	"border-color": "#fff",
+	"border-radius": 2,
+	"font-size": "0.875rem",
+	"font-weight": "500",
+	"letter-spacing": "0.04em",
+	"line-height": "2.25rem",
+	"text-decoration": "none",
+	"text-transform": "uppercase",
+	"color": "black",
+	"cursor": "pointer",
+	"box-sizing": "border-box",
+	"min-width": "64px",
+	"height": "36px",
+	"padding": "0 16px",
+	"border": "none",
+	"outline": "none",
+	"text-align": "center",
+	margin: "20px"
+};
 
 class RouteBuilder extends React.Component {
 

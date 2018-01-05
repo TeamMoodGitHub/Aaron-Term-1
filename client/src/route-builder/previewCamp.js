@@ -2,17 +2,15 @@ import React from 'react';
 
 import smite from './icons/smite.png'
 
-const campStyle = {
+var campStyle = {
 	width: "100%", 
-	height: 70, 
-	"background-color": "red", 
+	height: 70,
 	display: "inline-block"
 };
 
 const numberStyle = {
 	width: "28%",
 	height: "100%",
-	"background-color": "orange",
 	display: "inline-block",
 	"vertical-align": "top"
 };
@@ -20,7 +18,6 @@ const numberStyle = {
 const photoStyle = {
 	width: "28%",
 	height: "100%",
-	"background-color": "green",
 	display: "inline-block",
 	"vertical-align": "top"
 };
@@ -28,7 +25,6 @@ const photoStyle = {
 const nameStyle = {
 	width: "44%",
 	height: "100%",
-	"background-color": "blue",
 	display: "inline-block",
 	"vertical-align": "top"
 };
@@ -45,7 +41,6 @@ const numberItemStyle = {
 	"font-size": 30,
 	"border-radius": "100%",
 	"padding-top": 6,
-	"background-color": "white"
 };
 
 const smiteItemStyle = {
@@ -86,6 +81,15 @@ class PreviewCamp extends React.Component {
 	}
 
 	render() {
+
+		if (this.props.camp.name.startsWith("Blue")) {
+            campStyle["background-color"] = "#40C4FF";
+		} else if (this.props.camp.name.startsWith("Red")) {
+            campStyle["background-color"] = "#FF8A80";
+		} else {
+            campStyle["background-color"] = "#b2ff59";
+		}
+
 		//Number, Picture, Name
 		return (
 

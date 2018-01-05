@@ -7,7 +7,8 @@ const style = {
 	height: 700,
 	display: "inline-block",
 	"vertical-align": "top",
-	overflow: "scroll"
+	overflow: "scroll",
+	color: "black"
 };
 
 class RoutePreview extends React.Component {

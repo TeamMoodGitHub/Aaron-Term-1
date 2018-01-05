@@ -6,29 +6,28 @@ import camps from './camps';
 const divStyle = {
 	margin: 10, 
 	width: "30%", 
-	height: 700, 
-	"background-color": "red", 
+	height: 700,
 	display: "inline-block"
 };
 
 const blueStyle = {
 	width: "33.333%", 
 	height: 700, 
-	"background-color": "blue", 
+	"background-color": "#40C4FF",
 	display: "inline-block"
 };
 
 const redStyle = {
 	width: "33.333%", 
 	height: 700, 
-	"background-color": "red", 
+	"background-color": "#FF8A80",
 	display: "inline-block"
 };
 
 const greenStyle = {
 	width: "33.333%", 
 	height: 700, 
-	"background-color": "green", 
+	"background-color": "#b2ff59",
 	display: "inline-block"
 };
 

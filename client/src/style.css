@@ -1,7 +1,8 @@
 /*GLOBAL STYLING ONLY*/
 body {
-	background-color: #fafbfc;
+	background-color: rgb(33,33,33);
 	margin: 0px;
+	color: white;
 }
 
 * {

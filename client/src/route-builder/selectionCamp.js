@@ -1,8 +1,8 @@
 import React from 'react';
 
 const imageStyle = {
-	width: "60%",
-	height: "80%",
+	"width": 78,
+	"height": 78,
 	margin: "6%",
 	"border-radius": "20%"
 };
