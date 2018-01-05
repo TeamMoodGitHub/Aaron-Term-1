@@ -69,7 +69,7 @@ const photoItemStyle = {
 	position: "relative",
 	top: "50%",
 	transform: "translateY(-50%)",
-	width: "50%",
+	width: "63px",
 	height: "90%",
 	"border-radius": 20
 };

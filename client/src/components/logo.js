@@ -23,7 +23,7 @@ const style = {
 		"margin": "auto",
 		"float": "none"
 	}
-}
+};
 
 const linkStyle = {
 	"@media (max-width: 540px)": {
@@ -31,7 +31,7 @@ const linkStyle = {
 		margin: "auto",
 		"text-align": "center"
 	}	
-}
+};
 
 class Logo extends React.Component {
 

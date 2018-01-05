@@ -7,7 +7,7 @@ const style = {
 	"background-color": "#1B5E20",
 	"padding": "18px 35px",
 	color: "white"
-}
+};
 
 class Header extends React.Component {
 

@@ -7,7 +7,8 @@ const divStyle = {
 	margin: 10, 
 	width: "30%", 
 	height: 700,
-	display: "inline-block"
+	display: "inline-block",
+	"min-width": 300
 };
 
 const blueStyle = {
