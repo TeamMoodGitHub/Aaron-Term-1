@@ -86,8 +86,12 @@ class RouteBuilder extends React.Component {
 	}
 
 	createRoute() {
+
+		if (!this.routeToAPIString()) {
+			return;
+		}
+
 		this.setState({routeImage: '/api/buildRoute/' + this.routeToAPIString()});
-		console.log(this.state.routeImage);
 	}
 
 	render() {
