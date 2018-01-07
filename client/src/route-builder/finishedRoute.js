@@ -23,7 +23,6 @@ class FinishedRoute extends React.Component {
 	render() {
 		return (
 			<div>
-				<h1>Finished Route: { JSON.stringify(this.props.routeImage) }</h1>
 				{ 
 					this.props.routeImage ? 
 					(
