@@ -21,31 +21,30 @@ module.exports = {
 	}
 };
 
-function sendRoute(res, route) {
-	Jimp.read("client/src/images/riftMap.png", function (err, lenna) {
-	    if (err) throw err;
-	    addRoute(lenna, route)
-	        .getBuffer(Jimp.MIME_JPEG, function(err, buffer){
-         		res.set("Content-Type", Jimp.MIME_JPEG);
-         		res.send(buffer);
-         	}); // save 
-	});
+async function sendRoute(res, route) {
+	var lenna = await Jimp.read("client/src/images/riftMap.png");
+    var finalizedImage = await addRoute(lenna, route);
+    finalizedImage.getBuffer(Jimp.MIME_JPEG, function(err, buffer){
+ 		res.set("Content-Type", Jimp.MIME_JPEG);
+ 		res.send(buffer);
+ 	}); // save 
 }
 
-function addRoute(lenna, route) {
+async function addRoute(lenna, route) {
 
 	for (var i = 0 ; i < route.length ; i++) {
 		//console.log("Adding " + route[i].name + (route[i].smite ? " with smite" : "") +" to image.");
-		lenna = addCamp(lenna, route[i], i);
+		lenna = await addCamp(lenna, route[i], i);
 	}
 
 
 	return lenna;
 }
 
+async function addCamp(lenna, camp, position) {
 
-function addCamp(lenna, camp, position, smite) {
-	return lenna;
+	const image = await (camp.smite ? Jimp.read("circleNums/smite.png") : Jimp.read("circleNums/" + (position+1) + ".png"));
+	return lenna.composite(image, camp.x, camp.y);
 }
 
 function getCamp(campString) {
