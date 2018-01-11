@@ -7,7 +7,7 @@ const style = {
 	height: 700,
 	display: "inline-block",
 	"vertical-align": "top",
-	overflow: "scroll",
+	"overflow-y": "auto",
 	color: "black",
 	"min-width": 300
 };
