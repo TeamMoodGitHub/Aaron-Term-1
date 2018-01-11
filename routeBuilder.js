@@ -51,17 +51,15 @@ async function addCamp(lenna, camp, position) {
 }
 
 async function drawArrow(lenna, camp1, camp2) {
-	const image = await Jimp.read("redArrow.png");
 
 	const deltaX = camp2.x - camp1.x;
 	const deltaY = camp2.y - camp1.y;
 
-	console.log(deltaX + " " + deltaY);
-
 	const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY) - 70;
-	const angle = (deltaX > 0 ? Math.atan(deltaY / deltaX) : -Math.PI + Math.atan(deltaY / deltaX)) * 180 / Math.PI;
 
-	console.log(distance);
+	const image = await Jimp.read("arrows/" + (Math.floor(distance / 100) + 1) + "00.png");
+
+	const angle = (deltaX > 0 ? Math.atan(deltaY / deltaX) : -Math.PI + Math.atan(deltaY / deltaX)) * 180 / Math.PI;
 
 	const resizedImage = await image.resize(distance, 25);
 	const arrow = await resizedImage.rotate(angle);
