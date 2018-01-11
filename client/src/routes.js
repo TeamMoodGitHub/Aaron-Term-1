@@ -6,6 +6,7 @@ import Champion from './pages/champion';
 import NotFound from './pages/notFound';
 import NewJunglePath from './pages/newJunglePath';
 import NewItemSet from './pages/newItemSet';
+import RouteBuilder from './pages/routeBuilder';
 
 class Routes extends React.Component {
 
@@ -39,6 +40,7 @@ class Routes extends React.Component {
 					<Route path="/champion/:championName?/newPath" render={(props) => <NewJunglePath {...props} version={this.state.version} />}/>
 					<Route path="/champion/:championName?/newSet" render={(props) => <NewItemSet {...props} version={this.state.version} />} />
 					<Route path="/champion/:championName?" render={(props) => <Champion {...props} version={this.state.version} />}/>
+					<Route path="/dev/routeBuilder" component={RouteBuilder} />
 					<Route path="*" component={NotFound} />
 				</Switch>
 			</Router>

@@ -7,6 +7,8 @@ const CURRENT_PATCH = process.env.CURRENT_PATCH || require('./config').CURRENT_P
 const retrieveChampionsDaily = require('./scraper/retrieveChampions');
 const bodyParser = require('body-parser');
 
+const routeBuilder = require("./routeBuilder");
+
 const app = express();
 
 //Number of Routes per page.
@@ -24,6 +26,14 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.use(bodyParser.urlencoded({extended: false}));
 //Parse JSON Format for POST body data.
 app.use(bodyParser.json());
+
+
+app.get('/api/buildRoute/:route', (req, res) => {
+
+	routeBuilder.generateRoute(req, res);
+
+});
+
 
 //Put all API endpoints under '/API'
 /**

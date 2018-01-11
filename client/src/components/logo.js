@@ -18,12 +18,12 @@ const style = {
 	display: "inline-block",
 	"font-size": 40,
 	"margin": "22px 0px",
-	color: "black",	
+	color: "white",
 	"@media (max-width: 540px)": {
 		"margin": "auto",
 		"float": "none"
 	}
-}
+};
 
 const linkStyle = {
 	"@media (max-width: 540px)": {
@@ -31,7 +31,7 @@ const linkStyle = {
 		margin: "auto",
 		"text-align": "center"
 	}	
-}
+};
 
 class Logo extends React.Component {
 
