@@ -32,7 +32,7 @@ class FinishedRoute extends React.Component {
 						</div>
 					) 
 					: 
-					<img /> 
+					null 
 				}
 			</div>
 		);
